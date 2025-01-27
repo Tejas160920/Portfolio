@@ -1,0 +1,187 @@
+.resume-section {
+    padding: 80px 20px;
+    background-color: #121212;
+    color: #fff;
+    min-height: 100vh;
+  }
+  
+  .resume-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .resume-title {
+    font-size: 36px;
+    margin-bottom: 60px;
+    text-align: center;
+  }
+  
+  .resume-title span {
+    color: #4CAF50;
+  }
+  
+  .resume-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  
+  /* Column Styling */
+  .resume-column {
+    position: relative;
+  }
+  
+  .column-header {
+    margin-bottom: 40px;
+  }
+  
+  .column-header h3 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 15px;
+  }
+  
+  .header-line {
+    height: 3px;
+    background: linear-gradient(to right, #4CAF50, transparent);
+    width: 100%;
+  }
+  
+  /* Timeline Styling */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background-color: #333;
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding-bottom: 40px;
+  }
+  
+  .timeline-dot {
+    position: absolute;
+    left: -24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    border: 2px solid #121212;
+  }
+  
+  .timeline-content {
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .time-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: #4CAF50;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .content-card {
+    background-color: #1E1E1E;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .content-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .content-card h4 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .institution {
+    color: #888;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
+  /* Course Tags */
+  .courses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+  }
+  
+  .course-tag {
+    background-color: #2D2D2D;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 14px;
+    color: #ccc;
+    transition: background-color 0.3s ease;
+  }
+  
+  .course-tag:hover {
+    background-color: #4CAF50;
+    color: #fff;
+  }
+  
+  /* Experience Points */
+  .experience-points {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+  }
+  
+  .experience-points li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: #ccc;
+  }
+  
+  .experience-points li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #4CAF50;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .resume-content {
+      grid-template-columns: 1fr;
+    }
+  
+    .resume-column {
+      padding: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .resume-title {
+      font-size: 28px;
+    }
+  
+    .column-header h3 {
+      font-size: 20px;
+    }
+  
+    .content-card {
+      padding: 15px;
+    }
+  }

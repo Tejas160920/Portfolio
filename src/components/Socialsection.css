@@ -1,0 +1,123 @@
+/* Socialmedia.css */
+.social-media-section {
+    background-color: #121212;
+    padding: 4rem 1rem;
+    color: #ffffff;
+  }
+  
+  .social-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .social-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .highlight {
+    color: #4CAF50;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 3rem 0;
+    padding: 1rem;
+  }
+  
+  .social-item-wrapper {
+    position: relative;
+    padding: 0.5rem;
+  }
+  
+  .social-item {
+    width: 60px;
+    height: 60px;
+    background-color: #1E1E1E;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0;
+  }
+  
+  .social-item svg {
+    width: 24px;
+    height: 24px;
+    color: #4CAF50;
+    transition: all 0.3s ease;
+  }
+  
+  .social-item:hover {
+    border-color: #4CAF50;
+    /* transform: translateY(-5px); */
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+  }
+  
+  .tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background-color: #1E1E1E;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  
+  .social-item:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(5px);
+  }
+  
+  .social-text {
+    margin-top: 3rem;
+    color: #888888;
+    font-size: 1.125rem;
+  }
+  
+  @keyframes checkmark {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .social-title {
+      font-size: 2rem;
+    }
+    
+    .social-icons {
+      gap: 1.5rem;
+    }
+    
+    .social-item {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .social-item svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* .social-media-section {
+    border: 4px solid yellow;
+  } */

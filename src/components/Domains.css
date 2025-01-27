@@ -1,0 +1,108 @@
+/* Domains.css */
+.domains-section {
+    background-color: #121212;
+    padding: 5rem 1rem;
+    min-height: 100vh;
+    margin-bottom: -20%;
+  }
+  
+  .domains-container {
+    /* border: 4px solid yellow; */
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .domains-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    /* margin-bottom: 4rem; */
+  }
+  
+  .highlight {
+    color: #4CAF50;
+  }
+  
+  .domains-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+  
+  .domain-card {
+    background-color: #1E1E1E;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: var(--delay);
+  }
+  
+  .domain-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
+  }
+  
+  .domain-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .domain-icon-wrapper {
+    margin-bottom: 1rem;
+    color: #4CAF50;
+    transition: transform 0.3s ease;
+  }
+  
+  .domain-card:hover .domain-icon-wrapper {
+    transform: scale(1.1);
+  }
+  
+  .domain-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .domain-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+  
+  .domain-description {
+    color: #888888;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .domains-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .domains-title {
+      font-size: 2rem;
+    }
+  }
+
+/* .domains-section {
+  border: 4px solid green;
+} */

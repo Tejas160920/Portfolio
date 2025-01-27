@@ -1,0 +1,165 @@
+/* Navbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar.scrolled {
+  background: rgba(18, 18, 18, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  color: #ffffff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.nav-link:hover {
+  color: #4CAF50;
+}
+
+.nav-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #4CAF50;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover .nav-line,
+.nav-link.active .nav-line {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: #4CAF50;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .nav-container {
+    padding: 0 1rem;
+  }
+}
+
+/* Animation for navbar appearance */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar.scrolled {
+  animation: slideDown 0.3s ease forwards;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Button styles */
+.hire-me-button {
+  position: absolute; /* Change to absolute for positioning */
+  right: 10%; /* Position the button 20px from the right edge */
+  top: 50%; /* Optional: Center vertically if desired */
+  transform: translateY(-50%); /* Optional: Adjust for perfect vertical centering */
+  display: inline-block;
+  padding: 1px 10px; /* Adjust padding for rectangle shape */
+  font-size: 16px;
+  color: #00ff00; /* Green text color */
+  text-decoration: none;
+  border: 2px solid #00ff00; /* Green border */
+  border-radius: 5px; /* Curved edges */
+  background-color: #000; /* Black button background */
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.3s ease-in-out;
+  z-index: 1; /* Ensure it’s above the background */
+}
+
+/* Hover effects */
+.hire-me-button:hover {
+  color: #ffff00; /* Change text color to yellow */
+}
+
+/* Glowing animation inside the button */
+.hire-me-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%; /* Start the glow from the left */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ffff00, transparent);
+  z-index: 0; /* Behind the text but inside the button */
+  animation: none; /* No animation by default */
+}
+
+.hire-me-button:hover::before {
+  animation: glow-animation 2s linear infinite; /* Start animation on hover */
+}
+
+/* Keyframes for glowing animation */
+@keyframes glow-animation {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 0;
+  }
+  100% {
+    left: 100%;
+  }
+}

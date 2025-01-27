@@ -1,0 +1,223 @@
+.portfolio-section {
+    padding: 50px 20px;
+    background-color: #121212;
+    color: #fff;
+    min-height: 100vh;
+  }
+  
+  .portfolio-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .portfolio-title {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+  .portfolio-title span {
+    color: #4CAF50;
+  }
+  
+  /* Tabs Styling */
+  .portfolio-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #333;
+  }
+  
+  .tab-heading {
+    padding: 15px 30px;
+    font-size: 18px;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    text-transform: capitalize;
+  }
+  
+  .tab-heading:hover {
+    color: #fff;
+  }
+  
+  .tab-heading.active {
+    color: #fff;
+  }
+  
+  .tab-heading.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #4CAF50;
+  }
+  
+  /* Content Grid */
+  .portfolio-content {
+    width: 100%;
+  }
+  
+  .tab-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  .tab-content.active {
+    opacity: 1;
+  }
+  
+  /* Card Styling */
+  .portfolio-card {
+    background-color: #1E1E1E;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .portfolio-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .portfolio-card:hover .card-image img {
+    transform: scale(1.1);
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .year {
+    color: #FF4081;
+    font-weight: 500;
+  }
+  
+  .stars {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #FFD700;
+  }
+  
+  .star {
+    font-size: 14px;
+  }
+  
+  .card-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  
+  .card-content p {
+    color: #888;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  /* Tech Stack Tags */
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .tech-tag {
+    background-color: #333;
+    padding: 2px 5px;
+    border-radius: 50px;
+    font-size: 12px;
+    color: #fff;
+  }
+  
+  /* Card Actions */
+  .card-actions {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .card-btn {
+    padding: 8px 16px;
+    background-color: #2D2D2D;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    flex: 1; /* Ensures buttons take equal space */
+    text-align: center; /* Centers text inside the buttons */
+  }
+  
+ 
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .portfolio-tabs {
+      flex-wrap: wrap;
+    }
+    
+    .tab-heading {
+      padding: 10px 20px;
+    }
+    
+    .portfolio-card {
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .portfolio-title {
+      font-size: 28px;
+    }
+    
+    .card-actions {
+      flex-direction: column;
+    }
+    
+    .card-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }

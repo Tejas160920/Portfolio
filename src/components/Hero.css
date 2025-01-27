@@ -1,0 +1,192 @@
+.hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+  }
+  
+  .hero-background {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 50%, #1a1a1a 100%);
+    opacity: 0.9;
+  }
+  
+  .particles {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .particle {
+    position: absolute;
+    height: 4px;
+    width: 4px;
+    background-color: rgb(255, 238, 0);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  
+  .content-container {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Remove any button-specific styles from hero section */
+  .stats-bar {
+    z-index: 99999999999;
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .stat-item {
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    color: #fff;
+    font-size: 0.875rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .like-container {
+    padding-top: 60px;
+    padding-right: 80px;
+    z-index: 9999999999999;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .like-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Simplify like button styles */
+  .like-button {
+    background: none;
+    width: 48px;
+    height: 48px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .heart-icon {
+    color: #fff;
+    transition: all 0.3s;
+  }
+  
+  .heart-icon.active {
+    color: #ff69b4;
+    fill: #ff69b4;
+  }
+  
+  
+  .emoji {
+    font-size: 1.5rem;
+    position: absolute;
+    right: -40px;
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+    animation: fadeInOut 2s forwards;
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .like-count {
+    color: #fff;
+    margin-top: 0.5rem;
+  }
+  .like-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+  }
+  .main-content {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 1s;
+  }
+  
+  .main-content.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .title {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+  }
+  
+  .highlight {
+    color: #fff;
+  }
+  
+  .description {
+    font-size: 1.25rem;
+    color: #999;
+    max-width: 36rem;
+    line-height: 1.6;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.2; }
+  }
+  
+  @media (max-width: 768px) {
+    .title { font-size: 3rem; }
+    .subtitle { font-size: 2rem; }
+    .description { font-size: 1rem; }
+  }
+  
+  /* Important: Reset any styles that might interfere with cursor detection */
+  button, 
+  a, 
+  .social-button {
+    cursor: none !important;
+  }
+  
+  /* Ensure buttons maintain their borders */
+  .hero button:not([class*="nav"]) {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
