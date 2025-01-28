@@ -6,6 +6,7 @@ import Resume from './components/Resume';
 import DomainsSection from './components/Domains';
 import SocialMediaSection from './components/Socialsection';
 import CustomCursor from './components/CustomCursor';
+import SkillWheel from './components/Skillwheel';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <CustomCursor/> 
       <Navbar />
       <Hero />
+      <SkillWheel/>
       <Portfolio/>
       <Resume />
       <DomainsSection/>

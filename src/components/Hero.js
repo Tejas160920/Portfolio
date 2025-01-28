@@ -30,8 +30,8 @@ const Hero = () => {
     
     <div section id="home" className="hero">
               <div className="stats-bar">
-          <button className="stat-item border-2 border-gray-700">Followers 1.5k</button>
-          <button className="stat-item border-2 border-gray-700">Stars 4.3k</button>
+          {/* <button className="stat-item border-2 border-gray-700">Followers 1.5k</button>
+          <button className="stat-item border-2 border-gray-700">Stars 4.3k</button> */}
         </div>
               <div className="like-container">
           <div className="like-content">

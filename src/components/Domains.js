@@ -35,12 +35,12 @@ const DomainsSection = () => {
       description: "AWS, Azure, Docker, Kubernetes",
       color: "#4CAF50"
     },
-    {
-      icon: <Lock className="domain-icon" />,
-      name: "Cybersecurity",
-      description: "Network Security, Cryptography, Ethical Hacking",
-      color: "#4CAF50"
-    }
+    // {
+    //   icon: <Lock className="domain-icon" />,
+    //   name: "Cybersecurity",
+    //   description: "Network Security, Cryptography, Ethical Hacking",
+    //   color: "#4CAF50"
+    // }
   ];
 
   return (

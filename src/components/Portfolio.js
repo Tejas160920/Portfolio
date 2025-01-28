@@ -72,7 +72,7 @@ const Portfolio = () => {
                 </div>
                 <div className="card-content">
                   <div className="card-header">
-                    <span className="year">2023</span>
+                    <span className="year">2024</span>
                   </div>
                   <h3>Google Extension</h3>
                   <p>Engineered an impactful IoT solution, streamlining community alerts and notifications.</p>
@@ -116,7 +116,7 @@ const Portfolio = () => {
                 </div>
                 <div className="card-content">
                   <div className="card-header">
-                    <span className="year">2024</span>
+                    <span className="year">2023</span>
                   </div>
                   <h3>Brain Tumor</h3>
                   <p>Developed a deep learning model for brain tumor classification, achieving 75% accuracy on test data using CNNs.</p>
@@ -133,21 +133,23 @@ const Portfolio = () => {
               {/* Project 5 */}
               <div className="portfolio-card">
                 <div className="card-image">
-                  <img src="/smart_irrigation.jpeg" alt="Smart Irrigation System" />
+                  <img src="/portfolio.jpeg" alt="portfolio" />
                 </div>
                 <div className="card-content">
                   <div className="card-header">
                     <span className="year">2024</span>
                   </div>
-                  <h3>portfolio</h3>
-                  <p>Built an IoT-enabled irrigation system to automate water delivery based on soil moisture levels.</p>
+                  <h3>Personal Portfolio</h3>
+                  <p>A personal portfolio site to showcase my projects, skills, and experience.</p>
                   <div className="tech-stack">
-                    <span className="tech-tag">IoT</span>
-                    <span className="tech-tag">NodeMCU</span>
-                    <span className="tech-tag">C++</span>
+                    <span className="tech-tag">React</span>
+                    <span className="tech-tag">Javascript</span>
+                    
                   </div>
                   <div className="card-actions">
                     <button className="card-btn" onClick={() => window.location.href='#'}>View Project</button>
+                    <button className="card-btn" onClick={() => window.location.href='https://www.npmjs.com/package/circledot-cursor?activeTab=readme'}>Visit   <FiExternalLink /></button>
+
                   </div>
                 </div>
               </div>
@@ -177,8 +179,81 @@ const Portfolio = () => {
               </div>
             </div>
           )}
+{/* Certifications Tab */}
+{activeTab === 'certifications' && (
+            <div className="tab-content active">
+              <div className="portfolio-card">
+                <div className="card-image">
+                  <img src="/p4.jpeg" alt="NVIDIA" />
+                </div>
+                <div className="card-content">
+                  <div className="card-header">
+                    <span className="year">2024</span>
+                  </div>
+                  <h3>NVIDIA: Getting Started with Deep Learning</h3>
+                  <p>January 2024</p>
+                  <div className="tech-stack">
+                    <span className="tech-tag">Deep Learning</span>
+                    <span className="tech-tag">NVIDIA</span>
+                  </div>
+                  <div className="card-actions">
+                    <a href="#" className="card-btn">View Certificate</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-          {/* Other Tabs Content Remains */}
+          {/* Hackathons Tab */}
+{activeTab === 'hackathons' && (
+  <div className="tab-content active">
+    <div className="portfolio-card">
+      <div className="card-image">
+        <img src="/p7.jpeg" alt="Hackathon" />
+      </div>
+      <div className="card-content">
+        <div className="card-header">
+          <span className="year">2023</span>
+        </div>
+        <h3>APROJECTATHON '23</h3>
+        <p>Secured 3rd runner-up for creating 'Agribot,' a precision farming robot that optimized weed and disease detection.</p>
+        <div className="tech-stack">
+          <span className="tech-tag">Python</span>
+          <span className="tech-tag">YOLOv7</span>
+          <span className="tech-tag">OpenCV</span>
+        </div>
+        <div className="card-actions">
+          <a href="#" className="card-btn">View Project</a>
+        </div>
+      </div>
+    </div>
+  </div>
+          )}
+
+          {/* Publications Tab */}
+          {activeTab === 'publications' && (
+            <div className="tab-content active">
+              <div className="portfolio-card">
+                <div className="card-image">
+                  <img src="/p9.jpeg" alt="Publication" />
+                </div>
+                <div className="card-content">
+                  <div className="card-header">
+                    <span className="year">2023</span>
+                  </div>
+                  <h3>Publication Title 1</h3>
+                  <p>Description of the publication...</p>
+                  <div className="tech-stack">
+                    <span className="tech-tag">Research</span>
+                    <span className="tech-tag">ML</span>
+                  </div>
+                  <div className="card-actions">
+                    <a href="#" className="card-btn">Read Paper</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -186,3 +261,4 @@ const Portfolio = () => {
 };
 
 export default Portfolio;
+
