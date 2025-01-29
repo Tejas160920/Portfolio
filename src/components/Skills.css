@@ -1,7 +1,7 @@
 .sw-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,9 +17,9 @@
   border-radius: 50%;
   background: #4ade80;
   box-shadow: 
-    0 0 30px rgba(74, 222, 128, 0.4),
-    0 0 60px rgba(74, 222, 128, 0.3),
-    0 0 90px rgba(74, 222, 128, 0.2);
+    0 0 140px rgba(74, 222, 128, 0.4),
+    0 0 240px rgba(74, 222, 128, 0.3),
+    0 0 400px rgba(74, 222, 128, 0.2);
 }
 
 .sw-wheel {
@@ -29,6 +29,7 @@
   transform-origin: center;
   cursor: grab;
   z-index: 2;
+  bottom: -46%;
 }
 
 .sw-wheel:active {
@@ -39,9 +40,9 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 100px;
-  height: 100px;
-  margin: -50px;
+  width: 400px;
+  height: 400px;
+  margin: -200px;
   transform-origin: center;
 }
 
@@ -127,3 +128,140 @@
 /* .sw-skill-item {
   background-color: red;
 } */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Add these styles to your existing Skills.css */
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+  z-index: 1;
+}
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+.like-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.like-content {
+  position: relative;
+}
+
+.like-button {
+  background: transparent;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.like-button:hover {
+  transform: scale(1.1);
+}
+
+.heart-icon {
+  transition: fill 0.3s;
+  fill: #ff4d4d;
+}
+
+.heart-icon.active {
+  animation: pulse 0.3s ease-in-out;
+}
+
+.emoji {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float-up 2s ease-out forwards;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float-up {
+  0% { 
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% { 
+    opacity: 0;
+    transform: translate(-50%, -40px);
+  }
+}
+
+/* Make sure wheel components are above background */
+.sw-wheel, .sw-center-dot, .sw-skill-name {
+  position: relative;
+  z-index: 2;
+}
+
+.sw-center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 40%);
+  height: 260px;
+  width: 260px;
+}

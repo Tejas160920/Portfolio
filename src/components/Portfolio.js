@@ -68,7 +68,7 @@ const Portfolio = () => {
               {/* Project 2 */}
               <div className="portfolio-card">
                 <div className="card-image">
-                  <img src="/p2.jpeg" alt="Community Tracker" />
+                  <img src="/tryonn.jpg" alt="Community Tracker" />
                 </div>
                 <div className="card-content">
                   <div className="card-header">
@@ -181,35 +181,39 @@ const Portfolio = () => {
           )}
 {/* Certifications Tab */}
 {activeTab === 'certifications' && (
-            <div className="tab-content active">
-              <div className="portfolio-card">
-                <div className="card-image">
-                  <img src="/p4.jpeg" alt="NVIDIA" />
-                </div>
-                <div className="card-content">
-                  <div className="card-header">
-                    <span className="year">2024</span>
-                  </div>
-                  <h3>NVIDIA: Getting Started with Deep Learning</h3>
-                  <p>January 2024</p>
-                  <div className="tech-stack">
-                    <span className="tech-tag">Deep Learning</span>
-                    <span className="tech-tag">NVIDIA</span>
-                  </div>
-                  <div className="card-actions">
-                    <a href="#" className="card-btn">View Certificate</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+  <div className="tab-content active">
+    <div className="portfolio-card">
+      <div className="card-image">
+        <img src="/certi.jpeg" alt="IITM Foundation" />
+      </div>
+      <div className="card-content">
+        <div className="card-header">
+          <span className="year">2022</span>
+        </div>
+        <h3>IITM Foundation Certificate: Programming and Data Science</h3>
+        <p>April 2022</p>
+        <div className="tech-stack">
+          <span className="tech-tag">Programming</span>
+          <span className="tech-tag">Data Science</span>
+          <span className="tech-tag">IITM</span>
+        </div>
+        <div className="card-actions">
+          <a href="/mnt/data/IITM FOUNDATION CERTIFICATE.pdf" className="card-btn" target="_blank" rel="noopener noreferrer">
+            View Certificate
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
           {/* Hackathons Tab */}
 {activeTab === 'hackathons' && (
   <div className="tab-content active">
     <div className="portfolio-card">
       <div className="card-image">
-        <img src="/p7.jpeg" alt="Hackathon" />
+        <img src="/hack.jpeg" alt="Hackathon" />
       </div>
       <div className="card-content">
         <div className="card-header">
@@ -235,14 +239,14 @@ const Portfolio = () => {
             <div className="tab-content active">
               <div className="portfolio-card">
                 <div className="card-image">
-                  <img src="/p9.jpeg" alt="Publication" />
+                  <img src="/publi.jpeg" alt="Publication" />
                 </div>
                 <div className="card-content">
                   <div className="card-header">
                     <span className="year">2023</span>
                   </div>
-                  <h3>Publication Title 1</h3>
-                  <p>Description of the publication...</p>
+                  <h3>Crop Weed Detection, Depth Estimation, and Disease Diagnosis</h3>
+                  <p>Published in Springer PCCDA 2023, advancing precision agriculture with AI-driven weed and disease detection.</p>
                   <div className="tech-stack">
                     <span className="tech-tag">Research</span>
                     <span className="tech-tag">ML</span>
