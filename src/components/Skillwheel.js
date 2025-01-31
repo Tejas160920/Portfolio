@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Skills.css';
 import { Heart } from 'lucide-react';
+import { color } from 'framer-motion';
+
+
+
+
+
 
 const SkillWheel = () => {
   const wheelRef = useRef(null);
@@ -14,14 +20,14 @@ const SkillWheel = () => {
   const emojis = ['😊', '😃', '😄', '😁', '🤩'];
 
   const skills = [
-    { id: 'javascript', name: 'JavaScript', icon: '/css.png' },
-    { id: 'python', name: 'Python', icon: '/css.png' },
-    { id: 'python', name: 'Python', icon: '/css.png' },
-    { id: 'python', name: 'Python', icon: '/css.png' },
-    { id: 'react', name: 'React', icon: '/css.png' },
-    { id: 'nodejs', name: 'Node.js', icon: '/css.png' },
-    { id: 'python', name: 'Python', icon: '/css.png' },
-    { id: 'html', name: 'HTML', icon: '/css.png' },
+    { id: 'javascript', name: 'JavaScript', icon: '/java.png' },
+    { id: 'python', name: 'Python', icon: '/python.png' },
+    { id: 'spark', name: 'spark', icon: '/spark.png' },
+    { id: 'css', name: 'css', icon: '/css.png' },
+    { id: 'react', name: 'React', icon: '/react.png' },
+    { id: 'tensor', name: 'tensor', icon: '/tensor.png' },
+    { id: 'pytorch', name: 'Pytorch', icon: '/pytorch.png' },
+    { id: 'html', name: 'HTML', icon: '/sql.png' },
     // { id: 'java', name: 'Java', icon: '/css.png' }
   ];
 
@@ -103,7 +109,7 @@ const SkillWheel = () => {
 
   useEffect(() => {
     const updateSkillPositions = () => {
-      const radius = 600;
+      const radius = 700;
       const items = document.querySelectorAll('.sw-skill-item');
       const angleStep = (2 * Math.PI) / items.length;
 
@@ -122,6 +128,7 @@ const SkillWheel = () => {
 
   return (
     <div className="sw-container" ref={containerRef}>
+      <div class="skillset-text"><h1>My</h1><br></br><h1 class="text" style={{color: 'green'}}> Skillset</h1></div>
       <div className="hero-background">
         <div className="gradient-overlay"></div>
         <div className="particles">

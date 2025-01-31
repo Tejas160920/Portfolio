@@ -82,7 +82,9 @@ const Portfolio = () => {
                     <span className="tech-tag">AWS</span>
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='#'}>View Project</button>
+                  <button className="card-btn" onClick={() => window.open('#', '_blank')}>View Project</button>
+                  <button className="card-btn" onClick={() => window.open('https://chromewebstore.google.com/detail/Virtual%20Clothes%20Try-on/hpogkihhfoglihcgmhfhhngefkjgehjf', '_blank')}>Try   <FiExternalLink /></button>
+
                   </div>
                 </div>
               </div>
@@ -125,7 +127,7 @@ const Portfolio = () => {
                     <span className="tech-tag">CNN</span>
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='#'}>View Project</button>
+                    <button className="card-btn" onClick={() => window.location.href='https://github.com/Tejas160920/Brain-Tumor-Classification'}>View Project</button>
                   </div>
                 </div>
               </div>
@@ -198,7 +200,7 @@ const Portfolio = () => {
           <span className="tech-tag">IITM</span>
         </div>
         <div className="card-actions">
-          <a href="/mnt/data/IITM FOUNDATION CERTIFICATE.pdf" className="card-btn" target="_blank" rel="noopener noreferrer">
+          <a href="https://drive.google.com/file/d/1sc5H3Rp9Q3dUGYH-iAe5h5aPTyr535iF/view?usp=sharing" className="card-btn" target="_blank" rel="noopener noreferrer">
             View Certificate
           </a>
         </div>
@@ -227,7 +229,7 @@ const Portfolio = () => {
           <span className="tech-tag">OpenCV</span>
         </div>
         <div className="card-actions">
-          <a href="#" className="card-btn">View Project</a>
+          <a href="https://drive.google.com/file/d/183jvEqk7kV62c7u3wTyoZKRdW6Mz_oP-/view?usp=sharing" className="card-btn">View Project</a>
         </div>
       </div>
     </div>
@@ -252,7 +254,7 @@ const Portfolio = () => {
                     <span className="tech-tag">ML</span>
                   </div>
                   <div className="card-actions">
-                    <a href="#" className="card-btn">Read Paper</a>
+                    <a href="https://link.springer.com/chapter/10.1007/978-981-99-4626-6_5" className="card-btn">Read Paper</a>
                   </div>
                 </div>
               </div>
