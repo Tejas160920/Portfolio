@@ -33,7 +33,7 @@ const SocialMediaSection = () => {
     {
       name: 'LinkedIn',
       icon: <Linkedin />,
-      url: 'www.linkedin.com/in/tejasgg',
+      url: 'https://www.linkedin.com/in/tejas-gaikwad-342199297/',
       isButton: false
     }
   ];

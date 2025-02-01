@@ -109,7 +109,7 @@ const SkillWheel = () => {
 
   useEffect(() => {
     const updateSkillPositions = () => {
-      const radius = 700;
+      const radius = 500;
       const items = document.querySelectorAll('.sw-skill-item');
       const angleStep = (2 * Math.PI) / items.length;
 

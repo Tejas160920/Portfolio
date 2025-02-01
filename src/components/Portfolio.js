@@ -55,11 +55,11 @@ const Portfolio = () => {
                     <span className="tech-tag">Stereo Vision</span>
                   </div>
                   <div className="card-actions">
-                    <button
-                      className="card-btn"
-                      onClick={() => window.location.href="https://github.com/Tejas160920/Agribot"}
-                    >
-                      View Project
+                  <button
+  className="card-btn"
+  onClick={() => window.open("https://github.com/Tejas160920/Agribot", "_blank")}
+>
+  View Project
                     </button>
                   </div>
                 </div>
@@ -74,16 +74,17 @@ const Portfolio = () => {
                   <div className="card-header">
                     <span className="year">2024</span>
                   </div>
-                  <h3>Google Extension</h3>
-                  <p>Engineered an impactful IoT solution, streamlining community alerts and notifications.</p>
+                  <h3>Virtual Try-On</h3>
+                  <p>This Chrome extension lets you try on clothes virtually while shopping online, providing a fun and interactive way to see how outfits look on you.</p>
                   <div className="tech-stack">
-                    <span className="tech-tag">IoT</span>
-                    <span className="tech-tag">Python</span>
-                    <span className="tech-tag">AWS</span>
+                    <span className="tech-tag">Chrome extension</span>
+                    
                   </div>
                   <div className="card-actions">
-                  <button className="card-btn" onClick={() => window.open('#', '_blank')}>View Project</button>
-                  <button className="card-btn" onClick={() => window.open('https://chromewebstore.google.com/detail/Virtual%20Clothes%20Try-on/hpogkihhfoglihcgmhfhhngefkjgehjf', '_blank')}>Try   <FiExternalLink /></button>
+                  <button className="card-btn" onClick={() => window.open('https://github.com/Tejas160920/Virtual-Try-On', '_blank')}>View Project</button>
+<button className="card-btn" onClick={() => window.open('https://chromewebstore.google.com/detail/Virtual%20Clothes%20Try-on/hpogkihhfoglihcgmhfhhngefkjgehjf', '_blank')}>
+  Try <FiExternalLink />
+</button>
 
                   </div>
                 </div>
@@ -92,21 +93,21 @@ const Portfolio = () => {
               {/* Project 3 */}
               <div className="portfolio-card">
                 <div className="card-image">
-                  <img src="/soil_analysis.jpeg" alt="Soil Analysis Device" />
+                  <img src="/bird.gif" alt="FlockFlow: Parallel Flocking Simulation" />
                 </div>
                 <div className="card-content">
                   <div className="card-header">
                     <span className="year">2024</span>
                   </div>
-                  <h3>Bird Floping</h3>
-                  <p>Designed a device using Raspberry Pi and sensors to optimize irrigation, reducing costs by 25%.</p>
+                  <h3>FlockFlow: Parallel Flocking Simulation</h3>
+                  <p>This project uses parallel processing to simulate flocking behavior, making the simulation run faster and smoother.</p>
                   <div className="tech-stack">
-                    <span className="tech-tag">Raspberry Pi</span>
-                    <span className="tech-tag">Sensors</span>
-                    <span className="tech-tag">Data Analysis</span>
+                    <span className="tech-tag">Apache Spark</span>
+                    
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='#'}>View Project</button>
+                  <button className="card-btn" onClick={() => window.open('https://github.com/Tejas160920/FlockFlow-Parallel-Flocking-Simulation/tree/main', '_blank')}>View Project</button>
+
                   </div>
                 </div>
               </div>
@@ -127,7 +128,7 @@ const Portfolio = () => {
                     <span className="tech-tag">CNN</span>
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='https://github.com/Tejas160920/Brain-Tumor-Classification'}>View Project</button>
+                  <button className="card-btn" onClick={() => window.open('https://github.com/Tejas160920/Brain-Tumor-Classification', '_blank')}>View Project</button>
                   </div>
                 </div>
               </div>
@@ -149,8 +150,8 @@ const Portfolio = () => {
                     
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='#'}>View Project</button>
-                    <button className="card-btn" onClick={() => window.location.href='https://www.npmjs.com/package/circledot-cursor?activeTab=readme'}>Visit   <FiExternalLink /></button>
+                  <button className="card-btn" onClick={() => window.location.href = '#'}>View Project</button>
+                  <button className="card-btn" onClick={() => window.open('https://www.npmjs.com/package/circledot-cursor?activeTab=readme', '_blank')}>Visit <FiExternalLink /></button>
 
                   </div>
                 </div>
@@ -173,8 +174,9 @@ const Portfolio = () => {
                     <span className="tech-tag">Data Visualization</span>
                   </div>
                   <div className="card-actions">
-                    <button className="card-btn" onClick={() => window.location.href='https://github.com/Tejas160920/HoverMorph'}>View Project</button>
-                    <button className="card-btn" onClick={() => window.location.href='https://www.npmjs.com/package/circledot-cursor?activeTab=readme'}>Try   <FiExternalLink /></button>
+                  <button className="card-btn" onClick={() => window.open('https://github.com/Tejas160920/HoverMorph', '_blank')}>View Project</button>
+<button className="card-btn" onClick={() => window.open('https://www.npmjs.com/package/circledot-cursor?activeTab=readme', '_blank')}>Try <FiExternalLink /></button>
+
 
                   </div>
                 </div>
@@ -200,9 +202,10 @@ const Portfolio = () => {
           <span className="tech-tag">IITM</span>
         </div>
         <div className="card-actions">
-          <a href="https://drive.google.com/file/d/1sc5H3Rp9Q3dUGYH-iAe5h5aPTyr535iF/view?usp=sharing" className="card-btn" target="_blank" rel="noopener noreferrer">
-            View Certificate
-          </a>
+        <a href="https://drive.google.com/file/d/1sc5H3Rp9Q3dUGYH-iAe5h5aPTyr535iF/view?usp=sharing" className="card-btn" target="_blank" rel="noopener noreferrer">
+  View Certificate
+</a>
+
         </div>
       </div>
     </div>
@@ -229,7 +232,10 @@ const Portfolio = () => {
           <span className="tech-tag">OpenCV</span>
         </div>
         <div className="card-actions">
-          <a href="https://drive.google.com/file/d/183jvEqk7kV62c7u3wTyoZKRdW6Mz_oP-/view?usp=sharing" className="card-btn">View Project</a>
+        <a href="https://drive.google.com/file/d/183jvEqk7kV62c7u3wTyoZKRdW6Mz_oP-/view?usp=sharing" className="card-btn" target="_blank" rel="noopener noreferrer">
+  View Project
+</a>
+
         </div>
       </div>
     </div>
@@ -254,7 +260,10 @@ const Portfolio = () => {
                     <span className="tech-tag">ML</span>
                   </div>
                   <div className="card-actions">
-                    <a href="https://link.springer.com/chapter/10.1007/978-981-99-4626-6_5" className="card-btn">Read Paper</a>
+                  <a href="https://link.springer.com/chapter/10.1007/978-981-99-4626-6_5" className="card-btn" target="_blank" rel="noopener noreferrer">
+  Read Paper
+</a>
+
                   </div>
                 </div>
               </div>
