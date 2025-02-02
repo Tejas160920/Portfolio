@@ -189,9 +189,9 @@ a {
 
 @media only screen and (max-width: 1024px) {
   .hire-me-button {
-    right: 3vw;
+    right: 1.5vw;
     font-size: 0.8rem;
-    padding: 4px 8px;
+    padding: 2px 4px;
   }
 
   .navbar{

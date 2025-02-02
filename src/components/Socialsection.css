@@ -1,14 +1,21 @@
 /* Socialmedia.css */
 .social-media-section {
-    background-color: #121212;
-    padding: 4rem 1rem;
-    color: #ffffff;
-  }
+  background-color: #121212;
+  padding: 4rem 1rem;
+  color: #ffffff;
+  height: 50vh; /* Set height relative to the viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Ensures content is centered */
+  align-items: center;
+  overflow: hidden; /* Prevents content overflow */
+}
   
   .social-container {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    
   }
   
   .social-title {
