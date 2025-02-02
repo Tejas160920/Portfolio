@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Skills.css';
 import { Heart } from 'lucide-react';
-import { color } from 'framer-motion';
-
-
-
-
-
 
 const SkillWheel = () => {
   const wheelRef = useRef(null);
@@ -28,7 +22,6 @@ const SkillWheel = () => {
     { id: 'tensor', name: 'tensor', icon: '/tensor.png' },
     { id: 'pytorch', name: 'Pytorch', icon: '/pytorch.png' },
     { id: 'html', name: 'HTML', icon: '/sql.png' },
-    // { id: 'java', name: 'Java', icon: '/css.png' }
   ];
 
   const handleLike = () => {
@@ -112,8 +105,7 @@ const SkillWheel = () => {
       if (!containerRef.current) return;
       
       const containerSize = containerRef.current.clientWidth;
-      const radius = containerSize * 0.35; // Adjust the percentage as needed
-  
+      const radius = containerSize * 0.35;
       const items = document.querySelectorAll('.sw-skill-item');
       const angleStep = (2 * Math.PI) / items.length;
   
@@ -129,13 +121,49 @@ const SkillWheel = () => {
     window.addEventListener('resize', updateSkillPositions);
     return () => window.removeEventListener('resize', updateSkillPositions);
   }, []);
-  
 
-    
+  // Add touch event handlers
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    isDragging.current = true;
+    const touch = e.touches[0];
+    lastMousePosition.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isDragging.current) return;
+
+    const touch = e.touches[0];
+    const rect = wheelRef.current.getBoundingClientRect();
+    const currentAngle = calculateAngle(touch.clientX, touch.clientY, rect);
+    const startAngle = calculateAngle(
+      lastMousePosition.current.x,
+      lastMousePosition.current.y,
+      rect
+    );
+
+    let deltaAngle = currentAngle - startAngle;
+    if (deltaAngle > 180) deltaAngle -= 360;
+    if (deltaAngle < -180) deltaAngle += 360;
+
+    currentRotation.current += deltaAngle;
+    wheelRef.current.style.transform = `rotate(${currentRotation.current}deg)`;
+    findTopSkill();
+    lastMousePosition.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+  };
 
   return (
     <div className="sw-container" ref={containerRef}>
-      <div class="skillset-text"><h1>My</h1><br></br><h1 class="text" style={{color: 'green'}}> Skillset</h1></div>
+      <div className="skillset-text">
+        <h1>My</h1>
+        <br />
+        <h1 className="text" style={{color: 'green'}}> Skillset</h1>
+      </div>
       <div className="hero-background">
         <div className="gradient-overlay"></div>
         <div className="particles">
@@ -153,30 +181,14 @@ const SkillWheel = () => {
         </div>
       </div>
       
-      {/* <div className="like-container">
-        <div className="like-content">
-          <button
-            onClick={handleLike}
-            className="like-button border-2 border-gray-700 rounded-full"
-          >
-            <Heart
-              size={32}
-              className={`heart-icon ${likes > 0 ? 'active' : ''}`}
-              style={{ fillOpacity: likes / 5 }}
-            />
-          </button>
-          {showEmoji && (
-            <span className="emoji">{emojis[likes - 1]}</span>
-          )}
-        </div>
-        <span className="like-count mt-2">{likes}</span>
-      </div> */}
-
       <div className="sw-center-dot" />
       <div
         ref={wheelRef}
         className="sw-wheel"
         onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {skills.map((skill) => (
           <div
@@ -194,7 +206,6 @@ const SkillWheel = () => {
           </div>
         ))}
       </div>
-      {/* <div className="sw-skill-name">{currentSkill}</div> */}
     </div>
   );
 };
