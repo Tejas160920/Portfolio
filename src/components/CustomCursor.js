@@ -28,11 +28,6 @@ styleInject(css_248z);
 
 const CustomCursor = () => {
   useEffect(() => {
-    // Disable cursor on mobile devices
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      return;
-    }
-
     const cursorDot = document.createElement('div');
     const cursorCircle = document.createElement('div');
     cursorDot.className = 'cursor-dot';
