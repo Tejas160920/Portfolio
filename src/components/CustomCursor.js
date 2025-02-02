@@ -28,93 +28,101 @@ styleInject(css_248z);
 
 const CustomCursor = () => {
   useEffect(() => {
-    const cursorDot = document.createElement('div');
-    const cursorCircle = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    cursorCircle.className = 'cursor-circle';
-    document.body.appendChild(cursorDot);
-    document.body.appendChild(cursorCircle);
-
-    let position = { x: 0, y: 0 };
-    let isHovered = false;
-
-    const updatePosition = e => {
-      position.x = e.clientX;
-      position.y = e.clientY;
-      if (!isHovered) {
-        cursorDot.style.left = `${position.x}px`;
-        cursorDot.style.top = `${position.y}px`;
-        cursorCircle.style.left = `${position.x}px`;
-        cursorCircle.style.top = `${position.y}px`;
-      }
+    // Check if the device is mobile/touch device
+    const isMobileDevice = () => {
+      return (
+        typeof window.orientation !== 'undefined' ||
+        navigator.userAgent.indexOf('IEMobile') !== -1 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      );
     };
 
-    const handleMouseEnter = e => {
-      isHovered = true;
-      cursorDot.classList.add('cursor-dot-hidden');
-      cursorCircle.classList.add('hovered');
-      const rect = e.target.getBoundingClientRect();
-      const computedStyle = window.getComputedStyle(e.target);
-      const isIcon = e.target.tagName === 'IMG' || computedStyle.borderRadius === '50%';
-      Object.assign(cursorCircle.style, {
-        width: `${rect.width}px`,
-        height: `${rect.height}px`,
-        borderRadius: isIcon ? '50%' : computedStyle.borderRadius,
-        left: `${rect.left}px`,
-        top: `${rect.top}px`,
-        border: '2px solid yellow'
-      });
-    };
+    // Only proceed if it's not a mobile device
+    if (!isMobileDevice()) {
+      const cursorDot = document.createElement('div');
+      const cursorCircle = document.createElement('div');
+      cursorDot.className = 'cursor-dot';
+      cursorCircle.className = 'cursor-circle';
+      document.body.appendChild(cursorDot);
+      document.body.appendChild(cursorCircle);
 
-    const handleMouseLeave = () => {
-      isHovered = false;
-      cursorDot.classList.remove('cursor-dot-hidden');
-      cursorCircle.classList.remove('hovered');
-      cursorCircle.style = '';
-    };
+      let position = { x: 0, y: 0 };
+      let isHovered = false;
 
-    const attachCursorListeners = () => {
-      // Remove existing listeners first to prevent duplicates
-      const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn');
-      targetsToListen.forEach(target => {
-        // Remove existing listeners
-        target.removeEventListener('mouseenter', handleMouseEnter);
-        target.removeEventListener('mouseleave', handleMouseLeave);
-        
-        // Add new listeners
-        target.addEventListener('mouseenter', handleMouseEnter);
-        target.addEventListener('mouseleave', handleMouseLeave);
-        
-        // Ensure relative positioning
-        if (window.getComputedStyle(target).position === 'static') {
-          target.style.position = 'relative';
+      const updatePosition = e => {
+        position.x = e.clientX;
+        position.y = e.clientY;
+        if (!isHovered) {
+          cursorDot.style.left = `${position.x}px`;
+          cursorDot.style.top = `${position.y}px`;
+          cursorCircle.style.left = `${position.x}px`;
+          cursorCircle.style.top = `${position.y}px`;
         }
-      });
-    };
+      };
 
-    // Initial attachment
-    attachCursorListeners();
+      const handleMouseEnter = e => {
+        isHovered = true;
+        cursorDot.classList.add('cursor-dot-hidden');
+        cursorCircle.classList.add('hovered');
+        const rect = e.target.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(e.target);
+        const isIcon = e.target.tagName === 'IMG' || computedStyle.borderRadius === '50%';
+        Object.assign(cursorCircle.style, {
+          width: `${rect.width}px`,
+          height: `${rect.height}px`,
+          borderRadius: isIcon ? '50%' : computedStyle.borderRadius,
+          left: `${rect.left}px`,
+          top: `${rect.top}px`,
+          border: '2px solid yellow'
+        });
+      };
 
-    // Re-attach listeners when tabs change (MutationObserver)
-    const portfolioContent = document.querySelector('.portfolio-content');
-    const observer = new MutationObserver(attachCursorListeners);
-    
-    if (portfolioContent) {
-      observer.observe(portfolioContent, { 
-        childList: true, 
-        subtree: true 
-      });
+      const handleMouseLeave = () => {
+        isHovered = false;
+        cursorDot.classList.remove('cursor-dot-hidden');
+        cursorCircle.classList.remove('hovered');
+        cursorCircle.style = '';
+      };
+
+      const attachCursorListeners = () => {
+        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn');
+        targetsToListen.forEach(target => {
+          target.removeEventListener('mouseenter', handleMouseEnter);
+          target.removeEventListener('mouseleave', handleMouseLeave);
+          
+          target.addEventListener('mouseenter', handleMouseEnter);
+          target.addEventListener('mouseleave', handleMouseLeave);
+          
+          if (window.getComputedStyle(target).position === 'static') {
+            target.style.position = 'relative';
+          }
+        });
+      };
+
+      attachCursorListeners();
+
+      const portfolioContent = document.querySelector('.portfolio-content');
+      const observer = new MutationObserver(attachCursorListeners);
+      
+      if (portfolioContent) {
+        observer.observe(portfolioContent, { 
+          childList: true, 
+          subtree: true 
+        });
+      }
+
+      window.addEventListener('mousemove', updatePosition);
+
+      return () => {
+        window.removeEventListener('mousemove', updatePosition);
+        observer.disconnect();
+        cursorDot.remove();
+        cursorCircle.remove();
+      };
     }
-
-    window.addEventListener('mousemove', updatePosition);
-
-    return () => {
-      window.removeEventListener('mousemove', updatePosition);
-      observer.disconnect();
-      cursorDot.remove();
-      cursorCircle.remove();
-    };
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, []);
 
   return null;
 };
