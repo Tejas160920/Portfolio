@@ -249,12 +249,12 @@
 
   .skillset-text {
     z-index: 99;
-    font-size:1rm;
+    font-size:15px;
     color: white;
     position: absolute;
-    line-height: 6px;
-    top: 0;
-    left: 64px;
+    line-height: 3px;
+    top: 60px;
+    left: 40px;
     font-weight: 400;
   }
   
