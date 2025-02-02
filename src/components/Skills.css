@@ -276,7 +276,7 @@
   color: green;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
   .sw-center-dot {
     position: absolute;
     /* top: 50%; */
@@ -286,4 +286,26 @@
     width: 6vh;
     bottom: 6%;
   }
+
+  .skillset-text {
+    z-index: 99;
+    font-size:1rm;
+    color: white;
+    position: absolute;
+    line-height: 6px;
+    top: 0;
+    left: 64px;
+    font-weight: 400;
+  }
+  
+  
+  .skillset-text.text {
+    color: green;
+  }
+
+
+  .sw-container {
+    height:50vh;
+}
+
 }

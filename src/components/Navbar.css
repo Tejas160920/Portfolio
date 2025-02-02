@@ -113,12 +113,12 @@ a {
 /* Button styles */
 .hire-me-button {
   position: absolute; /* Change to absolute for positioning */
-  right: 10%; /* Position the button 20px from the right edge */
+  right: 10vw; /* Position the button 20px from the right edge */
   top: 50%; /* Optional: Center vertically if desired */
   transform: translateY(-50%); /* Optional: Adjust for perfect vertical centering */
   display: inline-block;
   padding: 1px 10px; /* Adjust padding for rectangle shape */
-  font-size: 16px;
+  font-size: 1rem;
   color: #00ff00; /* Green text color */
   text-decoration: none;
   border: 2px solid #00ff00; /* Green border */
@@ -130,7 +130,7 @@ a {
   z-index: 1; /* Ensure it’s above the background */
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
   .hire-me-button {
     right: 4%;
   }
@@ -168,5 +168,34 @@ a {
   }
   100% {
     left: 100%;
+  }
+}
+
+
+
+/* Hover effects */
+.hire-me-button:hover {
+  color: #ffff00; /* Yellow text on hover */
+}
+
+/* Mobile responsiveness */
+@media only screen and (max-width: 1024px) {
+  .hire-me-button {
+    right: 4vw; /* Reduce right spacing for smaller screens */
+    font-size: 0.9rem; /* Slightly smaller font */
+    padding: 5px 10px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .hire-me-button {
+    right: 3vw;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .navbar{
+    padding-right: 60px;
+
   }
 }

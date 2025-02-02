@@ -69,7 +69,7 @@
     z-index: 9999999999999;
     position: absolute;
     top: 2rem;
-    right: 2rem;
+    right: 5vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,6 +92,8 @@
     align-items: center;
     justify-content: center;
     padding: 0;
+    cursor: pointer;
+    transition: all 0.3s;
   }
   .heart-icon {
     color: #fff;
@@ -121,6 +123,7 @@
   .like-count {
     color: #fff;
     margin-top: 0.5rem;
+    font-size: 1rem
   }
   .like-content {
     position: relative;
@@ -130,7 +133,7 @@
     
   }
   .main-content {
-    transform: translateY(20px);
+    transform: translateY(100px);
     opacity: 0;
     transition: all 1s;
   }
@@ -190,3 +193,39 @@
     position: relative;
     overflow: hidden;
   }
+
+
+/* Responsive adjustments */
+@media only screen and (max-width: 1024px) {
+  .like-container {
+    right: 4vw; /* Adjust spacing */
+  }
+
+  .like-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .like-container{
+    padding-top: 100px;
+    padding-right: 50px;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+    margin-top: -5rem; /* Move title up slightly */
+  }
+
+  .description {
+    font-size: 1rem;
+    margin-top: -0.5rem; /* Move description up slightly */
+  }
+}
+
+
+@media only screen and (max-width: 768px) {
+  .hero{
+    height: 80vh;
+  }
+}
