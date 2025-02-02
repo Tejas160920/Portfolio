@@ -252,11 +252,12 @@
 
 .sw-center-dot {
   position: absolute;
-  top: 50%;
+  /* top: 50%; */
   left: 50%;
   transform: translate(-50%, 40%);
   height: 260px;
   width: 260px;
+  bottom: 20%;
 }
 
 .skillset-text {
@@ -273,4 +274,16 @@
 
 .skillset-text.text {
   color: green;
+}
+
+@media only screen and (max-width: 768px) {
+  .sw-center-dot {
+    position: absolute;
+    /* top: 50%; */
+    left: 50%;
+    transform: translate(-50%, 40%);
+    height: 6vh;
+    width: 6vh;
+    bottom: 6%;
+  }
 }

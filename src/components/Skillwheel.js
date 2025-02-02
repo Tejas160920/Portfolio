@@ -109,10 +109,14 @@ const SkillWheel = () => {
 
   useEffect(() => {
     const updateSkillPositions = () => {
-      const radius = 500;
+      if (!containerRef.current) return;
+      
+      const containerSize = containerRef.current.clientWidth;
+      const radius = containerSize * 0.35; // Adjust the percentage as needed
+  
       const items = document.querySelectorAll('.sw-skill-item');
       const angleStep = (2 * Math.PI) / items.length;
-
+  
       items.forEach((item, index) => {
         const angle = index * angleStep;
         const x = Math.cos(angle) * radius;
@@ -120,11 +124,14 @@ const SkillWheel = () => {
         item.style.transform = `translate(${x}px, ${y}px) rotate(45deg)`;
       });
     };
-
+  
     updateSkillPositions();
     window.addEventListener('resize', updateSkillPositions);
     return () => window.removeEventListener('resize', updateSkillPositions);
   }, []);
+  
+
+    
 
   return (
     <div className="sw-container" ref={containerRef}>

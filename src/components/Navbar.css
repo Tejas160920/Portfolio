@@ -130,6 +130,12 @@ a {
   z-index: 1; /* Ensure it’s above the background */
 }
 
+@media only screen and (max-width: 768px) {
+  .hire-me-button {
+    right: 4%;
+  }
+}
+
 /* Hover effects */
 .hire-me-button:hover {
   color: #ffff00; /* Change text color to yellow */
