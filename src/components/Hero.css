@@ -198,7 +198,7 @@
 /* Responsive adjustments */
 @media only screen and (max-width: 1024px) {
   .like-container {
-    right: 4vw; /* Adjust spacing */
+    right: 3vw; /* Adjust spacing */
   }
 
   .like-button {
@@ -207,19 +207,19 @@
   }
 
   .like-container{
-    padding-top: 100px;
+    padding-top: 180px;
     padding-right: 50px;
   }
 
   .title {
     font-size: 2rem;
     margin-bottom: 0.8rem;
-    margin-top: -5rem; /* Move title up slightly */
+    margin-top: 1rem; /* Move title up slightly */
   }
 
   .description {
     font-size: 1rem;
-    margin-top: -0.5rem; /* Move description up slightly */
+    margin-top: -1rem; /* Move description up slightly */
   }
 }
 
