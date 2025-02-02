@@ -185,47 +185,7 @@
   }
 }
 
-.like-container {
-  position: absolute;
-  top: 8%;
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.like-content {
-  position: relative;
-}
-
-.like-button {
-  background: transparent;
-  padding: 8px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.like-button:hover {
-  transform: scale(1.1);
-}
-
-.heart-icon {
-  transition: fill 0.3s;
-  fill: #ff4d4d;
-}
-
-.heart-icon.active {
-  animation: pulse 0.3s ease-in-out;
-}
-
-.emoji {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: float-up 2s ease-out forwards;
-}
 
 @keyframes pulse {
   0% { transform: scale(1); }
