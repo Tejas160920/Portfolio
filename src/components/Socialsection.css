@@ -1,12 +1,12 @@
 /* Socialmedia.css */
 .social-media-section {
   background-color: #121212;
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
   color: #ffffff;
-  height: 50vh; /* Set height relative to the viewport */
+  height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Ensures content is centered */
+  justify-content: center;
   align-items: center;
   overflow: hidden; /* Prevents content overflow */
 }

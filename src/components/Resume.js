@@ -69,6 +69,23 @@ const Resume = () => {
             </div>
 
             <div className="timeline">
+              {/* FindMe Internship */}
+              <div className="timeline-item">
+                <div className="timeline-dot"></div>
+                <div className="timeline-content">
+                  <div className="time-badge">June 2025 - Present</div>
+                  <div className="content-card">
+                    <h4>Full Stack Developer Intern</h4>
+                    <p className="institution">FindMe (Remote, USA)</p>
+                    <ul className="experience-points">
+                      <li>Built responsive and interactive user interfaces using Next.js, React, Tailwind CSS, and Zod with modern component architecture and state management using Zustand.</li>
+                      <li>Developed RESTful APIs using Node.js, Express.js, and MongoDB with proper validation, error handling, and secure user data management.</li>
+                      <li>Collaborated on feature development using Git version control, pull requests, and testing to ensure maintainable and production-ready code.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
               <div className="timeline-item">
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">

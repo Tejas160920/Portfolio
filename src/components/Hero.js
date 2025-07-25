@@ -152,11 +152,11 @@ const Hero = () => {
             Hey, I'm <span className="highlight">Tejas Gaikwad</span>
           </h1>
           <h2 className="subtitle">
-            A <span className="highlight">Computer Science Student</span>
+            A <span className="highlight">Software Developer & CS Graduate Student</span>
           </h2>
           <p className="description">
-            I'm a graduate student at SUNY Buffalo with experience working on real-world projects at BARC and SmartLeaven.  
-            I specialize in developing efficient systems, exploring AI applications, and solving diverse challenges in technology.  
+            I'm a graduate student at SUNY Buffalo currently working as a Software Developer Intern at FindMe.  
+            I specialize in building scalable applications, exploring AI/ML solutions, and solving diverse challenges in technology.  
           </p>
         </div>
       </div>

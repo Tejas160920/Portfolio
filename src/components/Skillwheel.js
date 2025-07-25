@@ -51,6 +51,7 @@ const SkillWheel = () => {
     setCurrentSkill(skills[topSkillIndex].name);
   };
 
+
   useEffect(() => {
     const items = document.querySelectorAll(".sw-skill-icon");
     items.forEach((item, index) => {
