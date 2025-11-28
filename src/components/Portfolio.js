@@ -15,7 +15,101 @@ const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('projects');
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState([]);
+  const [showAllProjects, setShowAllProjects] = useState(false);
   const sectionRef = useRef(null);
+
+  // All projects data
+  const allProjects = [
+    {
+      image: '/memento.jpg',
+      alt: 'Memento',
+      year: '2025',
+      title: 'Memento',
+      description: 'A caregiving app for dementia patients featuring facial recognition, voice reminders, GPS safety monitoring, and medical data collection.',
+      tags: ['TypeScript', 'OpenCV', 'DeepFace', 'GPS'],
+      links: [
+        { text: 'View Project', url: 'https://github.com/Tejas160920/Memento' }
+      ]
+    },
+    {
+      image: '/rag.jpg',
+      alt: 'Tejas AI',
+      year: '2025',
+      title: 'Tejas AI - Portfolio Assistant',
+      description: 'An intelligent RAG-powered chatbot that answers questions about me. Built with FastAPI, FAISS vector search, Sentence Transformers, and Llama 3.3 70B via Groq.',
+      tags: ['RAG', 'FastAPI', 'FAISS', 'Llama 3.3', 'HuggingFace'],
+      links: [
+        { text: 'Try Tejas AI', url: '#tejas-ai', isChatbot: true },
+        { text: 'GitHub', url: 'https://github.com/Tejas160920/Tejas-RAG-model', external: true }
+      ]
+    },
+    {
+      image: '/agribot1.jpeg',
+      alt: 'Agribot',
+      year: '2023',
+      title: 'AgriBot',
+      description: 'Developed a precision farming robot for weed detection, depth estimation, and autonomous navigation.',
+      tags: ['YOLOv7', 'OpenCV', 'Stereo Vision'],
+      links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/Agribot' }]
+    },
+    {
+      image: '/tryonn.jpg',
+      alt: 'Virtual Try-On',
+      year: '2024',
+      title: 'Virtual Try-On',
+      description: 'This Chrome extension lets you try on clothes virtually while shopping online, providing a fun and interactive way to see how outfits look on you.',
+      tags: ['Chrome extension'],
+      links: [
+        { text: 'View Project', url: 'https://github.com/Tejas160920/Virtual-Try-On' },
+        { text: 'Try', url: 'https://chromewebstore.google.com/detail/Virtual%20Clothes%20Try-on/hpogkihhfoglihcgmhfhhngefkjgehjf', external: true }
+      ]
+    },
+    {
+      image: '/bird.gif',
+      alt: 'FlockFlow',
+      year: '2024',
+      title: 'FlockFlow: Parallel Flocking Simulation',
+      description: 'This project uses parallel processing to simulate flocking behavior, making the simulation run faster and smoother.',
+      tags: ['Apache Spark'],
+      links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/FlockFlow-Parallel-Flocking-Simulation/tree/main' }]
+    },
+    {
+      image: '/brain.jpeg',
+      alt: 'Brain Tumor',
+      year: '2023',
+      title: 'Brain Tumor',
+      description: 'Developed a deep learning model for brain tumor classification, achieving 75% accuracy on test data using CNNs.',
+      tags: ['Deep Learning', 'CNN'],
+      links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/Brain-Tumor-Classification' }]
+    },
+    {
+      image: '/portfolio.jpeg',
+      alt: 'Portfolio',
+      year: '2024',
+      title: 'Personal Portfolio',
+      description: 'A personal portfolio site to showcase my projects, skills, and experience.',
+      tags: ['React', 'Javascript'],
+      links: [
+        { text: 'View Project', url: '#' },
+        { text: 'Visit', url: 'https://www.npmjs.com/package/circledot-cursor?activeTab=readme', external: true }
+      ]
+    },
+    {
+      image: '/demo.gif',
+      alt: 'HoverMorph',
+      year: '2024',
+      title: 'HoverMorph',
+      description: 'A React library for animated, customizable cursors with responsive hover effects, enhancing UI interactions.',
+      tags: ['React', 'JavaScript', 'npm Package'],
+      links: [
+        { text: 'View Project', url: 'https://github.com/Tejas160920/HoverMorph' },
+        { text: 'Try', url: 'https://www.npmjs.com/package/circledot-cursor?activeTab=readme', external: true }
+      ]
+    }
+  ];
+
+  // Projects to display (6 by default, all when expanded)
+  const displayedProjects = showAllProjects ? allProjects : allProjects.slice(0, 6);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -161,109 +255,88 @@ const Portfolio = () => {
         <div className="portfolio-content">
           {/* Projects Tab */}
           {activeTab === 'projects' && (
-            <div className="tab-content active">
-              {[
-                {
-                  image: '/agribot1.jpeg',
-                  alt: 'Agribot',
-                  year: '2023',
-                  title: 'AgriBot',
-                  description: 'Developed a precision farming robot for weed detection, depth estimation, and autonomous navigation.',
-                  tags: ['YOLOv7', 'OpenCV', 'Stereo Vision'],
-                  links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/Agribot' }]
-                },
-                {
-                  image: '/tryonn.jpg',
-                  alt: 'Virtual Try-On',
-                  year: '2024',
-                  title: 'Virtual Try-On',
-                  description: 'This Chrome extension lets you try on clothes virtually while shopping online, providing a fun and interactive way to see how outfits look on you.',
-                  tags: ['Chrome extension'],
-                  links: [
-                    { text: 'View Project', url: 'https://github.com/Tejas160920/Virtual-Try-On' },
-                    { text: 'Try', url: 'https://chromewebstore.google.com/detail/Virtual%20Clothes%20Try-on/hpogkihhfoglihcgmhfhhngefkjgehjf', external: true }
-                  ]
-                },
-                {
-                  image: '/bird.gif',
-                  alt: 'FlockFlow',
-                  year: '2024',
-                  title: 'FlockFlow: Parallel Flocking Simulation',
-                  description: 'This project uses parallel processing to simulate flocking behavior, making the simulation run faster and smoother.',
-                  tags: ['Apache Spark'],
-                  links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/FlockFlow-Parallel-Flocking-Simulation/tree/main' }]
-                },
-                {
-                  image: '/brain.jpeg',
-                  alt: 'Brain Tumor',
-                  year: '2023',
-                  title: 'Brain Tumor',
-                  description: 'Developed a deep learning model for brain tumor classification, achieving 75% accuracy on test data using CNNs.',
-                  tags: ['Deep Learning', 'CNN'],
-                  links: [{ text: 'View Project', url: 'https://github.com/Tejas160920/Brain-Tumor-Classification' }]
-                },
-                {
-                  image: '/portfolio.jpeg',
-                  alt: 'Portfolio',
-                  year: '2024',
-                  title: 'Personal Portfolio',
-                  description: 'A personal portfolio site to showcase my projects, skills, and experience.',
-                  tags: ['React', 'Javascript'],
-                  links: [
-                    { text: 'View Project', url: '#' },
-                    { text: 'Visit', url: 'https://www.npmjs.com/package/circledot-cursor?activeTab=readme', external: true }
-                  ]
-                },
-                {
-                  image: '/demo.gif',
-                  alt: 'HoverMorph',
-                  year: '2024',
-                  title: 'HoverMorph',
-                  description: 'A React library for animated, customizable cursors with responsive hover effects, enhancing UI interactions.',
-                  tags: ['React', 'JavaScript', 'npm Package'],
-                  links: [
-                    { text: 'View Project', url: 'https://github.com/Tejas160920/HoverMorph' },
-                    { text: 'Try', url: 'https://www.npmjs.com/package/circledot-cursor?activeTab=readme', external: true }
-                  ]
-                }
-              ].map((project, index) => (
-                <div
-                  key={project.title}
-                  className={`portfolio-card ${visibleCards.includes(index) ? 'card-visible' : ''}`}
-                  style={{ '--card-index': index }}
-                >
-                  <div className="card-image">
-                    <img src={project.image} alt={project.alt} />
-                  </div>
-                  <div className="card-content">
-                    <div className="card-header">
-                      <span className="year">{project.year}</span>
+            <>
+              <div className="tab-content active">
+                {displayedProjects.map((project, index) => (
+                  <div
+                    key={project.title}
+                    className={`portfolio-card ${visibleCards.includes(index) ? 'card-visible' : ''}`}
+                    style={{ '--card-index': index }}
+                  >
+                    <div className="card-image">
+                      <img src={project.image} alt={project.alt} />
                     </div>
-                    <h3>{project.title}</h3>
-                    <p>{project.description}</p>
-                    <div className="tech-stack">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="tech-tag">{tag}</span>
-                      ))}
-                    </div>
-                    <div className="card-actions">
-                      {project.links.map(link => (
-                        <button
-                          key={link.text}
-                          className="card-btn ripple-container"
-                          onClick={(e) => {
-                            handleRipple(e);
-                            window.open(link.url, '_blank');
-                          }}
-                        >
-                          {link.text} {link.external && <FiExternalLink />}
-                        </button>
-                      ))}
+                    <div className="card-content">
+                      <div className="card-header">
+                        <span className="year">{project.year}</span>
+                      </div>
+                      <h3>{project.title}</h3>
+                      <p>{project.description}</p>
+                      <div className="tech-stack">
+                        {project.tags.map(tag => (
+                          <span key={tag} className="tech-tag">{tag}</span>
+                        ))}
+                      </div>
+                      <div className="card-actions">
+                        {project.links.map(link => (
+                          <button
+                            key={link.text}
+                            className="card-btn ripple-container"
+                            onClick={(e) => {
+                              handleRipple(e);
+                              if (link.isChatbot) {
+                                // Open the Tejas AI chatbot
+                                window.dispatchEvent(new CustomEvent('openTejasAI'));
+                              } else {
+                                window.open(link.url, '_blank');
+                              }
+                            }}
+                          >
+                            {link.text} {link.external && <FiExternalLink />}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Show More/Less Button */}
+              {allProjects.length > 6 && (
+                <div className="show-more-container">
+                  <button
+                    className="show-more-btn ripple-container"
+                    onClick={(e) => {
+                      handleRipple(e);
+                      setShowAllProjects(!showAllProjects);
+                      if (!showAllProjects) {
+                        // Trigger animation for new cards
+                        setTimeout(() => {
+                          const newIndices = [6, 7];
+                          newIndices.forEach((idx, i) => {
+                            setTimeout(() => {
+                              setVisibleCards(prev => [...prev, idx]);
+                            }, i * 100);
+                          });
+                        }, 50);
+                      }
+                    }}
+                  >
+                    <span className="btn-text">
+                      {showAllProjects ? 'Show Less' : 'Show More'}
+                    </span>
+                    <span className={`btn-icon ${showAllProjects ? 'rotated' : ''}`}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                    <span className="btn-count">
+                      {showAllProjects ? '' : `+${allProjects.length - 6}`}
+                    </span>
+                  </button>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
 
           {/* Certifications Tab */}

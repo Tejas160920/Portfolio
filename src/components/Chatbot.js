@@ -26,6 +26,15 @@ const Chatbot = () => {
     }
   }, []);
 
+  // Listen for custom event to open chatbot from other components
+  useEffect(() => {
+    const handleOpenChatbot = () => {
+      setIsOpen(true);
+    };
+    window.addEventListener('openTejasAI', handleOpenChatbot);
+    return () => window.removeEventListener('openTejasAI', handleOpenChatbot);
+  }, []);
+
   // Save current chat when messages change (if there are messages)
   useEffect(() => {
     if (messages.length > 0 && currentChatId) {
