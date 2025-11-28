@@ -1,7 +1,9 @@
 {
   "version": 2,
-  "env": {
-    "CI": "false"
+  "build": {
+    "env": {
+      "CI": "false"
+    }
   },
   "builds": [
     {
