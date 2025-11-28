@@ -9,6 +9,7 @@ import CustomCursor from './components/CustomCursor';
 import SkillWheel from './components/Skillwheel';
 import Contact from './components/Contact';
 import ThemeToggle from './components/ThemeToggle';
+import Chatbot from './components/Chatbot';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Resume />
         <DomainsSection/>
         <Contact />
+        <Chatbot />
       </div>
     </ThemeProvider>
   );

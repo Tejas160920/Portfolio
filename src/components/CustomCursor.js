@@ -29,7 +29,7 @@ body{cursor:none!important}
 .cursor-dot-hidden{opacity:0}
 .cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease, border-color 0.3s ease;width:30px;z-index:9999999999998}
 .cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}
-.social-button,a,button,.theme-toggle,.like-button{cursor:none!important}
+.social-button,a,button,.theme-toggle,.like-button,.suggestion-card,.chatbot-toggle,.new-chat-btn,.back-to-portfolio,.send-button,.mobile-close-btn,.saved-chat-item,.delete-chat-btn{cursor:none!important}
 
 /* Light theme cursor colors */
 [data-theme="light"] .cursor-dot{background-color:#16a34a}
@@ -100,7 +100,7 @@ const CustomCursor = () => {
       };
 
       const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button');
+        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn');
         targetsToListen.forEach(target => {
           target.removeEventListener('mouseenter', handleMouseEnter);
           target.removeEventListener('mouseleave', handleMouseLeave);
@@ -118,13 +118,19 @@ const CustomCursor = () => {
 
       const portfolioContent = document.querySelector('.portfolio-content');
       const observer = new MutationObserver(attachCursorListeners);
-      
+
       if (portfolioContent) {
-        observer.observe(portfolioContent, { 
-          childList: true, 
-          subtree: true 
+        observer.observe(portfolioContent, {
+          childList: true,
+          subtree: true
         });
       }
+
+      // Also observe document body for chatbot and other dynamic elements
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
 
       window.addEventListener('mousemove', updatePosition);
 
