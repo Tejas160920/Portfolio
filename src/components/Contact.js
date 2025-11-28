@@ -55,18 +55,30 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission - replace with actual endpoint
     try {
-      // You can integrate with EmailJS, Formspree, or your own backend
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error(data.error || 'Failed to send message');
+      }
     } catch (error) {
+      console.error('Contact form error:', error);
       setSubmitStatus('error');
     }
 
     setIsSubmitting(false);
-    setTimeout(() => setSubmitStatus(null), 3000);
+    setTimeout(() => setSubmitStatus(null), 5000);
   };
 
   const socialLinks = [
