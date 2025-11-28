@@ -7,6 +7,7 @@ const SkillWheel = () => {
   const isDragging = useRef(false);
   const lastMousePosition = useRef({ x: 0, y: 0 });
   const currentRotation = useRef(0);
+  // eslint-disable-next-line no-unused-vars
   const [currentSkill, setCurrentSkill] = useState('');
 
   const skills = [
@@ -76,6 +77,7 @@ const SkillWheel = () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMouseDown = (e) => {

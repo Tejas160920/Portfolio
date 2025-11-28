@@ -46,6 +46,7 @@ const Chatbot = () => {
       setSavedChats(updatedChats);
       localStorage.setItem('tejas-portfolio-chats', JSON.stringify(updatedChats));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, currentChatId]);
 
   const scrollToBottom = () => {
