@@ -54,8 +54,18 @@ const Chatbot = () => {
     // Prevent body scroll when chat is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      // Hide hire-me button on mobile when chat is open
+      const hireMeBtn = document.querySelector('.hire-me-button');
+      if (hireMeBtn && window.innerWidth <= 768) {
+        hireMeBtn.style.display = 'none';
+      }
     } else {
       document.body.style.overflow = 'unset';
+      // Show hire-me button again
+      const hireMeBtn = document.querySelector('.hire-me-button');
+      if (hireMeBtn) {
+        hireMeBtn.style.display = '';
+      }
     }
 
     // Close chat when clicking on anchor links (navbar)
