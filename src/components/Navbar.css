@@ -6,7 +6,7 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: 999999999999;
   font-family: 'Poppins', sans-serif;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -20,17 +20,18 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: rgba(15, 15, 20, 0.75);
+  background: var(--bg-navbar);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 0 80px rgba(74, 222, 128, 0.05);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+}
+
+[data-theme="light"] .nav-container {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Animated border glow */
@@ -79,7 +80,7 @@
   padding: 10px 20px;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-secondary);
   background: transparent;
   border: none;
   border-radius: 25px;
@@ -102,7 +103,7 @@
 }
 
 .nav-link:hover {
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .nav-link:hover::before {
@@ -111,11 +112,16 @@
 
 /* Active state with glow pill */
 .nav-link.active {
-  color: #4ade80;
+  color: var(--accent-green);
   background: rgba(74, 222, 128, 0.12);
   box-shadow:
     0 0 20px rgba(74, 222, 128, 0.2),
     inset 0 0 15px rgba(74, 222, 128, 0.05);
+}
+
+[data-theme="light"] .nav-link.active {
+  background: rgba(22, 163, 74, 0.1);
+  box-shadow: 0 0 15px rgba(22, 163, 74, 0.15);
 }
 
 .nav-link.active::after {
@@ -126,9 +132,9 @@
   transform: translateX(-50%);
   width: 20px;
   height: 3px;
-  background: #4ade80;
+  background: var(--accent-green);
   border-radius: 2px;
-  box-shadow: 0 0 10px #4ade80;
+  box-shadow: 0 0 10px var(--accent-green);
   animation: activePulse 2s ease-in-out infinite;
 }
 
@@ -142,7 +148,7 @@
   position: fixed;
   top: 20px;
   right: 40px;
-  z-index: 1000;
+  z-index: 999999999999;
   display: flex;
   align-items: center;
   justify-content: center;

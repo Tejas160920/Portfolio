@@ -7,8 +7,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: var(--bg-primary);
   overflow: hidden;
+}
+
+[data-theme="light"] .sw-container {
+  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
 }
 
 .sw-center-dot {
@@ -120,6 +124,10 @@
   z-index: 3;
 }
 
+[data-theme="light"] .sw-skill-name {
+  color: rgba(0, 0, 0, 0.8);
+}
+
 .sw-navigation {
   position: absolute;
   bottom: 40px;
@@ -133,6 +141,20 @@
   border-radius: 100px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+[data-theme="light"] .sw-navigation {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .sw-navigation a {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="light"] .sw-navigation a:hover {
+  color: #16a34a;
 }
 
 .sw-navigation a {
@@ -265,7 +287,7 @@
 .skillset-text {
   z-index: 99;
   font-size: 28px;
-  color: white;
+  color: var(--text-primary);
   position: absolute;
   line-height: 6px;
   top: 60px;
@@ -279,8 +301,12 @@
 }
 
 .skillset-text .text {
-  color: #4ade80;
+  color: var(--accent-green);
   text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+}
+
+[data-theme="light"] .skillset-text .text {
+  text-shadow: none;
 }
 
 /* Orbital Rings - Visual enhancement only */
@@ -363,6 +389,54 @@
   animation: hintPulse 2.5s ease-in-out infinite;
 }
 
+[data-theme="light"] .drag-hint {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="light"] .particle {
+  background: #15803d !important;
+  background-color: #15803d !important;
+  box-shadow: 0 0 6px #15803d !important;
+  opacity: 0.8 !important;
+  width: 5px !important;
+  height: 5px !important;
+}
+
+[data-theme="light"] .skill-particle {
+  background: #15803d !important;
+  background-color: #15803d !important;
+  box-shadow: 0 0 8px #15803d !important;
+  opacity: 0.8 !important;
+  width: 5px !important;
+  height: 5px !important;
+}
+
+[data-theme="light"] .orbital-dot {
+  background: #15803d !important;
+  background-color: #15803d !important;
+  box-shadow: 0 0 10px #15803d, 0 0 20px rgba(21, 128, 61, 0.5) !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+[data-theme="light"] .orbital-ring-1 {
+  border-color: rgba(22, 163, 74, 0.4) !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 30px rgba(22, 163, 74, 0.2) !important;
+}
+
+[data-theme="light"] .orbital-ring-2 {
+  border-color: rgba(22, 163, 74, 0.3) !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 40px rgba(22, 163, 74, 0.15) !important;
+}
+
+[data-theme="light"] .orbital-ring-3 {
+  border-color: rgba(202, 138, 4, 0.3) !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 50px rgba(202, 138, 4, 0.15) !important;
+}
+
 .drag-hint svg {
   opacity: 0.8;
   color: #4ade80;
@@ -423,6 +497,10 @@
     color: #4ade80;
   }
 
+  [data-theme="light"] .skillset-text {
+    color: var(--text-primary);
+  }
+
   .sw-container {
     height: 50vh;
   }
@@ -434,5 +512,85 @@
   .drag-hint {
     bottom: 20px;
     font-size: 11px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .sw-container {
+    height: 45vh;
+    min-height: 350px;
+  }
+
+  .skillset-text {
+    font-size: 14px;
+    top: 50px;
+    left: 20px;
+    line-height: 1.4;
+  }
+
+  .skillset-text h1 {
+    font-size: 1.2rem;
+  }
+
+  .sw-wheel {
+    width: 350px;
+    height: 350px;
+  }
+
+  .sw-center-dot {
+    height: 50px;
+    width: 50px;
+  }
+
+  .orbital-ring-1 { width: 350px; height: 350px; }
+  .orbital-ring-2 { width: 420px; height: 420px; }
+  .orbital-ring-3 { width: 500px; height: 500px; }
+
+  .drag-hint {
+    bottom: 15px;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .sw-container {
+    height: 40vh;
+    min-height: 300px;
+  }
+
+  .skillset-text {
+    font-size: 12px;
+    top: 40px;
+    left: 15px;
+  }
+
+  .skillset-text h1 {
+    font-size: 1rem;
+  }
+
+  .sw-wheel {
+    width: 280px;
+    height: 280px;
+  }
+
+  .sw-center-dot {
+    height: 40px;
+    width: 40px;
+  }
+
+  .orbital-ring-1 { width: 280px; height: 280px; }
+  .orbital-ring-2 { width: 340px; height: 340px; }
+  .orbital-ring-3 { width: 400px; height: 400px; }
+
+  .drag-hint {
+    bottom: 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .orbital-dot {
+    width: 5px;
+    height: 5px;
   }
 }

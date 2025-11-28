@@ -23,7 +23,18 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = "body{cursor:none!important}.cursor-dot{background-color:#ff0;border-radius:50%;height:5px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:opacity .2s ease;width:5px;z-index:99999}.cursor-dot-hidden{opacity:0}.cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease;width:30px;z-index:99998}.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}.social-button,a,button{cursor:none!important}";
+var css_248z = `
+body{cursor:none!important}
+.cursor-dot{background-color:#ff0;border-radius:50%;height:5px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:opacity .2s ease, background-color 0.3s ease;width:5px;z-index:9999999999999}
+.cursor-dot-hidden{opacity:0}
+.cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease, border-color 0.3s ease;width:30px;z-index:9999999999998}
+.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}
+.social-button,a,button,.theme-toggle,.like-button{cursor:none!important}
+
+/* Light theme cursor colors */
+[data-theme="light"] .cursor-dot{background-color:#16a34a}
+[data-theme="light"] .cursor-circle{border-color:#16a34a}
+`;
 styleInject(css_248z);
 
 const CustomCursor = () => {
@@ -69,13 +80,15 @@ const CustomCursor = () => {
         const rect = e.target.getBoundingClientRect();
         const computedStyle = window.getComputedStyle(e.target);
         const isIcon = e.target.tagName === 'IMG' || computedStyle.borderRadius === '50%';
+        const isLightTheme = document.documentElement.getAttribute('data-theme') === 'light';
+        const borderColor = isLightTheme ? '#16a34a' : 'yellow';
         Object.assign(cursorCircle.style, {
           width: `${rect.width}px`,
           height: `${rect.height}px`,
           borderRadius: isIcon ? '50%' : computedStyle.borderRadius,
           left: `${rect.left}px`,
           top: `${rect.top}px`,
-          border: '2px solid yellow'
+          border: `2px solid ${borderColor}`
         });
       };
 
@@ -87,7 +100,7 @@ const CustomCursor = () => {
       };
 
       const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button');
+        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button');
         targetsToListen.forEach(target => {
           target.removeEventListener('mouseenter', handleMouseEnter);
           target.removeEventListener('mouseleave', handleMouseLeave);

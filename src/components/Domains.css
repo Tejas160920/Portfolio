@@ -1,7 +1,7 @@
 /* Domains.css */
 .domains-section {
   position: relative;
-  background-color: #121212;
+  background-color: var(--bg-tertiary);
   padding: 80px 20px;
   min-height: auto;
   margin-bottom: 0;
@@ -20,7 +20,7 @@
   font-size: 36px;
   font-weight: bold;
   text-align: center;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 60px;
   opacity: 0;
   transform: translateY(30px);
@@ -36,7 +36,7 @@
 .title-highlight {
   position: relative;
   display: inline-block;
-  color: #4CAF50;
+  color: var(--accent-green);
 }
 
 .title-highlight::after {
@@ -91,7 +91,7 @@
 /* Card with scroll-triggered animation */
 .domain-card {
   position: relative;
-  background-color: #1E1E1E;
+  background-color: var(--bg-card-solid);
   border-radius: 16px;
   padding: 2rem;
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -104,6 +104,17 @@
 .domain-card.card-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+[data-theme="light"] .domain-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .domain-card:hover {
+  box-shadow: 0 12px 35px rgba(22, 163, 74, 0.12), 0 6px 15px rgba(0, 0, 0, 0.08);
+  border-color: rgba(22, 163, 74, 0.3);
 }
 
 /* Card glow effect */
@@ -168,7 +179,7 @@
 
 .domain-icon-wrapper {
   margin-bottom: 1.5rem;
-  color: #4CAF50;
+  color: var(--accent-green);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
               color 0.3s ease;
   position: relative;
@@ -223,25 +234,25 @@
 .domain-name {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .domain-card:hover .domain-name {
-  color: #4CAF50;
+  color: var(--accent-green);
   transform: translateY(-2px);
 }
 
 .domain-description {
-  color: #888888;
+  color: var(--text-muted);
   font-size: 0.9rem;
   line-height: 1.6;
   transition: color 0.3s ease;
 }
 
 .domain-card:hover .domain-description {
-  color: #aaaaaa;
+  color: var(--text-secondary);
 }
 
 /* Responsive Design */

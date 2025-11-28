@@ -1,8 +1,8 @@
 .resume-section {
   position: relative;
   padding: 80px 20px;
-  background-color: #121212;
-  color: #fff;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow: hidden;
 }
@@ -30,7 +30,7 @@
 }
 
 .resume-title span {
-  color: #4CAF50;
+  color: var(--accent-green);
 }
 
 /* Title highlight with hand-drawn underline */
@@ -85,7 +85,7 @@
 
 .column-header h3 {
   font-size: 24px;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 15px;
 }
 
@@ -172,7 +172,7 @@
   padding: 6px 12px;
   background-color: rgba(76, 175, 80, 0.1);
   border: 1px solid rgba(76, 175, 80, 0.3);
-  color: #4CAF50;
+  color: var(--accent-green);
   border-radius: 4px;
   font-size: 14px;
   margin-bottom: 15px;
@@ -185,11 +185,23 @@
 }
 
 .content-card {
-  background-color: #1E1E1E;
+  background-color: var(--bg-card-solid);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .content-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .content-card:hover {
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.12), 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-color: rgba(22, 163, 74, 0.25);
 }
 
 .content-card:hover {
@@ -200,23 +212,23 @@
 
 .content-card h4 {
   font-size: 20px;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 10px;
   transition: color 0.3s ease;
 }
 
 .content-card:hover h4 {
-  color: #4CAF50;
+  color: var(--accent-green);
 }
 
 .institution {
-  color: #888;
+  color: var(--text-secondary);
   font-size: 16px;
   margin-bottom: 15px;
 }
 
 .duration {
-  color: #666;
+  color: var(--text-muted);
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -230,16 +242,21 @@
 }
 
 .course-tag {
-  background-color: #2D2D2D;
+  background-color: var(--bg-tertiary);
   padding: 5px 12px;
   border-radius: 50px;
   font-size: 14px;
-  color: #ccc;
+  color: var(--text-secondary);
   transition: all 0.3s ease;
 }
 
+[data-theme="light"] .course-tag {
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 .course-tag:hover {
-  background-color: #4CAF50;
+  background-color: var(--accent-green);
   color: #fff;
   transform: translateY(-2px);
 }
@@ -255,7 +272,7 @@
   position: relative;
   padding-left: 20px;
   margin-bottom: 10px;
-  color: #ccc;
+  color: var(--text-secondary);
   line-height: 1.5;
   transition: transform 0.3s ease;
 }
@@ -282,25 +299,88 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .resume-section {
+    padding: 60px 15px;
+  }
+
+  .resume-title {
+    font-size: 28px;
+    margin-bottom: 40px;
+  }
+
   .resume-content {
     grid-template-columns: 1fr;
+    gap: 30px;
   }
 
   .resume-column {
     padding: 0;
   }
+
+  .column-header {
+    margin-bottom: 25px;
+  }
+
+  .timeline {
+    padding-left: 15px;
+  }
+
+  .timeline-item {
+    padding-bottom: 25px;
+  }
+
+  .timeline-dot {
+    left: -19px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .content-card h4 {
+    font-size: 18px;
+  }
+
+  .institution {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
+  .resume-section {
+    padding: 50px 10px;
+  }
+
   .resume-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .column-header h3 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .content-card {
     padding: 15px;
+  }
+
+  .content-card h4 {
+    font-size: 16px;
+  }
+
+  .time-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .courses {
+    gap: 6px;
+  }
+
+  .course-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .experience-points li {
+    font-size: 14px;
+    padding-left: 15px;
   }
 }
