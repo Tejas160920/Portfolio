@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Skills.css';
-import { Heart } from 'lucide-react';
 
 const SkillWheel = () => {
   const wheelRef = useRef(null);
@@ -9,9 +8,6 @@ const SkillWheel = () => {
   const lastMousePosition = useRef({ x: 0, y: 0 });
   const currentRotation = useRef(0);
   const [currentSkill, setCurrentSkill] = useState('');
-  const [likes, setLikes] = useState(0);
-  const [showEmoji, setShowEmoji] = useState(false);
-  const emojis = ['😊', '😃', '😄', '😁', '🤩'];
 
   const skills = [
     { id: 'javascript', name: 'JavaScript', icon: '/java.png' },
@@ -21,20 +17,8 @@ const SkillWheel = () => {
     { id: 'react', name: 'React', icon: '/react.png' },
     { id: 'tensor', name: 'tensor', icon: '/tensor.png' },
     { id: 'pytorch', name: 'Pytorch', icon: '/pytorch.png' },
-    { id: 'html', name: 'HTML', icon: '/sql.png' },
+    { id: 'sql', name: 'SQL', icon: '/sql.png' },
   ];
-
-  const handleLike = () => {
-    if (likes < 5) {
-      setLikes((prev) => prev + 1);
-      setShowEmoji(true);
-      setTimeout(() => {
-        setShowEmoji(false);
-      }, 2000);
-    } else {
-      setLikes(0);
-    }
-  };
 
   const calculateAngle = (x, y, rect) => {
     const centerX = rect.left + rect.width / 2;
@@ -55,7 +39,6 @@ const SkillWheel = () => {
   useEffect(() => {
     const items = document.querySelectorAll(".sw-skill-icon");
     items.forEach((item, index) => {
-      console.log(`Index: ${index}, Element:`, item);
       item.style.transform = `rotate(${index * 360 / items.length}deg)`;
     });
 
@@ -104,12 +87,12 @@ const SkillWheel = () => {
   useEffect(() => {
     const updateSkillPositions = () => {
       if (!containerRef.current) return;
-      
+
       const containerSize = containerRef.current.clientWidth;
       const radius = containerSize * 0.35;
       const items = document.querySelectorAll('.sw-skill-item');
       const angleStep = (2 * Math.PI) / items.length;
-  
+
       items.forEach((item, index) => {
         const angle = index * angleStep;
         const x = Math.cos(angle) * radius;
@@ -117,7 +100,7 @@ const SkillWheel = () => {
         item.style.transform = `translate(${x}px, ${y}px) rotate(45deg)`;
       });
     };
-  
+
     updateSkillPositions();
     window.addEventListener('resize', updateSkillPositions);
     return () => window.removeEventListener('resize', updateSkillPositions);
@@ -159,14 +142,17 @@ const SkillWheel = () => {
   };
 
   return (
-    <div className="sw-container" ref={containerRef}>
+    <div className="sw-container" ref={containerRef} id="skills">
       <div className="skillset-text">
         <h1>My</h1>
         <br />
-        <h1 className="text" style={{color: 'green'}}> Skillset</h1>
+        <h1 className="text" style={{color: '#4ade80'}}> Skillset</h1>
       </div>
+
+      {/* Background with aurora effect */}
       <div className="hero-background">
         <div className="gradient-overlay"></div>
+        <div className="aurora-effect"></div>
         <div className="particles">
           {[...Array(50)].map((_, i) => (
             <div
@@ -181,7 +167,20 @@ const SkillWheel = () => {
           ))}
         </div>
       </div>
-      
+
+      {/* Orbital Rings - Visual only, doesn't affect wheel */}
+      <div className="orbital-rings">
+        <div className="orbital-ring orbital-ring-1">
+          <div className="orbital-dot"></div>
+          <div className="orbital-dot"></div>
+        </div>
+        <div className="orbital-ring orbital-ring-2">
+          <div className="orbital-dot"></div>
+          <div className="orbital-dot"></div>
+        </div>
+        <div className="orbital-ring orbital-ring-3"></div>
+      </div>
+
       <div className="sw-center-dot" />
       <div
         ref={wheelRef}
@@ -198,13 +197,40 @@ const SkillWheel = () => {
             data-skill={skill.id}
           >
             <div className="sw-skill-inner">
-              <img 
-                src={skill.icon} 
-                alt={skill.name} 
+              <img
+                src={skill.icon}
+                alt={skill.name}
                 className="sw-skill-icon"
               />
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Drag Hint */}
+      <div className="drag-hint">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        Drag to explore
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: 'scaleX(-1)' }}>
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+
+      {/* Floating particles */}
+      <div className="skill-particles">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="skill-particle"
+            style={{
+              top: `${30 + Math.random() * 40}%`,
+              left: `${20 + Math.random() * 60}%`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}
+          />
         ))}
       </div>
     </div>

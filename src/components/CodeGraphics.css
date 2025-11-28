@@ -1,0 +1,126 @@
+/* CodeGraphics.css - Professional animated code symbol styles */
+
+/* Base styles for all code graphics */
+.code-graphic {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Floating graphic wrapper */
+.floating-graphic {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glow effects */
+.code-bracket,
+.curly-brace,
+.code-slash {
+  filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.4));
+}
+
+.semicolon {
+  filter: drop-shadow(0 0 8px rgba(255, 64, 129, 0.5));
+}
+
+.hash-symbol {
+  filter: drop-shadow(0 0 8px rgba(124, 77, 255, 0.5));
+}
+
+.equal-sign {
+  filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.5));
+}
+
+.parenthesis {
+  filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));
+}
+
+.arrow-function {
+  filter: drop-shadow(0 0 10px rgba(76, 175, 80, 0.4));
+}
+
+/* Decorative symbols container */
+.code-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Glow ring */
+.glow-ring {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Code block decoration */
+.code-block-decor {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Responsive scaling */
+@media (max-width: 1200px) {
+  .code-graphic {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 768px) {
+  .code-graphic {
+    transform: scale(0.7);
+  }
+
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .code-graphic {
+    transform: scale(0.5);
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Pulse animation for dots */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.code-dot {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for special elements */
+@keyframes shimmer {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}

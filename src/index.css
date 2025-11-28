@@ -1,16 +1,92 @@
+/* Global styles and CSS variables */
+
+:root {
+  /* Color palette */
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #121212;
+  --color-bg-card: #1E1E1E;
+  --color-accent-green: #4CAF50;
+  --color-accent-yellow: #FFEA00;
+  --color-accent-pink: #FF4081;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #888888;
+  --color-text-muted: #666666;
+
+  /* Animation timings */
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-glow-green: 0 0 20px rgba(76, 175, 80, 0.3);
+  --shadow-glow-yellow: 0 0 20px rgba(255, 234, 0, 0.3);
+
+  background: black;
+}
+
 body {
   margin: 0;
   font-family: "Poppins", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
-
-:root {
-  background: black;
-}
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Smooth scroll for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--color-accent-green);
+  color: var(--color-text-primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5bc45f;
+}
+
+/* Global link transition */
+a {
+  transition: color var(--transition-normal) ease;
+}
+
+/* Utility classes for sections */
+.section-relative {
+  position: relative;
+}
+
+/* Prevent stickers from causing horizontal scroll */
+.sticker-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
 }

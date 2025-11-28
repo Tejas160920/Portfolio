@@ -1,0 +1,155 @@
+/* Stickers.css - Professional 3D Code Symbol styles */
+
+/* Base code symbol styles */
+.code-symbol {
+  pointer-events: none;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4));
+  will-change: transform, opacity;
+}
+
+/* Individual symbol sizes */
+.code-slash {
+  width: 60px;
+  height: 150px;
+}
+
+.code-bracket {
+  width: 90px;
+  height: 135px;
+}
+
+/* Combined full symbol container */
+.code-symbol-full {
+  display: flex;
+  align-items: center;
+  gap: -20px;
+}
+
+/* Floating decorative symbols container */
+.decorative-symbols {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Individual positioned symbols */
+.symbol-top-right {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  transform: rotate(15deg);
+}
+
+.symbol-top-right .code-bracket {
+  width: 120px;
+  height: 180px;
+}
+
+.symbol-bottom-left {
+  position: absolute;
+  bottom: 15%;
+  left: 3%;
+  transform: rotate(-10deg);
+}
+
+.symbol-bottom-left .code-slash,
+.symbol-bottom-left .code-bracket {
+  width: 100px;
+  height: 150px;
+}
+
+.symbol-mid-right {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%) rotate(5deg);
+}
+
+.symbol-mid-right .code-bracket {
+  width: 80px;
+  height: 120px;
+}
+
+/* Subtle floating animation */
+@keyframes floatSymbol {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotation, 0deg));
+  }
+  50% {
+    transform: translateY(-15px) rotate(var(--rotation, 0deg));
+  }
+}
+
+.symbol-float {
+  animation: floatSymbol 6s ease-in-out infinite;
+}
+
+.symbol-float-delayed {
+  animation: floatSymbol 6s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* Entrance animation */
+@keyframes slideInSymbol {
+  0% {
+    opacity: 0;
+    transform: translateX(50px) rotate(var(--rotation, 0deg));
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(var(--rotation, 0deg));
+  }
+}
+
+.symbol-entrance {
+  animation: slideInSymbol 1s ease-out forwards;
+}
+
+/* Responsive scaling */
+@media (max-width: 1200px) {
+  .symbol-top-right .code-bracket {
+    width: 100px;
+    height: 150px;
+  }
+
+  .symbol-bottom-left .code-slash,
+  .symbol-bottom-left .code-bracket {
+    width: 80px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .symbol-top-right .code-bracket {
+    width: 70px;
+    height: 105px;
+  }
+
+  .symbol-bottom-left .code-slash,
+  .symbol-bottom-left .code-bracket {
+    width: 60px;
+    height: 90px;
+  }
+
+  .symbol-mid-right {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .symbol-top-right .code-bracket {
+    width: 50px;
+    height: 75px;
+    top: 15%;
+    right: 3%;
+  }
+
+  .symbol-bottom-left {
+    display: none;
+  }
+}

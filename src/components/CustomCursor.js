@@ -87,14 +87,14 @@ const CustomCursor = () => {
       };
 
       const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn');
+        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button');
         targetsToListen.forEach(target => {
           target.removeEventListener('mouseenter', handleMouseEnter);
           target.removeEventListener('mouseleave', handleMouseLeave);
-          
+
           target.addEventListener('mouseenter', handleMouseEnter);
           target.addEventListener('mouseleave', handleMouseLeave);
-          
+
           if (window.getComputedStyle(target).position === 'static') {
             target.style.position = 'relative';
           }
