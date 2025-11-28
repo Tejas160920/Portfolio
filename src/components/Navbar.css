@@ -240,56 +240,61 @@
   }
 }
 
-@media (max-width: 600px) {
+/* iPhone 15 and similar mobile devices */
+@media (max-width: 430px) {
   .navbar {
     top: 10px;
-    width: calc(100% - 20px);
-    max-width: none;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: calc(100% - 20px);
   }
 
   .nav-container {
-    width: 100%;
-    justify-content: center;
-    padding: 6px 8px;
-    gap: 2px;
+    padding: 4px 6px;
+    gap: 0;
   }
 
   .nav-links {
-    gap: 2px;
+    gap: 0;
   }
 
   .nav-link {
-    padding: 8px 10px;
-    font-size: 0.7rem;
-    letter-spacing: 0;
-  }
-
-  .hire-me-button {
-    top: 10px;
-    right: 15px;
-    padding: 8px 12px;
-    font-size: 0.7rem;
+    padding: 6px 8px;
+    font-size: 0.6rem;
+    letter-spacing: -0.3px;
   }
 
   .nav-link.active::after {
-    bottom: 4px;
-    width: 15px;
+    bottom: 3px;
+    width: 12px;
     height: 2px;
+  }
+
+  /* Move hire me button below navbar */
+  .hire-me-button {
+    position: fixed;
+    top: auto;
+    bottom: 80px;
+    right: 15px;
+    padding: 10px 18px;
+    font-size: 0.75rem;
+    border-radius: 25px;
+    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.4);
   }
 }
 
-/* Hide on very small screens - show hamburger instead if needed */
-@media (max-width: 400px) {
+@media (max-width: 375px) {
   .nav-link {
-    padding: 6px 8px;
-    font-size: 0.65rem;
+    padding: 5px 6px;
+    font-size: 0.55rem;
   }
 
   .hire-me-button {
-    top: 10px;
-    right: 10px;
-    padding: 6px 10px;
-    font-size: 0.65rem;
+    bottom: 75px;
+    right: 12px;
+    padding: 8px 14px;
+    font-size: 0.7rem;
   }
 }
 
