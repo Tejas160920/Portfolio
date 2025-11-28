@@ -208,7 +208,7 @@ const Hero = () => {
       <div className="hero-background" style={{ transform: `translateY(${parallaxOffset}px)` }}>
         <div className="gradient-overlay"></div>
         <div className="particles">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(window.innerWidth <= 768 ? 15 : 50)].map((_, i) => (
             <div
               key={i}
               className="particle"

@@ -154,7 +154,7 @@ const SkillWheel = () => {
         <div className="gradient-overlay"></div>
         <div className="aurora-effect"></div>
         <div className="particles">
-          {[...Array(50)].map((_, i) => (
+          {[...Array(window.innerWidth <= 768 ? 15 : 50)].map((_, i) => (
             <div
               key={i}
               className="particle"
@@ -220,7 +220,7 @@ const SkillWheel = () => {
 
       {/* Floating particles */}
       <div className="skill-particles">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(window.innerWidth <= 768 ? 3 : 8)].map((_, i) => (
           <div
             key={i}
             className="skill-particle"

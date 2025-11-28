@@ -573,3 +573,11 @@
     display: none;
   }
 }
+
+/* Reduce orbit dots on mobile */
+@media (max-width: 768px) {
+  .orbit-dot-2,
+  .orbit-dot-3 {
+    display: none;
+  }
+}

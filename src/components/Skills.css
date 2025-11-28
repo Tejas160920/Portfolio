@@ -594,3 +594,11 @@
     height: 5px;
   }
 }
+
+/* Hide extra orbital dots on mobile */
+@media only screen and (max-width: 768px) {
+  .orbital-ring-2 .orbital-dot,
+  .orbital-ring-1 .orbital-dot:nth-child(2) {
+    display: none;
+  }
+}
