@@ -212,11 +212,33 @@ const Hero = () => {
 
     setShowNamePrompt(false);
     setVisitorInfo({ name: '', role: '', company: '' });
+
+    // Reset cursor visibility after modal closes
+    setTimeout(() => {
+      const cursorDot = document.querySelector('.cursor-dot');
+      const cursorCircle = document.querySelector('.cursor-circle');
+      if (cursorDot) cursorDot.classList.remove('cursor-dot-hidden');
+      if (cursorCircle) {
+        cursorCircle.classList.remove('hovered');
+        cursorCircle.style = '';
+      }
+    }, 100);
   };
 
   // Handle skip
   const handleSkipName = () => {
     setShowNamePrompt(false);
+
+    // Reset cursor visibility after modal closes
+    setTimeout(() => {
+      const cursorDot = document.querySelector('.cursor-dot');
+      const cursorCircle = document.querySelector('.cursor-circle');
+      if (cursorDot) cursorDot.classList.remove('cursor-dot-hidden');
+      if (cursorCircle) {
+        cursorCircle.classList.remove('hovered');
+        cursorCircle.style = '';
+      }
+    }, 100);
     setVisitorInfo({ name: '', role: '', company: '' });
   };
 
@@ -313,7 +335,7 @@ const Hero = () => {
                 type="text"
                 value={visitorInfo.role}
                 onChange={(e) => setVisitorInfo({...visitorInfo, role: e.target.value})}
-                placeholder="Your role (e.g. Recruiter, Developer)"
+                placeholder="Your role (e.g. Recruiter, Developer, Student)"
                 maxLength={50}
               />
               <input
