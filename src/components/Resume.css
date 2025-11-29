@@ -476,3 +476,66 @@
     padding-left: 15px;
   }
 }
+
+/* iPhone 15 / 14 Pro specific (393px width) */
+@media only screen and (max-width: 400px) {
+  .resume-section {
+    padding: 40px 8px;
+  }
+
+  .resume-header {
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+
+  .resume-title {
+    font-size: 22px;
+  }
+
+  .download-resume-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .column-header h3 {
+    font-size: 16px;
+  }
+
+  .content-card {
+    padding: 12px;
+  }
+
+  .content-card h4 {
+    font-size: 15px;
+  }
+
+  .institution {
+    font-size: 13px;
+  }
+
+  .time-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .course-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .experience-points li {
+    font-size: 13px;
+    padding-left: 12px;
+  }
+
+  .timeline {
+    padding-left: 12px;
+  }
+
+  .timeline-dot {
+    left: -16px;
+    width: 8px;
+    height: 8px;
+  }
+}
