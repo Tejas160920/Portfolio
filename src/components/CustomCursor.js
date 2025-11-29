@@ -132,10 +132,19 @@ const CustomCursor = () => {
         subtree: true
       });
 
+      // Reset cursor when mouse enters window
+      const handleMouseEnterWindow = () => {
+        cursorDot.classList.remove('cursor-dot-hidden');
+        cursorCircle.classList.remove('hovered');
+        cursorCircle.style = '';
+      };
+
+      document.addEventListener('mouseenter', handleMouseEnterWindow);
       window.addEventListener('mousemove', updatePosition);
 
       return () => {
         window.removeEventListener('mousemove', updatePosition);
+        document.removeEventListener('mouseenter', handleMouseEnterWindow);
         observer.disconnect();
         cursorDot.remove();
         cursorCircle.remove();
