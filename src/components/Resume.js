@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { FiDownload } from 'react-icons/fi';
 import './Resume.css';
 import {
   CodeSlash,
@@ -73,9 +74,19 @@ const Resume = () => {
       )}
 
       <div className="resume-container">
-        <h2 className={`resume-title ${isVisible ? 'title-visible' : ''}`}>
-          My <span className="title-highlight">Resume</span>
-        </h2>
+        <div className="resume-header">
+          <h2 className={`resume-title ${isVisible ? 'title-visible' : ''}`}>
+            My <span className="title-highlight">Resume</span>
+          </h2>
+          <a
+            href="/Tejas_Gaikwad_Resume.pdf"
+            download="Tejas_Gaikwad_Resume.pdf"
+            className={`download-resume-btn ${isVisible ? 'btn-visible' : ''}`}
+          >
+            <FiDownload className="download-icon" />
+            <span>Download CV</span>
+          </a>
+        </div>
 
         <div className="resume-content">
           {/* Education Column */}

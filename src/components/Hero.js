@@ -58,7 +58,12 @@ const getUserLikes = async () => {
   const userId = getUserId();
   try {
     const snapshot = await get(ref(db, `likes/users/${userId}`));
-    return snapshot.exists() ? snapshot.val() : 0;
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      // Handle both old format (just number) and new format (object)
+      return typeof data === 'object' ? data.likes : data;
+    }
+    return 0;
   } catch (error) {
     console.error("Error fetching user likes:", error);
     return 0;
@@ -66,13 +71,36 @@ const getUserLikes = async () => {
 };
 
 // Function to update likes in Firebase
-const updateLikes = async (userLikes, totalLikes) => {
+const updateLikes = async (userLikes, totalLikes, name = null) => {
   const userId = getUserId();
   try {
-    await set(ref(db, `likes/users/${userId}`), userLikes);
+    const userData = {
+      likes: userLikes,
+      lastLiked: new Date().toISOString()
+    };
+    if (name) {
+      userData.name = name;
+    }
+    await set(ref(db, `likes/users/${userId}`), userData);
     await set(ref(db, "likes/count"), totalLikes);
   } catch (error) {
     console.error("Error updating likes:", error);
+  }
+};
+
+// Function to save user name
+const saveUserName = async (name) => {
+  const userId = getUserId();
+  try {
+    const snapshot = await get(ref(db, `likes/users/${userId}`));
+    const currentData = snapshot.exists() ? snapshot.val() : { likes: 0 };
+    await set(ref(db, `likes/users/${userId}`), {
+      ...currentData,
+      name: name,
+      lastLiked: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("Error saving name:", error);
   }
 };
 
@@ -82,7 +110,15 @@ const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [showNamePrompt, setShowNamePrompt] = useState(false);
+  const [visitorInfo, setVisitorInfo] = useState({
+    name: '',
+    role: '',
+    company: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const heroRef = useRef(null);
+  const namePromptTimerRef = useRef(null);
   const emojis = ['😊', '😃', '😄', '😁', '🤩'];
 
   // Fetch total likes & user likes from Firebase on mount
@@ -129,6 +165,59 @@ const Hero = () => {
     setTimeout(() => setShowEmoji(false), 2000);
 
     await updateLikes(newLikes, newTotalLikes);
+
+    // Show name prompt 4 seconds after user stops liking (only once per session)
+    const hasAskedName = sessionStorage.getItem('askedForName');
+    if (newLikes > 0 && !hasAskedName) {
+      // Clear any existing timer
+      if (namePromptTimerRef.current) {
+        clearTimeout(namePromptTimerRef.current);
+      }
+      // Set new timer - will trigger 4 seconds after last like
+      namePromptTimerRef.current = setTimeout(() => {
+        setShowNamePrompt(true);
+        sessionStorage.setItem('askedForName', 'true');
+      }, 4000);
+    }
+  };
+
+  // Handle visitor info submission
+  const handleNameSubmit = async () => {
+    const hasAnyInfo = visitorInfo.name.trim() || visitorInfo.role.trim() || visitorInfo.company.trim();
+
+    if (hasAnyInfo) {
+      setIsSubmitting(true);
+
+      // Save to Firebase
+      await saveUserName(visitorInfo.name.trim() || 'Anonymous');
+
+      // Send email notification
+      try {
+        await fetch('/api/visitor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: visitorInfo.name.trim() || 'Anonymous',
+            role: visitorInfo.role.trim() || 'Not specified',
+            company: visitorInfo.company.trim() || 'Not specified',
+            likes: likes
+          })
+        });
+      } catch (error) {
+        console.error('Failed to send visitor info:', error);
+      }
+
+      setIsSubmitting(false);
+    }
+
+    setShowNamePrompt(false);
+    setVisitorInfo({ name: '', role: '', company: '' });
+  };
+
+  // Handle skip
+  const handleSkipName = () => {
+    setShowNamePrompt(false);
+    setVisitorInfo({ name: '', role: '', company: '' });
   };
 
   return (
@@ -204,6 +293,48 @@ const Hero = () => {
         </div>
         <span className="like-count mt-2">{totalLikes}</span>
       </div>
+
+      {/* Visitor Info Modal */}
+      {showNamePrompt && (
+        <div className="name-prompt-overlay">
+          <div className="name-prompt-modal">
+            <h3>Thanks for the love! 💚</h3>
+            <p>I'd love to know who's visiting!</p>
+            <div className="visitor-form">
+              <input
+                type="text"
+                value={visitorInfo.name}
+                onChange={(e) => setVisitorInfo({...visitorInfo, name: e.target.value})}
+                placeholder="Your name"
+                maxLength={50}
+                autoFocus
+              />
+              <input
+                type="text"
+                value={visitorInfo.role}
+                onChange={(e) => setVisitorInfo({...visitorInfo, role: e.target.value})}
+                placeholder="Your role (e.g. Recruiter, Developer)"
+                maxLength={50}
+              />
+              <input
+                type="text"
+                value={visitorInfo.company}
+                onChange={(e) => setVisitorInfo({...visitorInfo, company: e.target.value})}
+                placeholder="Company / Organization"
+                maxLength={100}
+                onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+              />
+            </div>
+            <p className="optional-note">All fields are optional</p>
+            <div className="name-prompt-buttons">
+              <button onClick={handleSkipName} className="skip-btn">Skip</button>
+              <button onClick={handleNameSubmit} className="submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Sending...' : 'Submit'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="hero-background" style={{ transform: `translateY(${parallaxOffset}px)` }}>
         <div className="gradient-overlay"></div>

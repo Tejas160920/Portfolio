@@ -14,14 +14,96 @@
   z-index: 2;
 }
 
+/* Resume Header */
+.resume-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
 /* Title with animation */
 .resume-title {
   font-size: 36px;
-  margin-bottom: 60px;
   text-align: center;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  margin: 0;
+}
+
+/* Download Resume Button */
+.download-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: transparent;
+  border: 2px solid var(--accent-green);
+  border-radius: 50px;
+  color: var(--accent-green);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.download-resume-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.download-resume-btn:hover::before {
+  left: 100%;
+}
+
+.download-resume-btn.btn-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.download-resume-btn:hover {
+  background: var(--accent-green);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(74, 222, 128, 0.3);
+}
+
+.download-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.download-resume-btn:hover .download-icon {
+  animation: bounceDown 0.6s ease infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+[data-theme="light"] .download-resume-btn {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+[data-theme="light"] .download-resume-btn:hover {
+  background: var(--accent-green);
+  color: #fff;
 }
 
 .resume-title.title-visible {
@@ -303,9 +385,19 @@
     padding: 60px 15px;
   }
 
+  .resume-header {
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+
   .resume-title {
     font-size: 28px;
-    margin-bottom: 40px;
+  }
+
+  .download-resume-btn {
+    padding: 12px 24px;
+    font-size: 14px;
   }
 
   .resume-content {

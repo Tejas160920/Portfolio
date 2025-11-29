@@ -100,7 +100,7 @@ const CustomCursor = () => {
       };
 
       const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn');
+        const targetsToListen = document.querySelectorAll('button, a, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn, .download-resume-btn, .show-more-btn');
         targetsToListen.forEach(target => {
           target.removeEventListener('mouseenter', handleMouseEnter);
           target.removeEventListener('mouseleave', handleMouseLeave);

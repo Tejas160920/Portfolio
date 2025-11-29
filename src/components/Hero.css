@@ -581,3 +581,146 @@
     display: none;
   }
 }
+
+/* Name Prompt Modal */
+.name-prompt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.name-prompt-modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 30px 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .name-prompt-modal {
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.name-prompt-modal h3 {
+  color: var(--accent-green);
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.name-prompt-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.visitor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.name-prompt-modal input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.name-prompt-modal input:focus {
+  border-color: var(--accent-green);
+}
+
+.name-prompt-modal input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.optional-note {
+  font-size: 0.8rem !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 16px !important;
+  opacity: 0.7;
+}
+
+.name-prompt-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.name-prompt-buttons button {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.name-prompt-buttons .skip-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.name-prompt-buttons .skip-btn:hover {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.name-prompt-buttons .submit-btn {
+  background: var(--accent-green);
+  color: #000;
+}
+
+.name-prompt-buttons .submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(74, 222, 128, 0.4);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .name-prompt-modal {
+    padding: 24px 20px;
+  }
+
+  .name-prompt-modal h3 {
+    font-size: 1.25rem;
+  }
+
+  .name-prompt-buttons button {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+}
