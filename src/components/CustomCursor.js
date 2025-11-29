@@ -62,10 +62,9 @@ const CustomCursor = () => {
       let position = { x: 0, y: 0 };
       let isHovered = false;
       let currentHoveredElement = null;
+      let rafId = null;
 
-      const updatePosition = e => {
-        position.x = e.clientX;
-        position.y = e.clientY;
+      const updateCursorPosition = () => {
         if (!isHovered) {
           cursorDot.style.left = `${position.x}px`;
           cursorDot.style.top = `${position.y}px`;
@@ -85,6 +84,17 @@ const CustomCursor = () => {
           cursorCircle.style.left = `${position.x}px`;
           cursorCircle.style.top = `${position.y}px`;
         }
+      };
+
+      const updatePosition = e => {
+        position.x = e.clientX;
+        position.y = e.clientY;
+
+        // Use requestAnimationFrame for smoother performance in Chrome
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        rafId = requestAnimationFrame(updateCursorPosition);
       };
 
       const handleMouseEnter = e => {
@@ -152,6 +162,7 @@ const CustomCursor = () => {
 
       return () => {
         window.removeEventListener('mousemove', updatePosition);
+        if (rafId) cancelAnimationFrame(rafId);
         observer.disconnect();
         cursorDot.remove();
         cursorCircle.remove();
