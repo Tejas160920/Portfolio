@@ -25,10 +25,10 @@ function styleInject(css, ref) {
 
 var css_248z = `
 body{cursor:none!important}
-.cursor-dot{background-color:#ff0;border-radius:50%;height:5px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:background-color 0.3s ease;width:5px;z-index:9999999999999;opacity:1}
-.cursor-dot-hidden{opacity:0!important}
-.cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:border-color 0.3s ease;width:30px;z-index:9999999999998}
-.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none}
+.cursor-dot{background-color:#ff0;border-radius:50%;height:5px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:opacity .15s ease, background-color 0.3s ease;width:5px;z-index:9999999999999}
+.cursor-dot-hidden{opacity:0}
+.cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease, border-color 0.3s ease;width:30px;z-index:9999999999998}
+.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}
 .social-button,a,button,.theme-toggle,.like-button,.suggestion-card,.chatbot-toggle,.new-chat-btn,.back-to-portfolio,.send-button,.mobile-close-btn,.saved-chat-item,.delete-chat-btn{cursor:none!important}
 
 /* Light theme cursor colors */
@@ -61,6 +61,7 @@ const CustomCursor = () => {
 
       let position = { x: 0, y: 0 };
       let isHovered = false;
+      let currentHoveredElement = null;
 
       const updatePosition = e => {
         position.x = e.clientX;
@@ -71,10 +72,24 @@ const CustomCursor = () => {
           cursorCircle.style.left = `${position.x}px`;
           cursorCircle.style.top = `${position.y}px`;
         }
+
+        // Check if hovered element still exists in DOM
+        if (isHovered && currentHoveredElement && !document.body.contains(currentHoveredElement)) {
+          isHovered = false;
+          currentHoveredElement = null;
+          cursorDot.classList.remove('cursor-dot-hidden');
+          cursorCircle.classList.remove('hovered');
+          cursorCircle.style = '';
+          cursorDot.style.left = `${position.x}px`;
+          cursorDot.style.top = `${position.y}px`;
+          cursorCircle.style.left = `${position.x}px`;
+          cursorCircle.style.top = `${position.y}px`;
+        }
       };
 
       const handleMouseEnter = e => {
         isHovered = true;
+        currentHoveredElement = e.target;
         cursorDot.classList.add('cursor-dot-hidden');
         cursorCircle.classList.add('hovered');
         const rect = e.target.getBoundingClientRect();
@@ -94,6 +109,7 @@ const CustomCursor = () => {
 
       const handleMouseLeave = () => {
         isHovered = false;
+        currentHoveredElement = null;
         cursorDot.classList.remove('cursor-dot-hidden');
         cursorCircle.classList.remove('hovered');
         cursorCircle.style = '';
@@ -132,35 +148,10 @@ const CustomCursor = () => {
         subtree: true
       });
 
-      // Combined mousemove handler
-      const handleMouseMove = (e) => {
-        position.x = e.clientX;
-        position.y = e.clientY;
-
-        // Check if we're hovering over a tracked element
-        const hoveredElement = document.elementFromPoint(e.clientX, e.clientY);
-        const isOverTrackedElement = hoveredElement && hoveredElement.closest('button, a, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn, .download-resume-btn, .show-more-btn');
-
-        // If not hovering over tracked element, reset cursor immediately
-        if (!isOverTrackedElement) {
-          isHovered = false;
-          cursorDot.style.opacity = '1';
-          cursorDot.classList.remove('cursor-dot-hidden');
-          cursorCircle.classList.remove('hovered');
-          cursorCircle.style.width = '30px';
-          cursorCircle.style.height = '30px';
-          cursorCircle.style.borderRadius = '50%';
-          cursorCircle.style.transform = 'translate(-50%, -50%)';
-          cursorDot.style.left = `${position.x}px`;
-          cursorDot.style.top = `${position.y}px`;
-          cursorCircle.style.left = `${position.x}px`;
-          cursorCircle.style.top = `${position.y}px`;
-        }
-      };
-
-      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mousemove', updatePosition);
 
       return () => {
+        window.removeEventListener('mousemove', updatePosition);
         observer.disconnect();
         cursorDot.remove();
         cursorCircle.remove();
