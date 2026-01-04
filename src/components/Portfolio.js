@@ -25,7 +25,7 @@ const Portfolio = () => {
       alt: 'Jobleap',
       year: '2025',
       title: 'Jobleap - AI-Powered Job Search & Chrome Extension',
-      description: 'Full-stack job platform aggregating listings from 4 APIs with caching, fuzzy deduplication (~40%), and advanced search. ManifestV3 Chrome extension with ATS adapters (Lever, Greenhouse, Workday, iCIMS) and 54-matcher field-mapping engine achieving 90%+ accuracy.',
+      description: 'AI-powered job platform with Chrome extension that automates multi-step applications across major ATS systems with 90%+ accuracy.',
       tags: ['React', 'Node.js', 'MongoDB', 'Docker', 'OAuth', 'LLM APIs'],
       links: [
         { text: 'View Project', url: 'https://github.com/Tejas160920/Jobleap' },
@@ -37,7 +37,7 @@ const Portfolio = () => {
       alt: 'Rapcut',
       year: '2025',
       title: 'Rapcut - LLM-Powered Image Text Editor SaaS',
-      description: 'Production-grade SaaS platform enabling LLM-powered text editing in images using Google Gemini Vision, preserving original fonts, colors, and layouts. Scalable backend with 36+ API endpoints, Firestore transactions, AWS S3 presigned uploads, and ~60% database read reduction via intelligent caching.',
+      description: 'SaaS platform for AI-powered text editing in images using Google Gemini Vision, preserving original fonts, colors, and layouts.',
       tags: ['React 19', 'Firebase', 'AWS S3', 'Gemini Vision', 'Next.js'],
       links: [
         { text: 'View Project', url: 'https://github.com/Tejas160920/Rapcut' },
