@@ -13,7 +13,9 @@ const Chatbot = () => {
 
   // Hugging Face Space API URL
   const API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat';
+  const STREAM_API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat/stream';
   const [isWakingUp, setIsWakingUp] = useState(false);
+  const [streamingText, setStreamingText] = useState('');
 
   // Wake up the HF Space when chatbot opens (prevents cold start delays)
   const wakeUpSpace = async () => {
@@ -192,19 +194,76 @@ const Chatbot = () => {
         content: msg.text
       }));
 
-      const response = await fetchWithRetry(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question: userMessage,
-          history: history.slice(0, -1) // Send all previous messages except the current one
-        }),
-      });
+      // Try streaming first for better UX
+      let streamSuccess = false;
+      try {
+        const response = await fetchWithRetry(STREAM_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            question: userMessage,
+            history: history.slice(0, -1)
+          }),
+        });
 
-      const data = await response.json();
-      setMessages(prev => [...prev, { type: 'bot', text: data.answer }]);
+        if (response.ok && response.body) {
+          streamSuccess = true;
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let fullText = '';
+
+          // Add empty bot message that we'll update
+          setMessages(prev => [...prev, { type: 'bot', text: '' }]);
+          setIsLoading(false);
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') {
+                  break;
+                }
+                if (!data.startsWith('{')) {
+                  fullText += data;
+                  // Update the last message with streaming text
+                  setMessages(prev => {
+                    const updated = [...prev];
+                    updated[updated.length - 1] = { type: 'bot', text: fullText };
+                    return updated;
+                  });
+                }
+              }
+            }
+          }
+        }
+      } catch (streamError) {
+        console.log('Streaming failed, falling back to regular API:', streamError.message);
+      }
+
+      // Fallback to regular API if streaming failed
+      if (!streamSuccess) {
+        const response = await fetchWithRetry(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            question: userMessage,
+            history: history.slice(0, -1)
+          }),
+        });
+
+        const data = await response.json();
+        setMessages(prev => [...prev, { type: 'bot', text: data.answer }]);
+      }
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [
