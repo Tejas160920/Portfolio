@@ -13,6 +13,52 @@ const Chatbot = () => {
 
   // Hugging Face Space API URL
   const API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat';
+  const [isWakingUp, setIsWakingUp] = useState(false);
+
+  // Wake up the HF Space when chatbot opens (prevents cold start delays)
+  const wakeUpSpace = async () => {
+    try {
+      await fetch(API_URL.replace('/chat', '/health'), {
+        method: 'GET',
+        signal: AbortSignal.timeout(5000)
+      }).catch(() => {});
+    } catch (e) {
+      // Ignore errors - just trying to wake it up
+    }
+  };
+
+  // Fetch with retry logic for HF Space cold starts
+  const fetchWithRetry = async (url, options, maxRetries = 3) => {
+    let lastError;
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        if (i > 0) {
+          setIsWakingUp(true);
+          // Wait longer between retries (2s, 4s)
+          await new Promise(resolve => setTimeout(resolve, 2000 * i));
+        }
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          setIsWakingUp(false);
+          return response;
+        }
+        throw new Error(`HTTP ${response.status}`);
+      } catch (error) {
+        lastError = error;
+        console.log(`Attempt ${i + 1} failed:`, error.message);
+      }
+    }
+    setIsWakingUp(false);
+    throw lastError;
+  };
 
   // Load saved chats from localStorage on mount
   useEffect(() => {
@@ -30,9 +76,11 @@ const Chatbot = () => {
   useEffect(() => {
     const handleOpenChatbot = () => {
       setIsOpen(true);
+      wakeUpSpace(); // Pre-warm the Space
     };
     window.addEventListener('openTejasAI', handleOpenChatbot);
     return () => window.removeEventListener('openTejasAI', handleOpenChatbot);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save current chat when messages change (if there are messages)
@@ -144,7 +192,7 @@ const Chatbot = () => {
         content: msg.text
       }));
 
-      const response = await fetch(API_URL, {
+      const response = await fetchWithRetry(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,10 +203,6 @@ const Chatbot = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('API request failed');
-      }
-
       const data = await response.json();
       setMessages(prev => [...prev, { type: 'bot', text: data.answer }]);
     } catch (error) {
@@ -167,11 +211,12 @@ const Chatbot = () => {
         ...prev,
         {
           type: 'bot',
-          text: "Sorry, I'm having trouble connecting right now. Please try again later or reach out to Tejas directly at tejasgaikwad16092002@gmail.com"
+          text: "Sorry, I'm having trouble connecting right now. The AI service might be waking up - please try again in a moment, or reach out to Tejas directly at tejasgaikwad16092002@gmail.com"
         }
       ]);
     } finally {
       setIsLoading(false);
+      setIsWakingUp(false);
     }
   };
 
@@ -233,7 +278,10 @@ const Chatbot = () => {
       {/* Chat Toggle Button - Positioned below the heart */}
       <button
         className="chatbot-toggle"
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setIsOpen(true);
+          wakeUpSpace(); // Pre-warm the Space
+        }}
         aria-label="Open chat"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -373,11 +421,22 @@ const Chatbot = () => {
                         <span>T</span>
                       </div>
                       <div className="message-bubble">
-                        <div className="typing-dots">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                        </div>
+                        {isWakingUp ? (
+                          <div className="waking-up-message">
+                            <div className="typing-dots">
+                              <span></span>
+                              <span></span>
+                              <span></span>
+                            </div>
+                            <span className="waking-text">Waking up AI service...</span>
+                          </div>
+                        ) : (
+                          <div className="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
