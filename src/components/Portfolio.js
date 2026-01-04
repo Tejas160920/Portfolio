@@ -21,6 +21,30 @@ const Portfolio = () => {
   // All projects data
   const allProjects = [
     {
+      image: '/jobleap.png',
+      alt: 'Jobleap',
+      year: '2025',
+      title: 'Jobleap - AI-Powered Job Search & Chrome Extension',
+      description: 'Full-stack job platform aggregating listings from 4 APIs with caching, fuzzy deduplication (~40%), and advanced search. ManifestV3 Chrome extension with ATS adapters (Lever, Greenhouse, Workday, iCIMS) and 54-matcher field-mapping engine achieving 90%+ accuracy.',
+      tags: ['React', 'Node.js', 'MongoDB', 'Docker', 'OAuth', 'LLM APIs'],
+      links: [
+        { text: 'View Project', url: 'https://github.com/Tejas160920/Jobleap' },
+        { text: 'Live', url: 'https://www.jobleap.work', external: true }
+      ]
+    },
+    {
+      image: '/rapcut.png',
+      alt: 'Rapcut',
+      year: '2025',
+      title: 'Rapcut - LLM-Powered Image Text Editor SaaS',
+      description: 'Production-grade SaaS platform enabling LLM-powered text editing in images using Google Gemini Vision, preserving original fonts, colors, and layouts. Scalable backend with 36+ API endpoints, Firestore transactions, AWS S3 presigned uploads, and ~60% database read reduction via intelligent caching.',
+      tags: ['React 19', 'Firebase', 'AWS S3', 'Gemini Vision', 'Next.js'],
+      links: [
+        { text: 'View Project', url: 'https://github.com/Tejas160920/Rapcut' },
+        { text: 'Live', url: 'https://rapcut.app/', external: true }
+      ]
+    },
+    {
       image: '/memento.jpg',
       alt: 'Memento',
       year: '2025',
@@ -312,7 +336,7 @@ const Portfolio = () => {
                       if (!showAllProjects) {
                         // Trigger animation for new cards
                         setTimeout(() => {
-                          const newIndices = [6, 7];
+                          const newIndices = allProjects.slice(6).map((_, i) => 6 + i);
                           newIndices.forEach((idx, i) => {
                             setTimeout(() => {
                               setVisibleCards(prev => [...prev, idx]);
