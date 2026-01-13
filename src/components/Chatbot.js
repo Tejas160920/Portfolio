@@ -467,11 +467,23 @@ const Chatbot = () => {
                       )}
                       <div className="message-bubble">
                         <div className="message-content">
-                          {message.text.split('\n').map((line, i) => (
-                            <p key={i} className={line.trim().startsWith('•') ? 'bullet-line' : ''}>
-                              {line || '\u00A0'}
-                            </p>
-                          ))}
+                          {message.text.split('\n').map((line, i) => {
+                            const trimmedLine = line.trim();
+                            // Check if line is a heading (wrapped in **)
+                            const isHeading = trimmedLine.startsWith('**') && trimmedLine.includes('**', 2);
+                            const isBullet = trimmedLine.startsWith('•');
+
+                            if (isHeading) {
+                              // Remove ** and render as heading
+                              const headingText = trimmedLine.replace(/\*\*/g, '');
+                              return <p key={i} className="heading-line">{headingText}</p>;
+                            }
+                            return (
+                              <p key={i} className={isBullet ? 'bullet-line' : ''}>
+                                {line || '\u00A0'}
+                              </p>
+                            );
+                          })}
                         </div>
                       </div>
                       {message.type === 'user' && (
