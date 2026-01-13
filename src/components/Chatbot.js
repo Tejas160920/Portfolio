@@ -461,7 +461,13 @@ const Chatbot = () => {
                         </div>
                       )}
                       <div className="message-bubble">
-                        <p>{message.text}</p>
+                        <div className="message-content">
+                          {message.text.split('\n').map((line, i) => (
+                            <p key={i} className={line.trim().startsWith('•') ? 'bullet-line' : ''}>
+                              {line || '\u00A0'}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                       {message.type === 'user' && (
                         <div className="user-avatar">
