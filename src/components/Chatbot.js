@@ -232,7 +232,12 @@ const Chatbot = () => {
                   break;
                 }
                 if (!data.startsWith('{')) {
-                  fullText += data;
+                  // Handle newline token from backend
+                  if (data === '[NEWLINE]') {
+                    fullText += '\n';
+                  } else {
+                    fullText += data;
+                  }
                   // Update the last message with streaming text
                   setMessages(prev => {
                     const updated = [...prev];
