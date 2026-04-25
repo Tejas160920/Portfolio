@@ -15,7 +15,7 @@ import {
 
 // Import Firebase modules
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, set } from "firebase/database";
+import { getDatabase, ref, get, set, runTransaction } from "firebase/database";
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -70,21 +70,31 @@ const getUserLikes = async () => {
   }
 };
 
-// Function to update likes in Firebase
-const updateLikes = async (userLikes, totalLikes, name = null) => {
+// Atomically apply a delta to the global like counter on the server.
+// Why: previous code did `set(count, localState + delta)`, which wiped
+// the real count whenever a user clicked before the initial fetch resolved.
+const applyGlobalLikeDelta = async (delta) => {
+  const result = await runTransaction(ref(db, "likes/count"), (current) => {
+    const next = (current || 0) + delta;
+    return next < 0 ? 0 : next;
+  });
+  return result.snapshot.exists() ? result.snapshot.val() : 0;
+};
+
+// Persist this user's personal like count (does not touch the global counter).
+const saveUserLikes = async (userLikes) => {
   const userId = getUserId();
   try {
-    const userData = {
+    const snapshot = await get(ref(db, `likes/users/${userId}`));
+    const existing = snapshot.exists() ? snapshot.val() : {};
+    const userData = typeof existing === 'object' ? existing : {};
+    await set(ref(db, `likes/users/${userId}`), {
+      ...userData,
       likes: userLikes,
       lastLiked: new Date().toISOString()
-    };
-    if (name) {
-      userData.name = name;
-    }
-    await set(ref(db, `likes/users/${userId}`), userData);
-    await set(ref(db, "likes/count"), totalLikes);
+    });
   } catch (error) {
-    console.error("Error updating likes:", error);
+    console.error("Error saving user likes:", error);
   }
 };
 
@@ -149,22 +159,23 @@ const Hero = () => {
 
   // Handle Like Click
   const handleLike = async () => {
-    let newLikes, newTotalLikes;
+    let newLikes, delta;
 
     if (likes < 5) {
       newLikes = likes + 1;
-      newTotalLikes = totalLikes + 1;
+      delta = 1;
     } else {
       newLikes = 0;
-      newTotalLikes = totalLikes - 5;
+      delta = -5;
     }
 
     setLikes(newLikes);
-    setTotalLikes(newTotalLikes);
     setShowEmoji(true);
     setTimeout(() => setShowEmoji(false), 2000);
 
-    await updateLikes(newLikes, newTotalLikes);
+    const serverTotal = await applyGlobalLikeDelta(delta);
+    setTotalLikes(serverTotal);
+    await saveUserLikes(newLikes);
 
     // Show name prompt 4 seconds after user stops liking (only once per session)
     const hasAskedName = sessionStorage.getItem('askedForName');
