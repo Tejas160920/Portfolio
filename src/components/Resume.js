@@ -100,17 +100,11 @@ const Resume = () => {
               <div className={`timeline-item ${visibleItems.includes(0) ? 'item-visible' : ''}`}>
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
-                  <div className="time-badge">August 2024 - Present</div>
+                  <div className="time-badge">Dec 2025</div>
                   <div className="content-card">
-                    <h4>Master of Computer Science</h4>
-                    <p className="institution">State University of New York at Buffalo</p>
-                    <p className="duration">Fall 2024 - Present</p>
-                    <div className="courses">
-                      <span className="course-tag">Machine Learning</span>
-                      <span className="course-tag">Analysis of Algorithms</span>
-                      <span className="course-tag">Data Intensive Computing</span>
-                      <span className="course-tag">Computer Security</span>
-                    </div>
+                    <h4>Master of Science in Computer Science &amp; Engineering</h4>
+                    <p className="institution">State University of New York at Buffalo, USA</p>
+                    <p className="duration">GPA: 3.6</p>
                   </div>
                 </div>
               </div>
@@ -118,20 +112,10 @@ const Resume = () => {
               <div className={`timeline-item ${visibleItems.includes(1) ? 'item-visible' : ''}`}>
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
-                  <div className="time-badge">June 2020 - June 2024</div>
+                  <div className="time-badge">Aug 2024</div>
                   <div className="content-card">
-                    <h4>Bachelor of Technology in Electronics and Telecommunication Engineering</h4>
+                    <h4>Bachelor of Technology in Electronics &amp; Telecommunication</h4>
                     <p className="institution">Vishwakarma Institute of Technology, Pune, India</p>
-                    <p className="duration">July 2020 - August 2024</p>
-                    <div className="courses">
-                      <span className="course-tag">Programming and Data Science in Python</span>
-                      <span className="course-tag">Data Science</span>
-                      <span className="course-tag">Computer Vision</span>
-                      <span className="course-tag">Data Structures and Algorithms</span>
-                      <span className="course-tag">Object-Oriented Programming (Java)</span>
-                      <span className="course-tag">Web Technology</span>
-                      <span className="course-tag">IoT</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -149,14 +133,13 @@ const Resume = () => {
               <div className={`timeline-item ${visibleItems.includes(2) ? 'item-visible' : ''}`}>
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
-                  <div className="time-badge">June 2025 - Present</div>
+                  <div className="time-badge">Mar 2026 - Present</div>
                   <div className="content-card">
-                    <h4>Full Stack Developer Intern</h4>
-                    <p className="institution">FindMe (Remote, USA)</p>
+                    <h4>Software Engineer</h4>
+                    <p className="institution">DoorDash, New York, USA</p>
                     <ul className="experience-points">
-                      <li>Built responsive and interactive user interfaces using Next.js, React, Tailwind CSS, and Zod with modern component architecture and state management using Zustand.</li>
-                      <li>Developed RESTful APIs using Node.js, Express.js, and MongoDB with proper validation, error handling, and secure user data management.</li>
-                      <li>Collaborated on feature development using Git version control, pull requests, and testing to ensure maintainable and production-ready code.</li>
+                      <li>Build cloud infrastructure on AWS and Kubernetes for production LLM and vision model workloads.</li>
+                      <li>Automate deployments with Terraform and CI/CD, and tune model serving for better GPU utilization.</li>
                     </ul>
                   </div>
                 </div>
@@ -165,15 +148,13 @@ const Resume = () => {
               <div className={`timeline-item ${visibleItems.includes(3) ? 'item-visible' : ''}`}>
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
-                  <div className="time-badge">July 2023 - June 2024</div>
+                  <div className="time-badge">Jul 2025 - Dec 2025</div>
                   <div className="content-card">
-                    <h4>Software Development Intern</h4>
-                    <p className="institution">SmartLeaven Digital Systems Pvt Ltd, Pune, India</p>
+                    <h4>Software Engineer</h4>
+                    <p className="institution">Capital One, USA</p>
                     <ul className="experience-points">
-                      <li>Developed real-time detection systems using YOLO (v7, v8) for object detection and OpenCV for lane detection.</li>
-                      <li>Generated high-definition datasets of over 7GB of images for machine learning model training.</li>
-                      <li>Optimized YOLO for Jetson Orin, achieving a 30% increase in processing speed for live-video analysis.</li>
-                      <li>Developed voice models using RVC and created a voice cloning app with an integrated Text-to-Speech engine.</li>
+                      <li>Built Python backend services and REST APIs with FastAPI, PostgreSQL, and DynamoDB.</li>
+                      <li>Worked on RAG pipelines and Redis caching to improve search relevance and response times.</li>
                     </ul>
                   </div>
                 </div>
@@ -182,14 +163,13 @@ const Resume = () => {
               <div className={`timeline-item ${visibleItems.includes(4) ? 'item-visible' : ''}`}>
                 <div className="timeline-dot"></div>
                 <div className="timeline-content">
-                  <div className="time-badge">June 2023 - August 2023</div>
+                  <div className="time-badge">Feb 2022 - Jul 2024</div>
                   <div className="content-card">
-                    <h4>Summer Research Intern</h4>
-                    <p className="institution">BARC (Bhabha Atomic Research Centre), Mumbai, India</p>
+                    <h4>Software Engineer</h4>
+                    <p className="institution">Hexaware Technologies, India</p>
                     <ul className="experience-points">
-                      <li>Researched and implemented machine learning solutions that improved industrial efficiency by 30%.</li>
-                      <li>Engineered a data simulator for Nuclear Power Plants (NPPS) to generate timestamped data.</li>
-                      <li>Created a feedforward neural network to predict liquid levels for the next five timestamps.</li>
+                      <li>Developed REST APIs and backend features using Java, Spring Boot, and SQL.</li>
+                      <li>Refactored a monolith into microservices and set up CI/CD pipelines for faster releases.</li>
                     </ul>
                   </div>
                 </div>

@@ -370,11 +370,11 @@ const Hero = () => {
             Hey, I'm <span className="highlight name-highlight">Tejas Gaikwad</span>
           </h1>
           <h2 className="subtitle">
-            A <span className="highlight">Software Developer & CS Graduate Student</span>
+            A <span className="highlight">Software Engineer</span>
           </h2>
           <p className="description">
-            I'm a graduate student at SUNY Buffalo currently working as a Software Developer Intern at FindMe.
-            I specialize in building scalable applications, exploring AI/ML solutions, and solving diverse challenges in technology.
+            I'm a Software Engineer at DoorDash building scalable backend systems and cloud infrastructure
+            for production AI workloads. I hold an MS in Computer Science from SUNY Buffalo.
           </p>
         </div>
 
