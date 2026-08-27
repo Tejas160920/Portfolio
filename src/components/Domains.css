@@ -62,7 +62,6 @@
   --my: 50%;
 
   transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transform-style: preserve-3d;
   transition: transform 0.45s var(--ease-out-quint),
     border-color 0.4s ease,
     background 0.4s ease,
@@ -108,7 +107,7 @@
 }
 
 .domain-card-inner:hover .domain-icon-wrapper {
-  transform: translateZ(28px) scale(1.06);
+  transform: scale(1.08);
 }
 
 .domain-icon {
@@ -183,6 +182,13 @@
   .domain-card.span-wide   { grid-column: span 4; }
   .domain-card.span-tall   { grid-column: span 2; grid-row: span 1; }
   .domain-card.span-normal { grid-column: span 2; }
+}
+
+/* Phones: no pointer, so no tilt or sheen to pay for */
+@media (hover: none), (max-width: 768px) {
+  .domain-card { perspective: none; }
+  .domain-card-inner { transform: none; }
+  .domain-sheen { display: none; }
 }
 
 @media (max-width: 600px) {

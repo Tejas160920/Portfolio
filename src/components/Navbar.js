@@ -17,31 +17,58 @@ const Navbar = () => {
   const listRef = useRef(null);
   const hireRef = useMagnetic({ strength: 0.3 });
 
-  // Which section is under the reading line, and has the page moved at all
+  // Active section via IntersectionObserver.
+  // The previous version measured all six sections with getBoundingClientRect
+  // on every scroll frame — six forced synchronous layouts per frame, which
+  // was a large part of the scroll jank. The observer costs nothing on scroll.
+  useEffect(() => {
+    const seen = new Map();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          seen.set(entry.target.id, entry);
+        });
+
+        // The visible section closest to the top of the viewport wins
+        let best = null;
+        seen.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          if (!best || entry.boundingClientRect.top < best.boundingClientRect.top) {
+            best = entry;
+          }
+        });
+
+        if (best) setActiveSection(best.target.id);
+      },
+      {
+        // A band across the upper-middle of the viewport acts as the
+        // reading line the old code computed by hand.
+        rootMargin: '-35% 0px -55% 0px',
+        threshold: 0
+      }
+    );
+
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Navbar background state. Reads only scrollY, which is free.
   useEffect(() => {
     let raf = null;
+    let last = false;
 
     const measure = () => {
       raf = null;
-      setScrolled(window.scrollY > 40);
-
-      // The section straddling a line ~40% down the viewport wins.
-      const line = window.innerHeight * 0.4;
-      let current = SECTIONS[0].id;
-
-      for (const { id } of SECTIONS) {
-        const el = document.getElementById(id);
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= line && rect.bottom >= line) {
-          current = id;
-          break;
-        }
-        // Already scrolled past its top — keep it as the running best
-        if (rect.top <= line) current = id;
+      const next = window.scrollY > 40;
+      if (next !== last) {
+        last = next;
+        setScrolled(next);
       }
-
-      setActiveSection(current);
     };
 
     const onScroll = () => {
@@ -50,11 +77,9 @@ const Navbar = () => {
 
     measure();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
       if (raf !== null) cancelAnimationFrame(raf);
     };
   }, []);

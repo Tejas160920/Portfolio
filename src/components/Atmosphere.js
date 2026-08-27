@@ -30,7 +30,10 @@ const Atmosphere = () => {
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    if (reduceMotion) return;
+    // On phones the parallax layers and spotlight are disabled in CSS, so the
+    // listeners would only burn frames writing to hidden elements.
+    const isSmall = window.matchMedia('(max-width: 768px)').matches;
+    if (reduceMotion || isSmall) return;
 
     const aurora = root.querySelector('.atm-aurora');
     const grid = root.querySelector('.atm-grid');
@@ -38,14 +41,21 @@ const Atmosphere = () => {
     let scrollRaf = null;
     let pointerRaf = null;
 
+    // Cached: scrollHeight and innerHeight both force layout when read.
+    let maxScroll = 0;
+    let vh = 0;
+
+    const measureDoc = () => {
+      maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      vh = window.innerHeight / 100;
+    };
+
     const applyScroll = () => {
       scrollRaf = null;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = max > 0 ? window.scrollY / max : 0;
+      const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
       // Write transforms straight onto the two layers. Driving them through a
       // custom property on the parent invalidated style for the whole subtree
       // on every scroll frame; this is a compositor-only update instead.
-      const vh = window.innerHeight / 100;
       if (aurora) {
         aurora.style.transform = `translate3d(0, ${(progress * -8 * vh).toFixed(2)}px, 0)`;
       }
@@ -68,14 +78,23 @@ const Atmosphere = () => {
       });
     };
 
+    const onResize = () => {
+      measureDoc();
+      applyScroll();
+    };
+
+    measureDoc();
     applyScroll();
+    const ro = new ResizeObserver(onResize);
+    ro.observe(document.documentElement);
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', applyScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('pointermove', onPointerMove, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', applyScroll);
+      window.removeEventListener('resize', onResize);
+      ro.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
       if (pointerRaf !== null) cancelAnimationFrame(pointerRaf);

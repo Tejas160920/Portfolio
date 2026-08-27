@@ -133,17 +133,33 @@
 /* 5. Grain ---------------------------------------------------------------- */
 .atm-grain {
   position: absolute;
-  inset: -50%;
+  inset: 0;
   opacity: var(--atm-grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
 }
 
-/* Mobile: drop the heaviest effects, keep the colour ---------------------- */
+/* Mobile ------------------------------------------------------------------
+   Phones have far less compositing headroom and a much higher pixel ratio
+   relative to their GPU, so the atmosphere drops to a static backdrop: the
+   colour survives, the per-frame work does not. */
 @media (max-width: 768px) {
   .atm-grid { background-size: 44px 44px; }
+
+  /* No pointer to follow */
   .atm-spotlight { display: none; }
-  .atm-grain { animation: none; }
+
+  /* Three permanently-animating full-width layers is the single most
+     expensive thing on a phone. The blobs keep their positions. */
+  .atm-blob { animation: none; }
+
+  /* Grain over a large high-DPI surface costs more than it adds here */
+  .atm-grain { display: none; }
+}
+
+/* Small phones: drop the parallax layers entirely */
+@media (max-width: 480px) {
+  .atm-grid { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

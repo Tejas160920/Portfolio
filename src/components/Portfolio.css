@@ -119,7 +119,7 @@
 
 .tab-content {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -598,4 +598,11 @@
     padding: 3px 8px;
     font-size: 11px;
   }
+}
+
+
+/* Phones: the pointer sheen has no pointer to track */
+@media (hover: none), (max-width: 768px) {
+  .portfolio-card::after { display: none; }
+  .portfolio-card:hover { transform: none; }
 }

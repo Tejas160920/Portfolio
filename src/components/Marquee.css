@@ -71,3 +71,15 @@
   .marquee-track { animation: none; }
   .marquee { overflow-x: auto; }
 }
+
+
+@media (max-width: 768px) {
+  .marquee {
+    padding: 1.25rem 0;
+    gap: 0.35rem;
+  }
+
+  .marquee-item {
+    font-size: 1rem;
+  }
+}

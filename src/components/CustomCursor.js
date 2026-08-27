@@ -23,49 +23,55 @@ function styleInject(css, ref) {
   }
 }
 
+/* Ring diameter, kept in sync with the CSS below — the free-roaming state
+   offsets by half of this to centre the ring on the pointer. */
+var RING = 46;
+var DOT = 6;
+
 var css_248z = `
 body{cursor:none!important}
 
+/* Both layers are positioned purely with transform. Writing left/top every
+   frame invalidates layout; transform stays on the compositor. */
 .cursor-dot{
   background-color:var(--accent-green,#4ade80);
   border-radius:50%;
-  width:6px;height:6px;
+  width:${DOT}px;height:${DOT}px;
   left:0;top:0;
   position:fixed;
   pointer-events:none;
-  transform:translate(-50%,-50%);
+  will-change:transform;
   transition:opacity .15s ease, background-color .3s ease;
   z-index:9999999999999;
 }
 .cursor-dot-hidden{opacity:0}
 
-/* Free-roaming ring. Position is driven frame-by-frame in JS, so only the
-   morph properties are transitioned here — transitioning left/top is what
-   made the cursor feel sluggish. */
 .cursor-circle{
   border:2px solid var(--accent-green,#4ade80);
   border-radius:50%;
   box-sizing:border-box;
-  width:36px;height:36px;
+  width:${RING}px;height:${RING}px;
   left:0;top:0;
   position:fixed;
   pointer-events:none;
-  transform:translate(-50%,-50%);
+  will-change:transform;
+  /* transform is driven frame-by-frame in JS while free, so it must not be
+     transitioned here — that was the original source of the lag. */
   transition:width .22s cubic-bezier(.22,1,.36,1),
              height .22s cubic-bezier(.22,1,.36,1),
              border-radius .22s cubic-bezier(.22,1,.36,1),
-             border-color .3s ease,
-             background-color .3s ease;
+             border-color .3s ease;
   z-index:9999999999998;
 }
 
-/* Locked onto an element: left/top now carry real positions, so they get a
-   short ease. The rect is re-read every frame, so a button that lifts on
-   hover keeps the ring with it. */
+/* Locked onto an element: the transform now carries a real position, so it
+   gets a short ease to glide onto the target and ride any hover lift. */
 .cursor-circle.hovered{
-  box-sizing:border-box;margin:0;padding:0;
-  transform:none;
-  transition:all .18s cubic-bezier(.22,1,.36,1);
+  transition:width .18s cubic-bezier(.22,1,.36,1),
+             height .18s cubic-bezier(.22,1,.36,1),
+             border-radius .18s cubic-bezier(.22,1,.36,1),
+             transform .18s cubic-bezier(.22,1,.36,1),
+             border-color .3s ease;
 }
 
 a,button,input,textarea,select,label,[role="button"],.social-button,.theme-toggle,.like-button,.suggestion-card,.chatbot-toggle,.new-chat-btn,.back-to-portfolio,.send-button,.mobile-close-btn,.saved-chat-item,.delete-chat-btn,.hero-cta,.footer-link,.footer-top,.scroll-cue,.sw-wheel{cursor:none!important}
@@ -81,7 +87,8 @@ const CustomCursor = () => {
         navigator.userAgent.indexOf('IEMobile') !== -1 ||
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent
-        )
+        ) ||
+        window.matchMedia('(pointer: coarse)').matches
       );
     };
 
@@ -95,17 +102,17 @@ const CustomCursor = () => {
       document.body.appendChild(cursorCircle);
 
       let position = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-      // Where the ring has caught up to. Kept separate from `position` so the
-      // ring can trail the dot instead of being welded to it.
+      // Where the ring has caught up to. Separate from `position` so the ring
+      // can trail the dot instead of being welded to it.
       let ringPos = { x: position.x, y: position.y };
       let isHovered = false;
       let currentHoveredElement = null;
       let hoveredRadius = '50%';
       let rafId = null;
+      let settled = false;
 
       // Fraction of the remaining gap the ring closes each frame — this is
-      // the trail. The old sluggishness came from a CSS transition on
-      // left/top, not from this, so a soft value here reads smooth now.
+      // the trail. Lower = more lag behind the dot.
       const FOLLOW = 0.15;
 
       const resetHoverState = () => {
@@ -113,50 +120,64 @@ const CustomCursor = () => {
         currentHoveredElement = null;
         cursorDot.classList.remove('cursor-dot-hidden');
         cursorCircle.classList.remove('hovered');
-        // Clear the inline box left behind by the morph
         cursorCircle.style.width = '';
         cursorCircle.style.height = '';
         cursorCircle.style.borderRadius = '';
-        cursorCircle.style.border = '';
-        // Resume the trail from wherever the ring currently sits
+        // Resume the trail from the pointer rather than sliding back from the
+        // element's corner
         ringPos.x = position.x;
         ringPos.y = position.y;
+        settled = false;
       };
 
       const render = () => {
+        rafId = requestAnimationFrame(render);
+
         // The dot always tracks the pointer exactly — no smoothing, no lag.
-        cursorDot.style.left = `${position.x}px`;
-        cursorDot.style.top = `${position.y}px`;
+        cursorDot.style.transform =
+          `translate3d(${position.x - DOT / 2}px, ${position.y - DOT / 2}px, 0)`;
 
         if (isHovered && currentHoveredElement) {
           if (!document.body.contains(currentHoveredElement)) {
             resetHoverState();
-          } else {
-            // Re-measure every frame. Buttons that lift or scale on hover
-            // move after mouseenter fired, and reading the rect once left
-            // the ring sitting where the button used to be.
-            const rect = currentHoveredElement.getBoundingClientRect();
-            cursorCircle.style.left = `${rect.left}px`;
-            cursorCircle.style.top = `${rect.top}px`;
-            cursorCircle.style.width = `${rect.width}px`;
-            cursorCircle.style.height = `${rect.height}px`;
-            cursorCircle.style.borderRadius = hoveredRadius;
+            return;
           }
+          // Re-measured every frame: buttons that lift or scale on hover
+          // finish moving after mouseenter fired, so a single measurement
+          // leaves the ring where the button used to be.
+          const rect = currentHoveredElement.getBoundingClientRect();
+          cursorCircle.style.transform =
+            `translate3d(${rect.left}px, ${rect.top}px, 0)`;
+          cursorCircle.style.width = `${rect.width}px`;
+          cursorCircle.style.height = `${rect.height}px`;
+          cursorCircle.style.borderRadius = hoveredRadius;
+          return;
         }
 
-        if (!isHovered) {
-          ringPos.x += (position.x - ringPos.x) * FOLLOW;
-          ringPos.y += (position.y - ringPos.y) * FOLLOW;
-          cursorCircle.style.left = `${ringPos.x}px`;
-          cursorCircle.style.top = `${ringPos.y}px`;
+        const dx = position.x - ringPos.x;
+        const dy = position.y - ringPos.y;
+
+        // Once the ring has caught a stationary pointer there is nothing to
+        // redraw, so stop writing to the DOM until it moves again.
+        if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+          if (settled) return;
+          settled = true;
+          ringPos.x = position.x;
+          ringPos.y = position.y;
+        } else {
+          settled = false;
+          ringPos.x += dx * FOLLOW;
+          ringPos.y += dy * FOLLOW;
         }
 
-        rafId = requestAnimationFrame(render);
+        cursorCircle.style.transform =
+          `translate3d(${ringPos.x - RING / 2}px, ${ringPos.y - RING / 2}px, 0)`;
       };
 
       const updatePosition = e => {
         position.x = e.clientX;
         position.y = e.clientY;
+        settled = false;
       };
 
       const handleMouseEnter = e => {
@@ -170,7 +191,6 @@ const CustomCursor = () => {
 
         cursorDot.classList.add('cursor-dot-hidden');
         cursorCircle.classList.add('hovered');
-        cursorCircle.style.border = '2px solid var(--accent-green)';
         // render() takes over size and position from here
       };
 
@@ -178,11 +198,15 @@ const CustomCursor = () => {
         resetHoverState();
       };
 
+      const SELECTOR = 'button, a, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn, .download-resume-btn, .show-more-btn, .hero-cta, .footer-link, .footer-top, .scroll-cue';
+
       const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, a, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn, .download-resume-btn, .show-more-btn, .hero-cta, .footer-link, .footer-top, .scroll-cue');
-        targetsToListen.forEach(target => {
-          target.removeEventListener('mouseenter', handleMouseEnter);
-          target.removeEventListener('mouseleave', handleMouseLeave);
+        document.querySelectorAll(SELECTOR).forEach(target => {
+          // Already-wired elements are skipped. The previous version re-bound
+          // every match and ran getComputedStyle on each one for every DOM
+          // mutation, which is what made this expensive.
+          if (target.dataset.cursorBound === '1') return;
+          target.dataset.cursorBound = '1';
 
           target.addEventListener('mouseenter', handleMouseEnter);
           target.addEventListener('mouseleave', handleMouseLeave);
@@ -195,17 +219,18 @@ const CustomCursor = () => {
 
       attachCursorListeners();
 
-      const portfolioContent = document.querySelector('.portfolio-content');
-      const observer = new MutationObserver(attachCursorListeners);
-
-      if (portfolioContent) {
-        observer.observe(portfolioContent, {
-          childList: true,
-          subtree: true
+      // Coalesce mutation bursts into one pass per frame instead of running a
+      // full querySelectorAll for every individual DOM change.
+      let attachRaf = null;
+      const scheduleAttach = () => {
+        if (attachRaf !== null) return;
+        attachRaf = requestAnimationFrame(() => {
+          attachRaf = null;
+          attachCursorListeners();
         });
-      }
+      };
 
-      // Also observe document body for chatbot and other dynamic elements
+      const observer = new MutationObserver(scheduleAttach);
       observer.observe(document.body, {
         childList: true,
         subtree: true
@@ -217,7 +242,13 @@ const CustomCursor = () => {
       return () => {
         window.removeEventListener('mousemove', updatePosition);
         if (rafId) cancelAnimationFrame(rafId);
+        if (attachRaf) cancelAnimationFrame(attachRaf);
         observer.disconnect();
+        document.querySelectorAll(SELECTOR).forEach(target => {
+          target.removeEventListener('mouseenter', handleMouseEnter);
+          target.removeEventListener('mouseleave', handleMouseLeave);
+          delete target.dataset.cursorBound;
+        });
         cursorDot.remove();
         cursorCircle.remove();
       };
