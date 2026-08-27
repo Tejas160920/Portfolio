@@ -146,11 +146,9 @@ const SkillWheel = () => {
   return (
     <div className="sw-container" ref={containerRef} id="skills">
       <div className="skillset-text">
-        <span className="section-eyebrow">Toolkit</span>
-        <h2>
-          My <span className="title-highlight">Skillset</span>
-        </h2>
-        <p className="skillset-sub">Drag the wheel to spin through it.</p>
+        <h1>My</h1>
+        <br />
+        <h1 className="text" style={{color: '#4ade80'}}> Skillset</h1>
       </div>
 
       {/* Orbital Rings - Visual only, doesn't affect wheel */}
@@ -203,6 +201,21 @@ const SkillWheel = () => {
         </svg>
       </div>
 
+      {/* Floating particles */}
+      <div className="skill-particles">
+        {[...Array(window.innerWidth <= 768 ? 3 : 8)].map((_, i) => (
+          <div
+            key={i}
+            className="skill-particle"
+            style={{
+              top: `${30 + Math.random() * 40}%`,
+              left: `${20 + Math.random() * 60}%`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${3 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

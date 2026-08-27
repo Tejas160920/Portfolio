@@ -3,12 +3,10 @@
 .sw-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-section) var(--space-gutter);
   background: transparent;
   overflow: hidden;
 }
@@ -234,39 +232,29 @@
 }
 
 .skillset-text {
-  position: absolute;
-  top: clamp(4.5rem, 12vh, 7rem);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  text-align: center;
-  width: min(90vw, var(--content-max));
-  pointer-events: none;
-}
-
-.skillset-text h2 {
-  margin: 0;
-  font-size: var(--text-3xl);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  z-index: 99;
+  font-size: 28px;
   color: var(--text-primary);
+  position: absolute;
+  line-height: 6px;
+  top: 60px;
+  left: 120px;
+  font-weight: 400;
 }
 
-.skillset-text .title-highlight {
-  background: linear-gradient(120deg, var(--accent-green), var(--accent-cyan));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.skillset-text h1 {
+  font-weight: 300;
+  letter-spacing: 2px;
 }
 
-.skillset-sub {
-  margin: 0.65rem 0 0;
-  font-size: var(--text-sm);
-  color: var(--text-muted);
+.skillset-text .text {
+  color: var(--accent-green);
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
 }
 
-
+[data-theme="light"] .skillset-text .text {
+  text-shadow: none;
+}
 
 /* Orbital Rings - Visual enhancement only */
 .orbital-rings {
