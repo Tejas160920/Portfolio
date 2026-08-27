@@ -84,33 +84,54 @@ const Chatbot = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Save current chat when messages change (if there are messages)
+  // Persist the current chat, debounced.
+  // This used to run on every `messages` change — meaning once per streamed
+  // token it serialised the entire chat history with JSON.stringify and did a
+  // synchronous localStorage write, blocking the main thread mid-frame. Now
+  // it settles after the reply stops changing.
   useEffect(() => {
-    if (messages.length > 0 && currentChatId) {
-      const updatedChats = savedChats.map(chat =>
-        chat.id === currentChatId
-          ? { ...chat, messages, updatedAt: Date.now() }
-          : chat
-      );
-      setSavedChats(updatedChats);
-      localStorage.setItem('tejas-portfolio-chats', JSON.stringify(updatedChats));
-    }
+    if (messages.length === 0 || !currentChatId) return;
+
+    const timer = setTimeout(() => {
+      setSavedChats(prev => {
+        const updated = prev.map(chat =>
+          chat.id === currentChatId
+            ? { ...chat, messages, updatedAt: Date.now() }
+            : chat
+        );
+        try {
+          localStorage.setItem('tejas-portfolio-chats', JSON.stringify(updated));
+        } catch (e) {
+          // Quota exceeded or private mode — the chat still works in memory
+        }
+        return updated;
+      });
+    }, 600);
+
+    return () => clearTimeout(timer);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, currentChatId]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (behavior = 'smooth') => {
+    messagesEndRef.current?.scrollIntoView({ behavior, block: 'end' });
   };
 
+  // Keyed on message COUNT, not on the messages array. Streaming rewrites the
+  // last message on every frame, and the old dependency restarted a smooth
+  // scrollIntoView animation each time — hundreds of interrupted animations
+  // over one reply, which is most of what made this page stutter.
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages.length]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
-    // Prevent body scroll when chat is open
+    // Prevent body scroll when chat is open, and let the animation governor
+    // pause everything behind the overlay.
+    document.documentElement.classList.toggle('chat-open', isOpen);
+
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       // Hide hire-me button on mobile when chat is open
@@ -147,6 +168,7 @@ const Chatbot = () => {
 
     return () => {
       document.body.style.overflow = 'unset';
+      document.documentElement.classList.remove('chat-open');
       window.removeEventListener('hashchange', handleHashChange);
       document.removeEventListener('click', handleNavClick);
     };
@@ -217,6 +239,25 @@ const Chatbot = () => {
           setMessages(prev => [...prev, { type: 'bot', text: '' }]);
           setIsLoading(false);
 
+          // One React update per animation frame instead of one per token.
+          // A long reply used to trigger several hundred full re-renders of
+          // the whole message list, each re-splitting every message's text.
+          let flushHandle = null;
+          const commit = () => {
+            flushHandle = null;
+            const text = fullText;
+            setMessages(prev => {
+              const updated = [...prev];
+              updated[updated.length - 1] = { type: 'bot', text };
+              return updated;
+            });
+            // Keep the view pinned without starting a smooth animation
+            messagesEndRef.current?.scrollIntoView({ block: 'end' });
+          };
+          const scheduleCommit = () => {
+            if (flushHandle === null) flushHandle = requestAnimationFrame(commit);
+          };
+
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
@@ -237,16 +278,15 @@ const Chatbot = () => {
                   } else {
                     fullText += data;
                   }
-                  // Update the last message with streaming text
-                  setMessages(prev => {
-                    const updated = [...prev];
-                    updated[updated.length - 1] = { type: 'bot', text: fullText };
-                    return updated;
-                  });
+                  scheduleCommit();
                 }
               }
             }
           }
+
+          // Land the final text even if the last frame never fired
+          if (flushHandle !== null) cancelAnimationFrame(flushHandle);
+          commit();
         }
       } catch (streamError) {
         console.log('Streaming failed, falling back to regular API:', streamError.message);

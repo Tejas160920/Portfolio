@@ -30,7 +30,13 @@ const Atmosphere = () => {
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    if (reduceMotion) return;
+    // Phones disable these layers in CSS, so the listeners would only burn
+    // frames writing to hidden elements.
+    const isSmall = window.matchMedia('(max-width: 768px)').matches;
+    if (reduceMotion || isSmall) return;
+
+    const aurora = root.querySelector('.atm-aurora');
+    const grid = root.querySelector('.atm-grid');
 
     let scrollRaf = null;
     let pointerRaf = null;
@@ -45,9 +51,18 @@ const Atmosphere = () => {
     const applyScroll = () => {
       scrollRaf = null;
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      // Aurora drifts slowly as you travel down the page, so the backdrop
-      // evolves instead of repeating.
-      root.style.setProperty('--scroll-progress', progress.toFixed(4));
+      // Written straight onto the two layers. Driving them through a custom
+      // property on the parent invalidated style for the whole subtree on
+      // every scroll frame.
+      const vh = window.innerHeight / 100;
+      if (aurora) {
+        aurora.style.transform =
+          `translate3d(0, ${(progress * -8 * vh).toFixed(2)}px, 0)`;
+      }
+      if (grid) {
+        grid.style.transform =
+          `translate3d(0, ${(progress * 4 * vh).toFixed(2)}px, 0)`;
+      }
     };
 
     const onScroll = () => {
@@ -59,8 +74,8 @@ const Atmosphere = () => {
       pointerRaf = requestAnimationFrame(() => {
         pointerRaf = null;
         if (!spotlight) return;
-        spotlight.style.setProperty('--px', `${e.clientX}px`);
-        spotlight.style.setProperty('--py', `${e.clientY}px`);
+        spotlight.style.transform =
+          `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       });
     };
 

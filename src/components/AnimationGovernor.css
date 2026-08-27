@@ -1,0 +1,19 @@
+/* Regions scrolled well out of view stop animating entirely. Paused
+   animations hold their current frame, so nothing jumps on the way back. */
+.is-offscreen,
+.is-offscreen *,
+.is-offscreen *::before,
+.is-offscreen *::after {
+  animation-play-state: paused !important;
+}
+
+/* While the full-screen chat is open the whole page behind it is covered, so
+   nothing back there needs to keep running. */
+html.chat-open .page,
+html.chat-open .page *,
+html.chat-open .page *::before,
+html.chat-open .page *::after,
+html.chat-open .atmosphere,
+html.chat-open .atmosphere * {
+  animation-play-state: paused !important;
+}

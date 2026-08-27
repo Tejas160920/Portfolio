@@ -55,8 +55,6 @@
   border-radius: var(--radius-pill);
   background: var(--bg-card);
   border: 1px solid var(--border-color-light);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   color: var(--text-primary);
   text-decoration: none;
   font-size: var(--text-sm);
@@ -180,8 +178,6 @@
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   transition: background 0.35s ease, border-color 0.35s ease,
     transform 0.35s var(--ease-out-quint);
 }

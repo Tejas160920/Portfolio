@@ -92,7 +92,8 @@
   opacity: 0;
   visibility: hidden;
   transform: scale(0.98);
-  transition: all 0.3s ease;
+  /* `all` included layout properties; only these three actually change. */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
 
 .chatbot-fullscreen.open {

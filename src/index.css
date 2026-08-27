@@ -48,8 +48,8 @@
   --bg-primary: #05060a;
   --bg-secondary: #070810;
   --bg-tertiary: #090b14;
-  --bg-card: rgba(255, 255, 255, 0.035);
-  --bg-card-hover: rgba(255, 255, 255, 0.06);
+  --bg-card: rgba(19, 22, 33, 0.66);
+  --bg-card-hover: rgba(27, 31, 46, 0.82);
   --bg-card-solid: #10121c;
   --bg-navbar: rgba(10, 12, 20, 0.6);
   --bg-elevated: rgba(255, 255, 255, 0.05);
@@ -93,7 +93,7 @@
   --bg-primary: #fbfbfd;
   --bg-secondary: #f6f7f9;
   --bg-tertiary: #f1f3f6;
-  --bg-card: rgba(255, 255, 255, 0.72);
+  --bg-card: rgba(255, 255, 255, 0.8);
   --bg-card-hover: rgba(255, 255, 255, 0.95);
   --bg-card-solid: #ffffff;
   --bg-navbar: rgba(255, 255, 255, 0.7);

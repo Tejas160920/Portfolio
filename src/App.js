@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import Atmosphere from './components/Atmosphere';
 import Preloader from './components/Preloader';
 import ScrollProgress from './components/ScrollProgress';
+import AnimationGovernor from './components/AnimationGovernor';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Marquee from './components/Marquee';
@@ -29,6 +30,7 @@ function App() {
 
       <Preloader onDone={handleIntroDone} />
       <ScrollProgress />
+      <AnimationGovernor />
       <CustomCursor />
       <ThemeToggle />
       <Navbar />
