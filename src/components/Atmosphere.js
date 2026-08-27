@@ -30,38 +30,24 @@ const Atmosphere = () => {
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-    // On phones the parallax layers and spotlight are disabled in CSS, so the
-    // listeners would only burn frames writing to hidden elements.
-    const isSmall = window.matchMedia('(max-width: 768px)').matches;
-    if (reduceMotion || isSmall) return;
-
-    const aurora = root.querySelector('.atm-aurora');
-    const grid = root.querySelector('.atm-grid');
+    if (reduceMotion) return;
 
     let scrollRaf = null;
     let pointerRaf = null;
 
-    // Cached: scrollHeight and innerHeight both force layout when read.
+    // scrollHeight and innerHeight both force a synchronous layout when read,
+    // so cache them and refresh only when the page actually changes size.
     let maxScroll = 0;
-    let vh = 0;
-
     const measureDoc = () => {
       maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      vh = window.innerHeight / 100;
     };
 
     const applyScroll = () => {
       scrollRaf = null;
       const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
-      // Write transforms straight onto the two layers. Driving them through a
-      // custom property on the parent invalidated style for the whole subtree
-      // on every scroll frame; this is a compositor-only update instead.
-      if (aurora) {
-        aurora.style.transform = `translate3d(0, ${(progress * -8 * vh).toFixed(2)}px, 0)`;
-      }
-      if (grid) {
-        grid.style.transform = `translate3d(0, ${(progress * 4 * vh).toFixed(2)}px, 0)`;
-      }
+      // Aurora drifts slowly as you travel down the page, so the backdrop
+      // evolves instead of repeating.
+      root.style.setProperty('--scroll-progress', progress.toFixed(4));
     };
 
     const onScroll = () => {
@@ -73,8 +59,8 @@ const Atmosphere = () => {
       pointerRaf = requestAnimationFrame(() => {
         pointerRaf = null;
         if (!spotlight) return;
-        spotlight.style.transform =
-          `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        spotlight.style.setProperty('--px', `${e.clientX}px`);
+        spotlight.style.setProperty('--py', `${e.clientY}px`);
       });
     };
 

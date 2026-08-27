@@ -79,6 +79,8 @@
   border-radius: var(--radius-lg);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 [data-theme="light"] .contact-form-wrapper {
@@ -273,6 +275,7 @@
 /* Social section */
 .social-section {
   background: var(--bg-card);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 30px;
   border: 1px solid var(--border-color);

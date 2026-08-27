@@ -53,6 +53,8 @@
   border-radius: var(--radius-lg);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   overflow: hidden;
   isolation: isolate;
 
@@ -62,6 +64,7 @@
   --my: 50%;
 
   transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
   transition: transform 0.45s var(--ease-out-quint),
     border-color 0.4s ease,
     background 0.4s ease,
@@ -107,7 +110,7 @@
 }
 
 .domain-card-inner:hover .domain-icon-wrapper {
-  transform: scale(1.08);
+  transform: translateZ(28px) scale(1.06);
 }
 
 .domain-icon {

@@ -47,9 +47,10 @@ body{cursor:none!important}
 .cursor-dot-hidden{opacity:0}
 
 .cursor-circle{
-  border:2px solid var(--accent-green,#4ade80);
+  border:1.5px solid var(--accent-green,#4ade80);
   border-radius:50%;
   box-sizing:border-box;
+  opacity:.45;
   width:${RING}px;height:${RING}px;
   left:0;top:0;
   position:fixed;
@@ -60,6 +61,7 @@ body{cursor:none!important}
   transition:width .22s cubic-bezier(.22,1,.36,1),
              height .22s cubic-bezier(.22,1,.36,1),
              border-radius .22s cubic-bezier(.22,1,.36,1),
+             opacity .25s ease,
              border-color .3s ease;
   z-index:9999999999998;
 }
@@ -67,6 +69,7 @@ body{cursor:none!important}
 /* Locked onto an element: the transform now carries a real position, so it
    gets a short ease to glide onto the target and ride any hover lift. */
 .cursor-circle.hovered{
+  opacity:.75;
   transition:width .18s cubic-bezier(.22,1,.36,1),
              height .18s cubic-bezier(.22,1,.36,1),
              border-radius .18s cubic-bezier(.22,1,.36,1),
@@ -112,8 +115,8 @@ const CustomCursor = () => {
       let settled = false;
 
       // Fraction of the remaining gap the ring closes each frame — this is
-      // the trail. Lower = more lag behind the dot.
-      const FOLLOW = 0.15;
+      // the trail. Lower = more lag behind the dot; higher = tighter.
+      const FOLLOW = 0.22;
 
       const resetHoverState = () => {
         isHovered = false;
