@@ -15,7 +15,6 @@ const Chatbot = () => {
   const API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat';
   const STREAM_API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat/stream';
   const [isWakingUp, setIsWakingUp] = useState(false);
-  const [streamingText, setStreamingText] = useState('');
 
   // Wake up the HF Space when chatbot opens (prevents cold start delays)
   const wakeUpSpace = async () => {

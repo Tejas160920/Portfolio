@@ -1,1 +1,42 @@
-/* App.css - Custom styles can be added here */
+/* ==========================================================================
+   Page shell
+   The <main> that stacks every section. It stays transparent so the fixed
+   <Atmosphere /> reads through as one continuous surface.
+   ========================================================================== */
+
+.page {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: transparent;
+  /* Establishes the stacking context every section's decorations sit in */
+  isolation: isolate;
+
+  /* Content settles in as the intro curtain lifts off it */
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+
+  /* Failsafe: if the intro callback never lands (JS error, aborted timer),
+     reveal the page anyway rather than leaving a blank screen. Animations
+     outrank plain declarations, so this wins over the opacity above. */
+  animation: page-failsafe 0.4s linear 2.6s forwards;
+}
+
+.page.intro-done {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes page-failsafe {
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

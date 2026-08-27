@@ -1,17 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Heart } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Heart, ArrowDown, ArrowUpRight, Download } from 'lucide-react';
 import './Hero.css';
-import {
-  CodeBracket,
-  CurlyBrace,
-  CodeSlash,
-  Semicolon,
-  HashSymbol,
-  ArrowFunction,
-  CodeDot,
-  GlowRing,
-  FloatingGraphic
-} from './CodeGraphics';
+import Reveal from './Reveal';
+import { useMagnetic } from '../hooks/useMagnetic';
 
 // Import Firebase modules
 import { initializeApp } from "firebase/app";
@@ -114,12 +105,25 @@ const saveUserName = async (name) => {
   }
 };
 
+// Roles cycled through under the name
+const ROLES = [
+  'Software Engineer',
+  'Backend Developer',
+  'AI Systems Engineer',
+  'Cloud Engineer'
+];
+
+const STATS = [
+  { value: '3+', label: 'Years building' },
+  { value: '10+', label: 'Projects shipped' },
+  { value: 'MS', label: 'CS, SUNY Buffalo' }
+];
+
 const Hero = () => {
   const [likes, setLikes] = useState(0);
   const [totalLikes, setTotalLikes] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
-  const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [roleIndex, setRoleIndex] = useState(0);
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [visitorInfo, setVisitorInfo] = useState({
     name: '',
@@ -127,13 +131,15 @@ const Hero = () => {
     company: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const heroRef = useRef(null);
   const namePromptTimerRef = useRef(null);
+  const emojiTimerRef = useRef(null);
   const emojis = ['😊', '😃', '😄', '😁', '🤩'];
+
+  const primaryCtaRef = useMagnetic({ strength: 0.28 });
+  const secondaryCtaRef = useMagnetic({ strength: 0.28 });
 
   // Fetch total likes & user likes from Firebase on mount
   useEffect(() => {
-    setIsVisible(true);
     const fetchData = async () => {
       const userLikes = await getUserLikes();
       const total = await getTotalLikes();
@@ -143,18 +149,23 @@ const Hero = () => {
     fetchData();
   }, []);
 
-  // Parallax effect on scroll
+  // Cycle the role line
   useEffect(() => {
-    const handleScroll = () => {
-      if (heroRef.current) {
-        const scrolled = window.pageYOffset;
-        const rate = scrolled * 0.3;
-        setParallaxOffset(rate);
-      }
-    };
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (reduceMotion) return;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const id = setInterval(() => {
+      setRoleIndex((i) => (i + 1) % ROLES.length);
+    }, 2800);
+    return () => clearInterval(id);
+  }, []);
+
+  // Clean up pending timers on unmount
+  useEffect(() => () => {
+    if (namePromptTimerRef.current) clearTimeout(namePromptTimerRef.current);
+    if (emojiTimerRef.current) clearTimeout(emojiTimerRef.current);
   }, []);
 
   // Handle Like Click
@@ -171,7 +182,8 @@ const Hero = () => {
 
     setLikes(newLikes);
     setShowEmoji(true);
-    setTimeout(() => setShowEmoji(false), 2000);
+    if (emojiTimerRef.current) clearTimeout(emojiTimerRef.current);
+    emojiTimerRef.current = setTimeout(() => setShowEmoji(false), 2000);
 
     const serverTotal = await applyGlobalLikeDelta(delta);
     setTotalLikes(serverTotal);
@@ -231,83 +243,139 @@ const Hero = () => {
     setVisitorInfo({ name: '', role: '', company: '' });
   };
 
+  const scrollTo = useCallback((id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
   return (
-    <div id="home" className="hero" ref={heroRef}>
-      {/* Animated Code Decorations */}
-      <div className="code-decorations">
-        {/* Top left - Large bracket with floating */}
-        <FloatingGraphic amplitude={15} duration={5} style={{ top: '10%', left: '5%' }}>
-          <CodeBracket direction="left" size={140} delay={0.2} />
-        </FloatingGraphic>
+    <section id="home" className="hero">
+      <div className="hero-inner">
+        {/* ---------------------------------------------------------------- */}
+        <div className="hero-copy">
+          <Reveal animation="up" delay={100}>
+            <span className="hero-badge">
+              <span className="hero-badge-dot" />
+              Open to Software Engineering roles
+            </span>
+          </Reveal>
 
-        {/* Top right - Curly brace */}
-        <FloatingGraphic amplitude={20} duration={6} delay={1} style={{ top: '8%', right: '8%' }}>
-          <CurlyBrace direction="right" size={120} delay={0.4} />
-        </FloatingGraphic>
+          <Reveal animation="up" delay={180}>
+            <h1 className="hero-title">
+              <span className="hero-title-line">Tejas</span>
+              <span className="hero-title-line hero-title-accent">Gaikwad</span>
+            </h1>
+          </Reveal>
 
-        {/* Mid left - Arrow function */}
-        <FloatingGraphic amplitude={12} duration={4.5} delay={0.5} style={{ top: '45%', left: '3%' }} className="hide-mobile">
-          <ArrowFunction size={90} delay={0.8} />
-        </FloatingGraphic>
+          {/* Role rotator — fixed height so nothing below it shifts */}
+          <Reveal animation="up" delay={260}>
+            <div className="hero-roles" aria-live="polite">
+              <span className="hero-roles-prefix">I build as a</span>
+              <span className="hero-roles-viewport">
+                {ROLES.map((role, i) => (
+                  <span
+                    key={role}
+                    className={`hero-role ${i === roleIndex ? 'active' : ''}`}
+                    aria-hidden={i !== roleIndex}
+                  >
+                    {role}
+                  </span>
+                ))}
+              </span>
+            </div>
+          </Reveal>
 
-        {/* Mid right - Hash symbol */}
-        <FloatingGraphic amplitude={18} duration={5.5} delay={2} style={{ top: '50%', right: '5%' }} className="hide-mobile">
-          <HashSymbol size={70} delay={1} />
-        </FloatingGraphic>
+          <Reveal animation="up" delay={340}>
+            <p className="hero-description">
+              Software Engineer at <strong>DoorDash</strong>, building scalable
+              backend systems and the cloud infrastructure behind production AI
+              workloads. MS in Computer Science from SUNY Buffalo.
+            </p>
+          </Reveal>
 
-        {/* Bottom left - Slash and bracket combo */}
-        <FloatingGraphic amplitude={15} duration={5} delay={1.5} style={{ bottom: '20%', left: '8%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <CodeSlash size={80} delay={0.6} />
-            <CodeBracket direction="right" size={100} delay={0.7} />
-          </div>
-        </FloatingGraphic>
+          <Reveal animation="up" delay={420}>
+            <div className="hero-actions">
+              <button
+                ref={primaryCtaRef}
+                className="hero-cta hero-cta-primary"
+                onClick={() => scrollTo('portfolio')}
+              >
+                <span>View my work</span>
+                <ArrowUpRight size={18} strokeWidth={2.2} />
+              </button>
 
-        {/* Bottom right - Semicolon */}
-        <FloatingGraphic amplitude={10} duration={4} delay={0.8} style={{ bottom: '25%', right: '10%' }} className="hide-tablet">
-          <Semicolon size={70} delay={1.2} />
-        </FloatingGraphic>
+              <a
+                ref={secondaryCtaRef}
+                className="hero-cta hero-cta-ghost"
+                href="/Tejas_Gaikwad_Resume.pdf"
+                download="Tejas_Gaikwad_Resume.pdf"
+              >
+                <Download size={17} strokeWidth={2.2} />
+                <span>Resume</span>
+              </a>
+            </div>
+          </Reveal>
 
-        {/* Decorative dots */}
-        <FloatingGraphic amplitude={8} duration={3} style={{ top: '30%', left: '15%' }} className="hide-mobile">
-          <CodeDot size={15} delay={1.5} color="#4CAF50" />
-        </FloatingGraphic>
-        <FloatingGraphic amplitude={10} duration={3.5} delay={0.5} style={{ top: '65%', right: '15%' }} className="hide-mobile">
-          <CodeDot size={12} delay={1.8} color="#FFEA00" />
-        </FloatingGraphic>
-        <FloatingGraphic amplitude={6} duration={2.5} delay={1} style={{ bottom: '40%', left: '20%' }} className="hide-tablet">
-          <CodeDot size={10} delay={2} color="#FF4081" />
-        </FloatingGraphic>
-
-        {/* Glow rings */}
-        <GlowRing size={80} delay={0.5} style={{ top: '20%', right: '20%' }} className="hide-tablet" />
-        <GlowRing size={60} delay={1} style={{ bottom: '35%', left: '25%' }} className="hide-mobile" />
-      </div>
-
-      <div className="stats-bar">
-        {/* Optional Stats */}
-      </div>
-
-      <div className="like-container">
-        <div className="like-content">
-          <button
-            onClick={handleLike}
-            className="like-button border-2 border-gray-700 rounded-full ripple-container"
-          >
-            <Heart
-              size={32}
-              className={`heart-icon ${likes > 0 ? 'active' : ''}`}
-              style={{ fillOpacity: likes / 5 }}
-            />
-          </button>
-          {showEmoji && <span className="emoji">{emojis[likes - 1] || '😆'}</span>}
+          <Reveal animation="up" delay={500}>
+            <dl className="hero-stats">
+              {STATS.map((stat) => (
+                <div className="hero-stat" key={stat.label}>
+                  <dt className="hero-stat-value">{stat.value}</dt>
+                  <dd className="hero-stat-label">{stat.label}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
         </div>
-        <span className="like-count mt-2">{totalLikes}</span>
+
+        {/* ---------------------------------------------------------------- */}
+        <Reveal animation="scale" delay={300} className="hero-visual">
+          <div className="avatar-stage">
+            <div className="avatar-ring avatar-ring-1" />
+            <div className="avatar-ring avatar-ring-2" />
+            <div className="avatar-glow" />
+            <img
+              src="/avatar.png"
+              alt="Illustrated portrait of Tejas Gaikwad"
+              className="avatar-image"
+            />
+          </div>
+
+          {/* Like button lives with the avatar so it reads as a reaction */}
+          <div className="like-container">
+            <button
+              onClick={handleLike}
+              className="like-button"
+              aria-label={`Like this portfolio. ${totalLikes} likes so far.`}
+            >
+              <Heart
+                size={20}
+                className={`heart-icon ${likes > 0 ? 'active' : ''}`}
+                style={{ fillOpacity: likes / 5 }}
+              />
+              <span className="like-count">{totalLikes}</span>
+            </button>
+            {showEmoji && (
+              <span className="emoji">{emojis[likes - 1] || '😆'}</span>
+            )}
+          </div>
+        </Reveal>
       </div>
 
-      {/* Visitor Info Modal */}
+      {/* Scroll cue ------------------------------------------------------- */}
+      <button
+        className="scroll-cue"
+        onClick={() => scrollTo('skills')}
+        aria-label="Scroll to skills"
+      >
+        <span className="scroll-cue-text">Scroll</span>
+        <span className="scroll-cue-line">
+          <ArrowDown size={13} strokeWidth={2.4} />
+        </span>
+      </button>
+
+      {/* Visitor Info Modal ----------------------------------------------- */}
       {showNamePrompt && (
-        <div className="name-prompt-overlay">
+        <div className="name-prompt-overlay" role="dialog" aria-modal="true">
           <div className="name-prompt-modal">
             <h3>Thanks for the love! 💚</h3>
             <p>I'd love to know who's visiting!</p>
@@ -346,55 +414,7 @@ const Hero = () => {
           </div>
         </div>
       )}
-
-      <div className="hero-background" style={{ transform: `translateY(${parallaxOffset}px)` }}>
-        <div className="gradient-overlay"></div>
-        <div className="particles">
-          {[...Array(window.innerWidth <= 768 ? 15 : 50)].map((_, i) => (
-            <div
-              key={i}
-              className="particle"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="content-container hero-split">
-        <div className={`main-content ${isVisible ? 'visible' : ''}`}>
-          <h1 className="title">
-            Hey, I'm <span className="highlight name-highlight">Tejas Gaikwad</span>
-          </h1>
-          <h2 className="subtitle">
-            A <span className="highlight">Software Engineer</span>
-          </h2>
-          <p className="description">
-            I'm a Software Engineer at DoorDash building scalable backend systems and cloud infrastructure
-            for production AI workloads. I hold an MS in Computer Science from SUNY Buffalo.
-          </p>
-        </div>
-
-        {/* 3D Avatar Section */}
-        <div className={`avatar-container ${isVisible ? 'visible' : ''}`}>
-          <div className="avatar-glow"></div>
-          <img
-            src="/avatar.png"
-            alt="3D Developer Avatar"
-            className="avatar-image"
-          />
-          {/* Floating elements around avatar */}
-          <div className="avatar-orbit">
-            <div className="orbit-dot orbit-dot-1"></div>
-            <div className="orbit-dot orbit-dot-2"></div>
-            <div className="orbit-dot orbit-dot-3"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 

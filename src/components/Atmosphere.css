@@ -1,0 +1,160 @@
+/* ==========================================================================
+   Atmosphere — the one continuous page background
+   Fixed to the viewport so it never scrolls with, or seams between, sections.
+   ========================================================================== */
+
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  /* Set by JS; drives the aurora drift */
+  --scroll-progress: 0;
+}
+
+/* 1. Base wash ------------------------------------------------------------ */
+.atm-base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 0%,
+      color-mix(in srgb, var(--atm-base) 88%, var(--accent-green) 12%) 0%,
+      var(--atm-base) 55%),
+    var(--atm-base);
+}
+
+/* Browsers without color-mix still get a clean flat base */
+@supports not (background: color-mix(in srgb, red 50%, blue)) {
+  .atm-base { background: var(--atm-base); }
+}
+
+/* 2. Aurora --------------------------------------------------------------- */
+.atm-aurora {
+  position: absolute;
+  inset: -20%;
+  filter: blur(70px);
+  /* Whole field slides gently as the page scrolls */
+  transform: translate3d(0, calc(var(--scroll-progress) * -8vh), 0);
+  transition: transform 0.6s linear;
+}
+
+.atm-blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.atm-blob-1 {
+  width: 52vw;
+  height: 52vw;
+  min-width: 420px;
+  min-height: 420px;
+  top: -6%;
+  left: -8%;
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-1) 0%, transparent 68%);
+  animation: atm-drift-1 34s var(--ease-in-out) infinite;
+}
+
+.atm-blob-2 {
+  width: 46vw;
+  height: 46vw;
+  min-width: 380px;
+  min-height: 380px;
+  top: 22%;
+  right: -10%;
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-2) 0%, transparent 68%);
+  animation: atm-drift-2 43s var(--ease-in-out) infinite;
+}
+
+.atm-blob-3 {
+  width: 44vw;
+  height: 44vw;
+  min-width: 360px;
+  min-height: 360px;
+  bottom: -12%;
+  left: 26%;
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-3) 0%, transparent 68%);
+  animation: atm-drift-3 38s var(--ease-in-out) infinite;
+}
+
+@keyframes atm-drift-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(12vw, 8vh, 0) scale(1.14); }
+  66%      { transform: translate3d(4vw, 18vh, 0) scale(0.92); }
+}
+
+@keyframes atm-drift-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  40%      { transform: translate3d(-14vw, 12vh, 0) scale(1.18); }
+  70%      { transform: translate3d(-6vw, -6vh, 0) scale(0.9); }
+}
+
+@keyframes atm-drift-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(10vw, -14vh, 0) scale(1.2); }
+}
+
+/* 3. Blueprint grid ------------------------------------------------------- */
+.atm-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--atm-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--atm-grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+  /* Fade the rule out toward the edges so it reads as texture, not a table */
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
+  /* Parallax against the aurora at a different rate — adds depth */
+  transform: translate3d(0, calc(var(--scroll-progress) * 4vh), 0);
+  transition: transform 0.6s linear;
+}
+
+/* 4. Pointer spotlight ---------------------------------------------------- */
+.atm-spotlight {
+  position: absolute;
+  inset: 0;
+  --px: 50vw;
+  --py: 40vh;
+  background: radial-gradient(
+    460px circle at var(--px) var(--py),
+    var(--accent-green-soft) 0%,
+    transparent 70%
+  );
+  opacity: 0.75;
+}
+
+/* 5. Grain ---------------------------------------------------------------- */
+.atm-grain {
+  position: absolute;
+  inset: -50%;
+  opacity: var(--atm-grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: atm-grain-shift 700ms steps(4) infinite;
+  pointer-events: none;
+}
+
+@keyframes atm-grain-shift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2%, 1%); }
+  50%  { transform: translate(1%, -2%); }
+  75%  { transform: translate(-1%, -1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Mobile: drop the heaviest effects, keep the colour ---------------------- */
+@media (max-width: 768px) {
+  .atm-aurora { filter: blur(50px); }
+  .atm-grid { background-size: 44px 44px; }
+  .atm-spotlight { display: none; }
+  .atm-grain { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atm-blob { animation: none; }
+  .atm-grain { animation: none; }
+  .atm-aurora,
+  .atm-grid { transform: none; }
+}

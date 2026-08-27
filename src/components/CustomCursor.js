@@ -1,173 +1,98 @@
 import { useEffect } from 'react';
+import './CustomCursor.css';
 
-function styleInject(css, ref) {
-  if ( ref === undefined ) ref = {};
-  var insertAt = ref.insertAt;
-  if (typeof document === 'undefined') { return; }
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
+/**
+ * Two-part cursor: a small dot that tracks the pointer exactly, and a ring
+ * that lags behind on a spring.
+ *
+ * Interactive targets are detected by event delegation on the document rather
+ * than by attaching listeners to every matched node — the previous version
+ * re-queried and re-bound the whole DOM on every mutation, which fought with
+ * the chatbot and the portfolio tab switches.
+ */
 
-var css_248z = `
-body{cursor:none!important}
-.cursor-dot{background-color:#ff0;border-radius:50%;height:5px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:opacity .15s ease, background-color 0.3s ease;width:5px;z-index:9999999999999}
-.cursor-dot-hidden{opacity:0}
-.cursor-circle{border:2px solid #8B8000;border-radius:50%;box-sizing:border-box;height:30px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease, border-color 0.3s ease;width:30px;z-index:9999999999998}
-.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}
-.social-button,a,button,.theme-toggle,.like-button,.suggestion-card,.chatbot-toggle,.new-chat-btn,.back-to-portfolio,.send-button,.mobile-close-btn,.saved-chat-item,.delete-chat-btn{cursor:none!important}
-
-/* Light theme cursor colors */
-[data-theme="light"] .cursor-dot{background-color:#16a34a}
-[data-theme="light"] .cursor-circle{border-color:#16a34a}
-`;
-styleInject(css_248z);
+const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, .sw-wheel, .portfolio-card, .domain-card-inner';
 
 const CustomCursor = () => {
   useEffect(() => {
-    // Check if the device is mobile/touch device
-    const isMobileDevice = () => {
-      return (
-        typeof window.orientation !== 'undefined' ||
-        navigator.userAgent.indexOf('IEMobile') !== -1 ||
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
-      );
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    if (!finePointer || reduceMotion) return;
+
+    const dot = document.createElement('div');
+    const ring = document.createElement('div');
+    dot.className = 'cursor-dot';
+    ring.className = 'cursor-ring';
+    dot.setAttribute('aria-hidden', 'true');
+    ring.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+    document.body.classList.add('has-custom-cursor');
+
+    // target = where the pointer is; ring = where the ring has caught up to
+    const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const ringPos = { ...target };
+    let raf = null;
+    let visible = false;
+
+    const render = () => {
+      // Critically-damped-ish follow: a fraction of the remaining gap per
+      // frame gives the ring its weight without overshoot.
+      ringPos.x += (target.x - ringPos.x) * 0.18;
+      ringPos.y += (target.y - ringPos.y) * 0.18;
+
+      dot.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+      ring.style.transform = `translate3d(${ringPos.x}px, ${ringPos.y}px, 0) translate(-50%, -50%)`;
+
+      raf = requestAnimationFrame(render);
     };
 
-    // Only proceed if it's not a mobile device
-    if (!isMobileDevice()) {
-      const cursorDot = document.createElement('div');
-      const cursorCircle = document.createElement('div');
-      cursorDot.className = 'cursor-dot';
-      cursorCircle.className = 'cursor-circle';
-      document.body.appendChild(cursorDot);
-      document.body.appendChild(cursorCircle);
-
-      let position = { x: 0, y: 0 };
-      let isHovered = false;
-      let currentHoveredElement = null;
-      let rafId = null;
-
-      const updateCursorPosition = () => {
-        if (!isHovered) {
-          cursorDot.style.left = `${position.x}px`;
-          cursorDot.style.top = `${position.y}px`;
-          cursorCircle.style.left = `${position.x}px`;
-          cursorCircle.style.top = `${position.y}px`;
-        }
-
-        // Check if hovered element still exists in DOM
-        if (isHovered && currentHoveredElement && !document.body.contains(currentHoveredElement)) {
-          isHovered = false;
-          currentHoveredElement = null;
-          cursorDot.classList.remove('cursor-dot-hidden');
-          cursorCircle.classList.remove('hovered');
-          cursorCircle.style = '';
-          cursorDot.style.left = `${position.x}px`;
-          cursorDot.style.top = `${position.y}px`;
-          cursorCircle.style.left = `${position.x}px`;
-          cursorCircle.style.top = `${position.y}px`;
-        }
-      };
-
-      const updatePosition = e => {
-        position.x = e.clientX;
-        position.y = e.clientY;
-
-        // Use requestAnimationFrame for smoother performance in Chrome
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-        }
-        rafId = requestAnimationFrame(updateCursorPosition);
-      };
-
-      const handleMouseEnter = e => {
-        isHovered = true;
-        currentHoveredElement = e.target;
-        cursorDot.classList.add('cursor-dot-hidden');
-        cursorCircle.classList.add('hovered');
-        const rect = e.target.getBoundingClientRect();
-        const computedStyle = window.getComputedStyle(e.target);
-        const isIcon = e.target.tagName === 'IMG' || computedStyle.borderRadius === '50%';
-        const isLightTheme = document.documentElement.getAttribute('data-theme') === 'light';
-        const borderColor = isLightTheme ? '#16a34a' : 'yellow';
-        Object.assign(cursorCircle.style, {
-          width: `${rect.width}px`,
-          height: `${rect.height}px`,
-          borderRadius: isIcon ? '50%' : computedStyle.borderRadius,
-          left: `${rect.left}px`,
-          top: `${rect.top}px`,
-          border: `2px solid ${borderColor}`
-        });
-      };
-
-      const handleMouseLeave = () => {
-        isHovered = false;
-        currentHoveredElement = null;
-        cursorDot.classList.remove('cursor-dot-hidden');
-        cursorCircle.classList.remove('hovered');
-        cursorCircle.style = '';
-      };
-
-      const attachCursorListeners = () => {
-        const targetsToListen = document.querySelectorAll('button, a, .social-button, .card-btn, .tab-heading, .nav-link, .hire-me-button, .theme-toggle, .like-button, .suggestion-card, .chatbot-toggle, .new-chat-btn, .back-to-portfolio, .send-button, .mobile-close-btn, .saved-chat-item, .delete-chat-btn, .download-resume-btn, .show-more-btn');
-        targetsToListen.forEach(target => {
-          target.removeEventListener('mouseenter', handleMouseEnter);
-          target.removeEventListener('mouseleave', handleMouseLeave);
-
-          target.addEventListener('mouseenter', handleMouseEnter);
-          target.addEventListener('mouseleave', handleMouseLeave);
-
-          if (window.getComputedStyle(target).position === 'static') {
-            target.style.position = 'relative';
-          }
-        });
-      };
-
-      attachCursorListeners();
-
-      const portfolioContent = document.querySelector('.portfolio-content');
-      const observer = new MutationObserver(attachCursorListeners);
-
-      if (portfolioContent) {
-        observer.observe(portfolioContent, {
-          childList: true,
-          subtree: true
-        });
+    const onMove = (e) => {
+      target.x = e.clientX;
+      target.y = e.clientY;
+      if (!visible) {
+        visible = true;
+        dot.classList.add('is-visible');
+        ring.classList.add('is-visible');
       }
+    };
 
-      // Also observe document body for chatbot and other dynamic elements
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
+    // Delegated hover state — one listener, survives any DOM change
+    const onOver = (e) => {
+      const hit = e.target.closest?.(INTERACTIVE);
+      ring.classList.toggle('is-active', Boolean(hit));
+    };
 
-      window.addEventListener('mousemove', updatePosition);
+    const onDown = () => ring.classList.add('is-pressed');
+    const onUp = () => ring.classList.remove('is-pressed');
 
-      return () => {
-        window.removeEventListener('mousemove', updatePosition);
-        if (rafId) cancelAnimationFrame(rafId);
-        observer.disconnect();
-        cursorDot.remove();
-        cursorCircle.remove();
-      };
-    }
+    const onLeave = () => {
+      visible = false;
+      dot.classList.remove('is-visible');
+      ring.classList.remove('is-visible');
+    };
+
+    document.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('pointerover', onOver, { passive: true });
+    document.addEventListener('pointerdown', onDown, { passive: true });
+    document.addEventListener('pointerup', onUp, { passive: true });
+    document.addEventListener('pointerleave', onLeave, { passive: true });
+    raf = requestAnimationFrame(render);
+
+    return () => {
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerover', onOver);
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointerleave', onLeave);
+      if (raf !== null) cancelAnimationFrame(raf);
+      dot.remove();
+      ring.remove();
+      document.body.classList.remove('has-custom-cursor');
+    };
   }, []);
 
   return null;

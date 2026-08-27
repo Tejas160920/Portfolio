@@ -146,28 +146,11 @@ const SkillWheel = () => {
   return (
     <div className="sw-container" ref={containerRef} id="skills">
       <div className="skillset-text">
-        <h1>My</h1>
-        <br />
-        <h1 className="text" style={{color: '#4ade80'}}> Skillset</h1>
-      </div>
-
-      {/* Background with aurora effect */}
-      <div className="hero-background">
-        <div className="gradient-overlay"></div>
-        <div className="aurora-effect"></div>
-        <div className="particles">
-          {[...Array(window.innerWidth <= 768 ? 15 : 50)].map((_, i) => (
-            <div
-              key={i}
-              className="particle"
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
+        <span className="section-eyebrow">Toolkit</span>
+        <h2>
+          My <span className="title-highlight">Skillset</span>
+        </h2>
+        <p className="skillset-sub">Drag the wheel to spin through it.</p>
       </div>
 
       {/* Orbital Rings - Visual only, doesn't affect wheel */}
@@ -220,21 +203,6 @@ const SkillWheel = () => {
         </svg>
       </div>
 
-      {/* Floating particles */}
-      <div className="skill-particles">
-        {[...Array(window.innerWidth <= 768 ? 3 : 8)].map((_, i) => (
-          <div
-            key={i}
-            className="skill-particle"
-            style={{
-              top: `${30 + Math.random() * 40}%`,
-              left: `${20 + Math.random() * 60}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 };

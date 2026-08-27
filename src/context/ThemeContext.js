@@ -21,7 +21,15 @@ export const ThemeProvider = ({ children }) => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }, [isDark]);
 
-  const toggleTheme = () => setIsDark(!isDark);
+  // Colour transitions are opt-in for the duration of a toggle only. A global
+  // `* { transition: background-color }` would otherwise animate on every
+  // hover and scroll, which costs paint work on the whole tree.
+  const toggleTheme = () => {
+    const root = document.documentElement;
+    root.classList.add('theme-transition');
+    window.setTimeout(() => root.classList.remove('theme-transition'), 400);
+    setIsDark((prev) => !prev);
+  };
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>

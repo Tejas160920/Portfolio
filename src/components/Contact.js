@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Check } from 'lucide-react';
 import { FiSend, FiUser, FiMessageSquare, FiMail } from 'react-icons/fi';
 import './Contact.css';
+import Reveal from './Reveal';
 
 const Contact = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -13,7 +13,6 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const sectionRef = useRef(null);
 
   const copyEmailToClipboard = () => {
     const email = 'tejasgaikwad16092002@gmail.com';
@@ -26,23 +25,6 @@ const Contact = () => {
         console.error('Failed to copy email: ', err);
       });
   };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -103,22 +85,21 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="contact-section" ref={sectionRef}>
-      {/* Background elements */}
-      <div className="contact-bg-elements">
-        <div className="contact-orb contact-orb-1"></div>
-        <div className="contact-orb contact-orb-2"></div>
-        <div className="contact-grid-pattern"></div>
-      </div>
-
+    <section id="contact" className="contact-section">
       <div className="contact-container">
-        <h2 className={`contact-title ${isVisible ? 'visible' : ''}`}>
-          Let's get <span className="highlight">connected!</span>
-        </h2>
+        <Reveal animation="up">
+          <span className="section-eyebrow">Get in touch</span>
+        </Reveal>
 
-        <div className={`contact-content ${isVisible ? 'visible' : ''}`}>
+        <Reveal animation="up" delay={80}>
+          <h2 className="contact-title">
+            Let's get <span className="highlight">connected</span>
+          </h2>
+        </Reveal>
+
+        <div className="contact-content">
           {/* Left side - Contact Form */}
-          <div className="contact-form-wrapper">
+          <Reveal animation="left" delay={120} className="contact-form-wrapper">
             <div className="form-header">
               <h3>Send me a Hi!</h3>
               <p>and I'll reach out to you</p>
@@ -198,10 +179,10 @@ const Contact = () => {
                 </div>
               )}
             </form>
-          </div>
+          </Reveal>
 
           {/* Right side - Social Links & Avatar */}
-          <div className="contact-right">
+          <Reveal animation="right" delay={200} className="contact-right">
             <div className="social-section">
               <h3>Find me on my socials</h3>
               <p>and drop me a hey</p>
@@ -244,7 +225,7 @@ const Contact = () => {
                 <span className="signature-subtitle">&lt;development&gt;</span>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

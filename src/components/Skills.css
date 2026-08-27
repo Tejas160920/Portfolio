@@ -3,16 +3,14 @@
 .sw-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
+  padding: var(--space-section) var(--space-gutter);
+  background: transparent;
   overflow: hidden;
-}
-
-[data-theme="light"] .sw-container {
-  background: linear-gradient(180deg, #f5f5f7 0%, #ffffff 100%);
 }
 
 .sw-center-dot {
@@ -188,59 +186,10 @@
 }
 
 /* Background Effects */
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
-}
-
-.gradient-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(ellipse at 50% 100%, rgba(74, 222, 128, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
-  z-index: 1;
-}
-
 /* Aurora effect */
-.aurora-effect {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(74, 222, 128, 0.02) 40%,
-    rgba(74, 222, 128, 0.06) 60%,
-    rgba(34, 197, 94, 0.03) 80%,
-    transparent 100%);
-  filter: blur(30px);
-  animation: auroraWave 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
 @keyframes auroraWave {
   0%, 100% { opacity: 0.6; transform: translateX(-3%); }
   50% { opacity: 0.9; transform: translateX(3%); }
-}
-
-.particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background-color: #4ade80;
-  border-radius: 50%;
-  animation: float 3s infinite ease-in-out;
-  box-shadow: 0 0 6px #4ade80;
 }
 
 @keyframes float {
@@ -285,29 +234,39 @@
 }
 
 .skillset-text {
-  z-index: 99;
-  font-size: 28px;
-  color: var(--text-primary);
   position: absolute;
-  line-height: 6px;
-  top: 60px;
-  left: 120px;
-  font-weight: 400;
+  top: clamp(4.5rem, 12vh, 7rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  text-align: center;
+  width: min(90vw, var(--content-max));
+  pointer-events: none;
 }
 
-.skillset-text h1 {
-  font-weight: 300;
-  letter-spacing: 2px;
+.skillset-text h2 {
+  margin: 0;
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
 
-.skillset-text .text {
-  color: var(--accent-green);
-  text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+.skillset-text .title-highlight {
+  background: linear-gradient(120deg, var(--accent-green), var(--accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-[data-theme="light"] .skillset-text .text {
-  text-shadow: none;
+.skillset-sub {
+  margin: 0.65rem 0 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
 }
+
+
 
 /* Orbital Rings - Visual enhancement only */
 .orbital-rings {
@@ -391,15 +350,6 @@
 
 [data-theme="light"] .drag-hint {
   color: rgba(0, 0, 0, 0.7);
-}
-
-[data-theme="light"] .particle {
-  background: #15803d !important;
-  background-color: #15803d !important;
-  box-shadow: 0 0 6px #15803d !important;
-  opacity: 0.8 !important;
-  width: 5px !important;
-  height: 5px !important;
 }
 
 [data-theme="light"] .skill-particle {

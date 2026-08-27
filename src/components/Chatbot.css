@@ -3,24 +3,33 @@
    ============================================ */
 .chatbot-toggle {
   position: fixed;
-  /* Position below heart: heart is at top:200px, height:48px, plus like-count ~24px, plus gap */
-  top: 310px;
-  right: 80px;
-  display: flex;
+  bottom: 22px;
+  right: 22px;
+  z-index: 99999;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  background: none;
-  border: 2px solid var(--border-color, #374151);
-  border-radius: 50%;
-  cursor: none;
-  transition: all 0.3s ease;
-  z-index: 9999;
-  color: var(--text-primary, #fff);
-  box-shadow: 0 0 15px rgba(74, 222, 128, 0.3), 0 0 30px rgba(74, 222, 128, 0.2);
-  animation: chatButtonGlow 2s ease-in-out infinite;
+  gap: 0.5rem;
+  padding: 0.7rem 1.15rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color-light);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md), 0 0 0 0 var(--accent-green-soft);
+  transition: transform 0.35s var(--ease-spring), border-color 0.3s ease,
+    color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chatbot-toggle:hover {
+  transform: translateY(-3px);
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: var(--shadow-lg), 0 0 0 6px var(--accent-green-soft);
 }
 
 @keyframes chatButtonGlow {
@@ -64,7 +73,8 @@
 }
 
 .chat-label {
-  display: none;
+  display: inline;
+  white-space: nowrap;
 }
 
 /* ============================================
@@ -744,12 +754,10 @@
 
 @media (max-width: 768px) {
   .chatbot-toggle {
-    /* Position at bottom right for mobile - above hire-me button */
-    top: auto;
-    bottom: 140px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    bottom: 16px;
+    right: 16px;
+    padding: 0.6rem 0.95rem;
+    font-size: 0.76rem;
   }
 
   .chat-sidebar {

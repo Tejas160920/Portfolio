@@ -1,22 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { FiExternalLink, FiCode, FiAward, FiZap, FiFileText } from "react-icons/fi";
 import './Portfolio.css';
-import {
-  CodeBracket,
-  CurlyBrace,
-  CodeSlash,
-  Parenthesis,
-  CodeDot,
-  CodeBlockDecor,
-  FloatingGraphic
-} from './CodeGraphics';
+import Reveal from './Reveal';
 
 const Portfolio = () => {
   const [activeTab, setActiveTab] = useState('projects');
-  const [isVisible, setIsVisible] = useState(false);
-  const [visibleCards, setVisibleCards] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const sectionRef = useRef(null);
 
   // All projects data
   const allProjects = [
@@ -135,43 +124,12 @@ const Portfolio = () => {
   // Projects to display (6 by default, all when expanded)
   const displayedProjects = showAllProjects ? allProjects : allProjects.slice(0, 6);
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    setVisibleCards([]); // Reset for stagger animation
-    // Re-trigger stagger animation
-    setTimeout(() => {
-      const cards = document.querySelectorAll('.portfolio-card');
-      cards.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleCards(prev => [...prev, index]);
-        }, index * 100);
-      });
-    }, 50);
-  };
-
-  // Intersection Observer for section visibility
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          // Stagger cards
-          const cards = document.querySelectorAll('.portfolio-card');
-          cards.forEach((_, index) => {
-            setTimeout(() => {
-              setVisibleCards(prev => [...prev, index]);
-            }, index * 100);
-          });
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
+  // Cards track the pointer so the hover sheen follows it
+  const handleCardPointer = useCallback((e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--my', `${e.clientY - rect.top}px`);
   }, []);
 
   // Handle ripple effect on buttons
@@ -195,62 +153,20 @@ const Portfolio = () => {
   };
 
   return (
-    <section id="portfolio" className="portfolio-section" ref={sectionRef}>
-      {/* Floating orbs background */}
-      <div className="portfolio-orbs">
-        <div className="orb orb-1"></div>
-        <div className="orb orb-2"></div>
-        <div className="orb orb-3"></div>
-      </div>
-
-      {/* Animated Code Decorations */}
-      {isVisible && (
-        <div className="code-decorations">
-          {/* Top right - Curly brace */}
-          <FloatingGraphic amplitude={16} duration={5} style={{ top: '3%', right: '5%' }}>
-            <CurlyBrace direction="right" size={100} delay={0.3} />
-          </FloatingGraphic>
-
-          {/* Top left - Code bracket */}
-          <FloatingGraphic amplitude={14} duration={5.5} delay={0.5} style={{ top: '5%', left: '4%' }} className="hide-mobile">
-            <CodeBracket direction="left" size={80} delay={0.5} />
-          </FloatingGraphic>
-
-          {/* Bottom left - Parenthesis */}
-          <FloatingGraphic amplitude={12} duration={6} delay={1} style={{ bottom: '5%', left: '3%' }}>
-            <Parenthesis direction="left" size={90} delay={0.7} />
-          </FloatingGraphic>
-
-          {/* Bottom right - Slash and bracket */}
-          <FloatingGraphic amplitude={15} duration={5} delay={0.8} style={{ bottom: '8%', right: '6%' }} className="hide-tablet">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <CodeSlash size={70} delay={0.9} />
-              <CodeBracket direction="right" size={80} delay={1} />
-            </div>
-          </FloatingGraphic>
-
-          {/* Code block decoration */}
-          <FloatingGraphic amplitude={8} duration={7} delay={1.5} style={{ top: '40%', right: '2%' }} className="hide-mobile">
-            <CodeBlockDecor size={120} delay={1.2} />
-          </FloatingGraphic>
-
-          {/* Decorative dots */}
-          <FloatingGraphic amplitude={6} duration={3} style={{ top: '25%', left: '2%' }} className="hide-tablet">
-            <CodeDot size={12} delay={1.4} color="#FF4081" />
-          </FloatingGraphic>
-          <FloatingGraphic amplitude={8} duration={3.5} style={{ bottom: '30%', right: '3%' }} className="hide-mobile">
-            <CodeDot size={10} delay={1.6} color="#00BCD4" />
-          </FloatingGraphic>
-        </div>
-      )}
-
+    <section id="portfolio" className="portfolio-section">
       <div className="portfolio-container">
-        <h2 className={`portfolio-title ${isVisible ? 'title-visible' : ''}`}>
-          Featured <span className="title-highlight">Portfolio</span>
-        </h2>
+        <Reveal animation="up">
+          <span className="section-eyebrow">Selected work</span>
+        </Reveal>
+
+        <Reveal animation="up" delay={80}>
+          <h2 className="portfolio-title">
+            Featured <span className="title-highlight">Portfolio</span>
+          </h2>
+        </Reveal>
 
         {/* Tabs */}
-        <div className={`portfolio-tabs ${isVisible ? 'tabs-visible' : ''}`}>
+        <div className="portfolio-tabs">
           {[
             { id: 'projects', label: 'Projects', icon: FiCode },
             { id: 'certifications', label: 'Certifications', icon: FiAward },
@@ -263,7 +179,7 @@ const Portfolio = () => {
                 key={tab.id}
                 onClick={(e) => {
                   handleRipple(e);
-                  handleTabClick(tab.id);
+                  setActiveTab(tab.id);
                 }}
                 className={`tab-heading ripple-container ${activeTab === tab.id ? 'active' : ''}`}
                 style={{ transitionDelay: `${index * 0.1}s` }}
@@ -282,10 +198,12 @@ const Portfolio = () => {
             <>
               <div className="tab-content active">
                 {displayedProjects.map((project, index) => (
-                  <div
+                  <Reveal
                     key={project.title}
-                    className={`portfolio-card ${visibleCards.includes(index) ? 'card-visible' : ''}`}
-                    style={{ '--card-index': index }}
+                    animation="up"
+                    delay={(index % 3) * 90}
+                    className="portfolio-card"
+                    onPointerMove={handleCardPointer}
                   >
                     <div className="card-image">
                       <img src={project.image} alt={project.alt} />
@@ -321,7 +239,7 @@ const Portfolio = () => {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
 
@@ -332,18 +250,7 @@ const Portfolio = () => {
                     className="show-more-btn ripple-container"
                     onClick={(e) => {
                       handleRipple(e);
-                      setShowAllProjects(!showAllProjects);
-                      if (!showAllProjects) {
-                        // Trigger animation for new cards
-                        setTimeout(() => {
-                          const newIndices = allProjects.slice(6).map((_, i) => 6 + i);
-                          newIndices.forEach((idx, i) => {
-                            setTimeout(() => {
-                              setVisibleCards(prev => [...prev, idx]);
-                            }, i * 100);
-                          });
-                        }, 50);
-                      }
+                      setShowAllProjects((shown) => !shown);
                     }}
                   >
                     <span className="btn-text">
@@ -366,7 +273,7 @@ const Portfolio = () => {
           {/* Certifications Tab */}
           {activeTab === 'certifications' && (
             <div className="tab-content active">
-              <div className={`portfolio-card ${visibleCards.includes(0) ? 'card-visible' : ''}`}>
+              <div className="portfolio-card" onPointerMove={handleCardPointer}>
                 <div className="card-image">
                   <img src="/certi.jpeg" alt="IITM Foundation" />
                 </div>
@@ -394,7 +301,7 @@ const Portfolio = () => {
           {/* Hackathons Tab */}
           {activeTab === 'hackathons' && (
             <div className="tab-content active">
-              <div className={`portfolio-card ${visibleCards.includes(0) ? 'card-visible' : ''}`}>
+              <div className="portfolio-card" onPointerMove={handleCardPointer}>
                 <div className="card-image">
                   <img src="/hack.jpeg" alt="Hackathon" />
                 </div>
@@ -422,7 +329,7 @@ const Portfolio = () => {
           {/* Publications Tab */}
           {activeTab === 'publications' && (
             <div className="tab-content active">
-              <div className={`portfolio-card ${visibleCards.includes(0) ? 'card-visible' : ''}`}>
+              <div className="portfolio-card" onPointerMove={handleCardPointer}>
                 <div className="card-image">
                   <img src="/publi.jpeg" alt="Publication" />
                 </div>
