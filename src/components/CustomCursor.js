@@ -25,12 +25,51 @@ function styleInject(css, ref) {
 
 var css_248z = `
 body{cursor:none!important}
-.cursor-dot{background-color:var(--accent-green,#4ade80);border-radius:50%;height:6px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:opacity .15s ease, background-color 0.3s ease;width:6px;z-index:9999999999999}
+
+.cursor-dot{
+  background-color:var(--accent-green,#4ade80);
+  border-radius:50%;
+  width:6px;height:6px;
+  left:0;top:0;
+  position:fixed;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:opacity .15s ease, background-color .3s ease;
+  z-index:9999999999999;
+}
 .cursor-dot-hidden{opacity:0}
-.cursor-circle{border:2px solid var(--accent-green,#4ade80);border-radius:50%;box-sizing:border-box;height:32px;left:0;pointer-events:none;position:fixed;top:0;transform:translate(-50%,-50%);transition:all 0.1s ease, border-color 0.3s ease;width:32px;z-index:9999999999998}
-.cursor-circle.hovered{box-sizing:border-box;margin:0;padding:0;transform:none;transition:all .2s ease}
+
+/* Free-roaming ring. Position is driven frame-by-frame in JS, so only the
+   morph properties are transitioned here — transitioning left/top is what
+   made the cursor feel sluggish. */
+.cursor-circle{
+  border:2px solid var(--accent-green,#4ade80);
+  border-radius:50%;
+  box-sizing:border-box;
+  width:34px;height:34px;
+  left:0;top:0;
+  position:fixed;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  transition:width .22s cubic-bezier(.22,1,.36,1),
+             height .22s cubic-bezier(.22,1,.36,1),
+             border-radius .22s cubic-bezier(.22,1,.36,1),
+             border-color .3s ease,
+             background-color .3s ease;
+  z-index:9999999999998;
+}
+
+/* Locked onto an element: left/top now carry real positions, so they get a
+   short ease. The rect is re-read every frame, so a button that lifts on
+   hover keeps the ring with it. */
+.cursor-circle.hovered{
+  box-sizing:border-box;margin:0;padding:0;
+  transform:none;
+  transition:all .18s cubic-bezier(.22,1,.36,1);
+}
+
 a,button,input,textarea,select,label,[role="button"],.social-button,.theme-toggle,.like-button,.suggestion-card,.chatbot-toggle,.new-chat-btn,.back-to-portfolio,.send-button,.mobile-close-btn,.saved-chat-item,.delete-chat-btn,.hero-cta,.footer-link,.footer-top,.scroll-cue,.sw-wheel{cursor:none!important}
-`;;
+`;
 styleInject(css_248z);
 
 const CustomCursor = () => {
@@ -55,68 +94,87 @@ const CustomCursor = () => {
       document.body.appendChild(cursorDot);
       document.body.appendChild(cursorCircle);
 
-      let position = { x: 0, y: 0 };
+      let position = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      // Where the ring has caught up to. Kept separate from `position` so the
+      // ring can trail the dot instead of being welded to it.
+      let ringPos = { x: position.x, y: position.y };
       let isHovered = false;
       let currentHoveredElement = null;
+      let hoveredRadius = '50%';
       let rafId = null;
 
-      const updateCursorPosition = () => {
-        if (!isHovered) {
-          cursorDot.style.left = `${position.x}px`;
-          cursorDot.style.top = `${position.y}px`;
-          cursorCircle.style.left = `${position.x}px`;
-          cursorCircle.style.top = `${position.y}px`;
+      // Fraction of the remaining gap the ring closes each frame. Higher =
+      // snappier. 0.18 read as laggy; 0.34 keeps the trail but stays tight.
+      const FOLLOW = 0.34;
+
+      const resetHoverState = () => {
+        isHovered = false;
+        currentHoveredElement = null;
+        cursorDot.classList.remove('cursor-dot-hidden');
+        cursorCircle.classList.remove('hovered');
+        // Clear the inline box left behind by the morph
+        cursorCircle.style.width = '';
+        cursorCircle.style.height = '';
+        cursorCircle.style.borderRadius = '';
+        cursorCircle.style.border = '';
+        // Resume the trail from wherever the ring currently sits
+        ringPos.x = position.x;
+        ringPos.y = position.y;
+      };
+
+      const render = () => {
+        // The dot always tracks the pointer exactly — no smoothing, no lag.
+        cursorDot.style.left = `${position.x}px`;
+        cursorDot.style.top = `${position.y}px`;
+
+        if (isHovered && currentHoveredElement) {
+          if (!document.body.contains(currentHoveredElement)) {
+            resetHoverState();
+          } else {
+            // Re-measure every frame. Buttons that lift or scale on hover
+            // move after mouseenter fired, and reading the rect once left
+            // the ring sitting where the button used to be.
+            const rect = currentHoveredElement.getBoundingClientRect();
+            cursorCircle.style.left = `${rect.left}px`;
+            cursorCircle.style.top = `${rect.top}px`;
+            cursorCircle.style.width = `${rect.width}px`;
+            cursorCircle.style.height = `${rect.height}px`;
+            cursorCircle.style.borderRadius = hoveredRadius;
+          }
         }
 
-        // Check if hovered element still exists in DOM
-        if (isHovered && currentHoveredElement && !document.body.contains(currentHoveredElement)) {
-          isHovered = false;
-          currentHoveredElement = null;
-          cursorDot.classList.remove('cursor-dot-hidden');
-          cursorCircle.classList.remove('hovered');
-          cursorCircle.style = '';
-          cursorDot.style.left = `${position.x}px`;
-          cursorDot.style.top = `${position.y}px`;
-          cursorCircle.style.left = `${position.x}px`;
-          cursorCircle.style.top = `${position.y}px`;
+        if (!isHovered) {
+          ringPos.x += (position.x - ringPos.x) * FOLLOW;
+          ringPos.y += (position.y - ringPos.y) * FOLLOW;
+          cursorCircle.style.left = `${ringPos.x}px`;
+          cursorCircle.style.top = `${ringPos.y}px`;
         }
+
+        rafId = requestAnimationFrame(render);
       };
 
       const updatePosition = e => {
         position.x = e.clientX;
         position.y = e.clientY;
-
-        // Use requestAnimationFrame for smoother performance in Chrome
-        if (rafId) {
-          cancelAnimationFrame(rafId);
-        }
-        rafId = requestAnimationFrame(updateCursorPosition);
       };
 
       const handleMouseEnter = e => {
+        const el = e.currentTarget;
+        const computedStyle = window.getComputedStyle(el);
+        const isIcon = el.tagName === 'IMG' || computedStyle.borderRadius === '50%';
+
         isHovered = true;
-        currentHoveredElement = e.target;
+        currentHoveredElement = el;
+        hoveredRadius = isIcon ? '50%' : computedStyle.borderRadius;
+
         cursorDot.classList.add('cursor-dot-hidden');
         cursorCircle.classList.add('hovered');
-        const rect = e.target.getBoundingClientRect();
-        const computedStyle = window.getComputedStyle(e.target);
-        const isIcon = e.target.tagName === 'IMG' || computedStyle.borderRadius === '50%';
-        Object.assign(cursorCircle.style, {
-          width: `${rect.width}px`,
-          height: `${rect.height}px`,
-          borderRadius: isIcon ? '50%' : computedStyle.borderRadius,
-          left: `${rect.left}px`,
-          top: `${rect.top}px`,
-          border: '2px solid var(--accent-green)'
-        });
+        cursorCircle.style.border = '2px solid var(--accent-green)';
+        // render() takes over size and position from here
       };
 
       const handleMouseLeave = () => {
-        isHovered = false;
-        currentHoveredElement = null;
-        cursorDot.classList.remove('cursor-dot-hidden');
-        cursorCircle.classList.remove('hovered');
-        cursorCircle.style = '';
+        resetHoverState();
       };
 
       const attachCursorListeners = () => {
@@ -152,7 +210,8 @@ const CustomCursor = () => {
         subtree: true
       });
 
-      window.addEventListener('mousemove', updatePosition);
+      window.addEventListener('mousemove', updatePosition, { passive: true });
+      rafId = requestAnimationFrame(render);
 
       return () => {
         window.removeEventListener('mousemove', updatePosition);

@@ -123,7 +123,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: clamp(1rem, 2vw, 1.5rem);
-  align-items: start;
 }
 
 /* Card Styling with glassmorphism */
@@ -131,6 +130,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   border-radius: var(--radius-lg);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -183,7 +183,9 @@
 
 .card-image {
   position: relative;
-  aspect-ratio: 16 / 10;
+  width: 100%;
+  height: 200px;
+  flex-shrink: 0;
   overflow: hidden;
   background: var(--bg-elevated);
 }
