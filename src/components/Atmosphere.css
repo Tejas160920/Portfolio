@@ -33,10 +33,10 @@
 .atm-aurora {
   position: absolute;
   inset: -20%;
-  filter: blur(70px);
-  /* Whole field slides gently as the page scrolls */
-  transform: translate3d(0, calc(var(--scroll-progress) * -8vh), 0);
-  transition: transform 0.6s linear;
+  /* Slides gently as the page scrolls. Transform is set from JS, so no
+     transition here — interpolating it re-composites on every frame. */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .atm-blob {
@@ -53,7 +53,7 @@
   min-height: 420px;
   top: -6%;
   left: -8%;
-  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-1) 0%, transparent 68%);
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-1) 0%, transparent 72%);
   animation: atm-drift-1 34s var(--ease-in-out) infinite;
 }
 
@@ -64,7 +64,7 @@
   min-height: 380px;
   top: 22%;
   right: -10%;
-  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-2) 0%, transparent 68%);
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-2) 0%, transparent 72%);
   animation: atm-drift-2 43s var(--ease-in-out) infinite;
 }
 
@@ -75,7 +75,7 @@
   min-height: 360px;
   bottom: -12%;
   left: 26%;
-  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-3) 0%, transparent 68%);
+  background: radial-gradient(circle at 50% 50%, var(--atm-aurora-3) 0%, transparent 72%);
   animation: atm-drift-3 38s var(--ease-in-out) infinite;
 }
 
@@ -108,22 +108,26 @@
   -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
   mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
   /* Parallax against the aurora at a different rate — adds depth */
-  transform: translate3d(0, calc(var(--scroll-progress) * 4vh), 0);
-  transition: transform 0.6s linear;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 /* 4. Pointer spotlight ---------------------------------------------------- */
 .atm-spotlight {
   position: absolute;
-  inset: 0;
-  --px: 50vw;
-  --py: 40vh;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: 900px;
+  margin: -450px 0 0 -450px;
   background: radial-gradient(
-    460px circle at var(--px) var(--py),
+    circle closest-side,
     var(--accent-green-soft) 0%,
-    transparent 70%
+    transparent 100%
   );
   opacity: 0.75;
+  transform: translate3d(50vw, 40vh, 0);
+  will-change: transform;
 }
 
 /* 5. Grain ---------------------------------------------------------------- */
@@ -132,21 +136,11 @@
   inset: -50%;
   opacity: var(--atm-grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: atm-grain-shift 700ms steps(4) infinite;
   pointer-events: none;
-}
-
-@keyframes atm-grain-shift {
-  0%   { transform: translate(0, 0); }
-  25%  { transform: translate(-2%, 1%); }
-  50%  { transform: translate(1%, -2%); }
-  75%  { transform: translate(-1%, -1%); }
-  100% { transform: translate(0, 0); }
 }
 
 /* Mobile: drop the heaviest effects, keep the colour ---------------------- */
 @media (max-width: 768px) {
-  .atm-aurora { filter: blur(50px); }
   .atm-grid { background-size: 44px 44px; }
   .atm-spotlight { display: none; }
   .atm-grain { animation: none; }

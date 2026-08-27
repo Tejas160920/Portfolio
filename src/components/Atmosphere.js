@@ -32,6 +32,9 @@ const Atmosphere = () => {
     ).matches;
     if (reduceMotion) return;
 
+    const aurora = root.querySelector('.atm-aurora');
+    const grid = root.querySelector('.atm-grid');
+
     let scrollRaf = null;
     let pointerRaf = null;
 
@@ -39,9 +42,16 @@ const Atmosphere = () => {
       scrollRaf = null;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? window.scrollY / max : 0;
-      // Aurora drifts slowly as you travel down the page, so the backdrop
-      // evolves instead of repeating.
-      root.style.setProperty('--scroll-progress', progress.toFixed(4));
+      // Write transforms straight onto the two layers. Driving them through a
+      // custom property on the parent invalidated style for the whole subtree
+      // on every scroll frame; this is a compositor-only update instead.
+      const vh = window.innerHeight / 100;
+      if (aurora) {
+        aurora.style.transform = `translate3d(0, ${(progress * -8 * vh).toFixed(2)}px, 0)`;
+      }
+      if (grid) {
+        grid.style.transform = `translate3d(0, ${(progress * 4 * vh).toFixed(2)}px, 0)`;
+      }
     };
 
     const onScroll = () => {
@@ -53,8 +63,8 @@ const Atmosphere = () => {
       pointerRaf = requestAnimationFrame(() => {
         pointerRaf = null;
         if (!spotlight) return;
-        spotlight.style.setProperty('--px', `${e.clientX}px`);
-        spotlight.style.setProperty('--py', `${e.clientY}px`);
+        spotlight.style.transform =
+          `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
       });
     };
 

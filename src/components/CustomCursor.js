@@ -46,7 +46,7 @@ body{cursor:none!important}
   border:2px solid var(--accent-green,#4ade80);
   border-radius:50%;
   box-sizing:border-box;
-  width:34px;height:34px;
+  width:36px;height:36px;
   left:0;top:0;
   position:fixed;
   pointer-events:none;
@@ -103,9 +103,10 @@ const CustomCursor = () => {
       let hoveredRadius = '50%';
       let rafId = null;
 
-      // Fraction of the remaining gap the ring closes each frame. Higher =
-      // snappier. 0.18 read as laggy; 0.34 keeps the trail but stays tight.
-      const FOLLOW = 0.34;
+      // Fraction of the remaining gap the ring closes each frame — this is
+      // the trail. The old sluggishness came from a CSS transition on
+      // left/top, not from this, so a soft value here reads smooth now.
+      const FOLLOW = 0.15;
 
       const resetHoverState = () => {
         isHovered = false;

@@ -211,8 +211,6 @@
   background: var(--bg-card);
   color: var(--text-primary);
   border-color: var(--border-color-light);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .hero-cta-ghost:hover {
@@ -366,8 +364,6 @@
   border-radius: var(--radius-pill);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   font-family: inherit;
   font-size: var(--text-sm);
   font-weight: 600;
@@ -476,8 +472,6 @@
   place-items: center;
   padding: 1.25rem;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   animation: overlay-in 0.3s ease;
 }
 
