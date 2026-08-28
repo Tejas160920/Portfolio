@@ -673,13 +673,24 @@
 
 
 /* --------------------------------------------------------------------------
-   Phones: the avatar stage runs four infinite animations at once (glow
-   breathe, two ring spins, float). That is the heaviest thing in the hero on
-   a mobile GPU, so keep the float and drop the rest.
+   Phones: no orbit stage at all — just the portrait, sitting still.
+   The rings, glow and float were four infinite animations running at once,
+   the heaviest thing in the hero on a mobile GPU, and the rings crowd the
+   figure once the layout stacks.
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-  .avatar-glow { animation: none; }
-  .avatar-ring-1,
-  .avatar-ring-2 { animation: none; }
-  .hero-badge-dot { animation: none; }
+  .avatar-ring,
+  .avatar-glow {
+    display: none;
+  }
+
+  .avatar-image {
+    animation: none;
+    /* No rings to sit inside, so the portrait can use the whole stage */
+    width: 100%;
+  }
+
+  .hero-badge-dot {
+    animation: none;
+  }
 }
