@@ -755,10 +755,11 @@
 
 @media (max-width: 768px) {
   .chatbot-toggle {
-    bottom: 16px;
-    right: 16px;
-    padding: 0.6rem 0.95rem;
-    font-size: 0.76rem;
+    /* Clears the bottom tab bar */
+    bottom: calc(4.6rem + env(safe-area-inset-bottom));
+    right: 14px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.74rem;
   }
 
   .chat-sidebar {

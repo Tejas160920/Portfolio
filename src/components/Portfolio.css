@@ -606,3 +606,120 @@
   .portfolio-card::after { display: none; }
   .portfolio-card:hover { transform: none; }
 }
+
+/* ==========================================================================
+   Mobile: projects become a swipeable carousel
+   Ten full-width cards stacked vertically is several screens of scrolling.
+   One snap row turns that into a thumb swipe, which is how every app shows
+   a collection on a phone.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .portfolio-section {
+    padding-block: var(--space-section);
+  }
+
+  .portfolio-title {
+    margin-bottom: 1.25rem;
+  }
+
+  /* Tabs scroll horizontally instead of wrapping onto three rows */
+  .portfolio-tabs {
+    margin-bottom: 1.5rem;
+    flex-wrap: nowrap;
+    width: auto;
+    /* Break out of the page gutter so the row reaches both edges */
+    margin-inline: calc(var(--space-gutter) * -1);
+    padding-inline: var(--space-gutter);
+    border: none;
+    background: none;
+    border-radius: 0;
+    scroll-snap-type: x proximity;
+  }
+
+  .tab-heading {
+    scroll-snap-align: start;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+  }
+
+  .tab-heading.active {
+    background: var(--accent-green-soft);
+    border-color: color-mix(in srgb, var(--accent-green) 35%, transparent);
+  }
+
+  .tab-content {
+    display: flex;
+    gap: 0.85rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    /* Full-bleed row: cards start at the gutter but can scroll to the edge */
+    margin-inline: calc(var(--space-gutter) * -1);
+    padding-inline: var(--space-gutter);
+    padding-bottom: 0.5rem;
+    scroll-padding-inline: var(--space-gutter);
+  }
+
+  .tab-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .portfolio-card {
+    flex: 0 0 80%;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
+
+  .card-image {
+    height: 150px;
+  }
+
+  .card-content {
+    gap: 0.5rem;
+    padding: 0.9rem 1rem 1.1rem;
+  }
+
+  .card-content h3 {
+    font-size: var(--text-base);
+  }
+
+  /* Two lines is enough on a card you swipe past */
+  .card-content p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Only the first few tags fit legibly at this width */
+  .tech-stack {
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .show-more-container {
+    margin-top: 1.5rem;
+  }
+
+  .show-more-container::before {
+    display: none;
+  }
+}
+
+/* Swipe affordance: a hint that there is more to the right */
+@media (max-width: 768px) {
+  .portfolio-content {
+    position: relative;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-content .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

@@ -193,17 +193,68 @@
 }
 
 @media (max-width: 600px) {
+  /* Two compact tiles per row. Five stacked full-width cards was most of a
+     screen each; this fits the whole set in roughly one. */
   .domains-bento {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: auto;
+    gap: 0.65rem;
   }
+
   .domain-card.span-wide,
   .domain-card.span-tall,
   .domain-card.span-normal {
     grid-column: span 1;
     grid-row: span 1;
   }
+
+  /* The first tile earns the full width as the section's lead */
+  .domain-card:first-child {
+    grid-column: span 2;
+  }
+
   .domain-card-inner {
     transform: none;
+    gap: 0.6rem;
+    padding: 0.9rem;
+    border-radius: var(--radius-md);
+  }
+
+  .domain-icon-wrapper {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .domain-icon {
+    width: 17px;
+    height: 17px;
+  }
+
+  .domain-name {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+
+  /* The blurb is desktop detail; the name and tags carry it on a phone */
+  .domain-card:not(:first-child) .domain-description {
+    display: none;
+  }
+
+  .domain-card:first-child .domain-description {
+    font-size: var(--text-xs);
+  }
+
+  .domain-tags {
+    gap: 0.25rem;
+  }
+
+  .domain-tag {
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .domains-title {
+    margin-bottom: 1.5rem;
   }
 }

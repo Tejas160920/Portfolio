@@ -5,6 +5,7 @@ import Preloader from './components/Preloader';
 import ScrollProgress from './components/ScrollProgress';
 import AnimationGovernor from './components/AnimationGovernor';
 import Navbar from './components/Navbar';
+import MobileNav from './components/MobileNav';
 import Hero from './components/Hero';
 import Marquee from './components/Marquee';
 import Portfolio from './components/Portfolio';
@@ -34,6 +35,7 @@ function App() {
       <CustomCursor />
       <ThemeToggle />
       <Navbar />
+      <MobileNav />
 
       <main className={`page ${introDone ? 'intro-done' : ''}`}>
         <Hero />

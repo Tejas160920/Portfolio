@@ -127,3 +127,12 @@
     right: 15px;
   }
 }
+
+
+/* Phones: the pill nav is gone, so the toggle takes the top-right corner */
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 14px;
+    right: 14px;
+  }
+}

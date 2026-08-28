@@ -1,0 +1,99 @@
+/* ==========================================================================
+   Mobile tab bar
+   Hidden entirely on desktop — this is not a resized version of the pill nav,
+   it is a different control for a different input method.
+   ========================================================================== */
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99990;
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: stretch;
+
+    padding: 0.4rem 0.35rem;
+    /* Clears the iPhone home indicator */
+    padding-bottom: max(0.4rem, env(safe-area-inset-bottom));
+
+    background: var(--bg-navbar);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+
+    padding: 0.45rem 0.2rem;
+    border: none;
+    background: none;
+    border-radius: var(--radius-md);
+
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.25s ease;
+  }
+
+  /* The icon carries the active state via a pill behind it, the way native
+     tab bars do — no layout shift when it changes. */
+  .mobile-nav-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 26px;
+    border-radius: var(--radius-pill);
+    transition: background 0.28s var(--ease-out-quint),
+      color 0.25s ease;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--accent-green);
+  }
+
+  .mobile-nav-item.active .mobile-nav-icon {
+    background: var(--accent-green-soft);
+  }
+
+  .mobile-nav-item:active .mobile-nav-icon {
+    transform: scale(0.92);
+  }
+
+  .mobile-nav-label {
+    line-height: 1;
+  }
+}
+
+/* Leave room for the bar so the footer is never trapped underneath it */
+@media (max-width: 768px) {
+  .page {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+
+/* The full-screen chat owns the viewport while it is open */
+@media (max-width: 768px) {
+  html.chat-open .mobile-nav {
+    display: none;
+  }
+}

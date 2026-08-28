@@ -302,6 +302,35 @@ a {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Mobile rhythm
+   The desktop scale (up to 11rem between sections) adds several screens of
+   empty space on a phone. These are the values the mobile layouts are
+   designed against, not a scaled-down desktop.
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --space-section: 3.25rem;
+    --space-gutter: 1.15rem;
+
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.85rem;
+    --text-4xl: 2.9rem;
+  }
+
+  .section-eyebrow {
+    margin-bottom: 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+
+  /* Shorter travel so reveals finish within a swipe */
+  .reveal {
+    transform: translate3d(0, 16px, 0);
+    transition-duration: 0.6s;
+  }
+}
+
 /* Keyboard users get a visible ring; mouse users do not */
 :focus-visible {
   outline: 2px solid var(--accent-green);

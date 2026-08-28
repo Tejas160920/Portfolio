@@ -273,3 +273,103 @@
     align-items: flex-start;
   }
 }
+
+/* ==========================================================================
+   Mobile: condensed timeline
+   The desktop version is two long columns of roomy cards — several screens
+   of scrolling. Here it is a single tight list, sized like an app's feed.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .resume-header {
+    margin-bottom: 1.5rem;
+    gap: 0.9rem;
+  }
+
+  .download-resume-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.7rem 1rem;
+  }
+
+  .resume-content {
+    gap: 2rem;
+  }
+
+  .column-header {
+    margin-bottom: 0.9rem;
+  }
+
+  .column-header h3 {
+    font-size: var(--text-base);
+  }
+
+  /* Tighter rail */
+  .timeline {
+    padding-left: 1.15rem;
+  }
+
+  .timeline::before {
+    left: 3px;
+  }
+
+  .timeline-item {
+    padding-bottom: 1rem;
+  }
+
+  .timeline-dot {
+    left: -1.15rem;
+    top: 0.5rem;
+    width: 8px;
+    height: 8px;
+    border-width: 2px;
+  }
+
+  .time-badge {
+    margin-bottom: 0.4rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.62rem;
+  }
+
+  .content-card {
+    padding: 0.8rem 0.9rem;
+    border-radius: var(--radius-md);
+  }
+
+  .content-card h4 {
+    font-size: 0.92rem;
+    line-height: 1.3;
+  }
+
+  .institution {
+    font-size: 0.8rem;
+  }
+
+  .experience-points {
+    margin-top: 0.55rem;
+    gap: 0.35rem;
+  }
+
+  .experience-points li {
+    padding-left: 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* Course chips run in one scrollable row rather than wrapping to five */
+  .courses {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-top: 0.6rem;
+    padding-bottom: 2px;
+  }
+
+  .courses::-webkit-scrollbar {
+    display: none;
+  }
+
+  .course-tag {
+    flex: 0 0 auto;
+    font-size: 0.62rem;
+  }
+}

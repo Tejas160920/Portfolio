@@ -573,3 +573,43 @@
     font-size: 1.5rem;
   }
 }
+
+
+/* ==========================================================================
+   Mobile contact
+   Form first, socials as a compact row, and the decorative avatar dropped —
+   it pushes the form a screen down for no information.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .contact-title {
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-content {
+    gap: 1.5rem;
+  }
+
+  .contact-form-wrapper {
+    padding: 1.1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .form-header h3 {
+    font-size: var(--text-lg);
+  }
+
+  .input-wrapper input,
+  .input-wrapper textarea {
+    padding: 12px 14px 12px 42px;
+    font-size: 16px; /* iOS zooms the page on focus below 16px */
+  }
+
+  .contact-avatar-wrapper {
+    display: none;
+  }
+
+  .social-links,
+  .social-icons {
+    justify-content: flex-start;
+  }
+}
