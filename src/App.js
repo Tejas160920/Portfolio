@@ -18,6 +18,7 @@ import Footer from './components/Footer';
 import ThemeToggle from './components/ThemeToggle';
 import Chatbot from './components/Chatbot';
 import './App.css';
+import './styles/mobile.css';
 
 function App() {
   const [introDone, setIntroDone] = useState(false);

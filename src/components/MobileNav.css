@@ -32,6 +32,7 @@
   }
 
   .mobile-nav-item {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,7 +60,8 @@
   .mobile-nav-icon {
     display: grid;
     place-items: center;
-    width: 46px;
+    width: 100%;
+    max-width: 46px;
     height: 26px;
     border-radius: var(--radius-pill);
     transition: background 0.28s var(--ease-out-quint),
@@ -80,6 +82,10 @@
 
   .mobile-nav-label {
     line-height: 1;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 

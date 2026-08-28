@@ -1,0 +1,295 @@
+/* ==========================================================================
+   MOBILE LAYER
+   Loaded last, so this file owns the phone layout rather than patching the
+   desktop one selector by selector. Same design language — same palette,
+   type and glass — but a composition built for a 390px screen and a thumb.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  /* ------------------------------------------------------------------ */
+  /* 1. Containment                                                      */
+  /* Flex and grid children default to min-width:auto, so a long word or */
+  /* a nowrap label refuses to shrink and widens the initial containing  */
+  /* block. That is what pushed every section past the screen edge and   */
+  /* cut the fixed tab bar's last item off.                              */
+  /* ------------------------------------------------------------------ */
+  html {
+    overflow-x: clip;
+  }
+
+  .hero-stat,
+  .hero-cta,
+  .mobile-nav-item,
+  .footer-link,
+  .domain-card,
+  .domain-card-inner,
+  .timeline-content,
+  .content-card,
+  .portfolio-card,
+  .card-content {
+    min-width: 0;
+  }
+
+  /* Long unbroken strings (URLs, course names) wrap instead of stretching */
+  .content-card h4,
+  .institution,
+  .card-content h3,
+  .domain-name {
+    overflow-wrap: anywhere;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 2. Floating controls                                                */
+  /* ------------------------------------------------------------------ */
+  /* An earlier rule set `bottom` for small screens. Setting `top` without
+     clearing it leaves both defined, and with height:auto the button
+     stretches the full viewport height. */
+  .theme-toggle {
+    top: 13px;
+    bottom: auto;
+    right: 13px;
+    padding: 5px;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 3. Hero — no portrait, content first                                */
+  /* ------------------------------------------------------------------ */
+  .hero-visual {
+    display: none;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 4.75rem var(--space-gutter) 2rem;
+  }
+
+  .hero-inner {
+    display: block;
+  }
+
+  .hero-badge {
+    margin-bottom: 0.9rem;
+    padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-title {
+    font-size: 3.1rem;
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-roles {
+    margin-top: 0.85rem;
+    font-size: 1.05rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .hero-roles-viewport {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .hero-role {
+    justify-content: flex-start;
+  }
+
+  .hero-description {
+    margin-top: 0.85rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  /* Full-width stacked actions: thumb-sized, no side-by-side squeeze */
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+    margin-top: 1.35rem;
+    width: 100%;
+  }
+
+  .hero-cta {
+    justify-content: center;
+    padding: 0.85rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  /* Stats as a bordered strip — an app stat row, not three floated blocks */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 1.5rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+  }
+
+  .hero-stat + .hero-stat {
+    border-left: 1px solid var(--border-color);
+  }
+
+  .hero-stat-value {
+    font-size: 1.1rem;
+  }
+
+  .hero-stat-label {
+    margin-top: 0.15rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.03em;
+    line-height: 1.25;
+  }
+
+  /* The like button moves under the stats, still reachable */
+  .hero .like-container {
+    display: flex;
+    margin-top: 1.25rem;
+    justify-content: flex-start;
+  }
+
+  .scroll-cue {
+    display: none;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 4. Section headers — compact, consistent                            */
+  /* ------------------------------------------------------------------ */
+  .portfolio-title,
+  .resume-title,
+  .domains-title,
+  .contact-title {
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.1rem;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 5. Projects — compact swipe cards                                   */
+  /* ------------------------------------------------------------------ */
+  .portfolio-card {
+    flex: 0 0 82%;
+    max-width: 290px;
+  }
+
+  .card-image {
+    height: 128px;
+  }
+
+  .card-content {
+    gap: 0.45rem;
+    padding: 0.8rem 0.85rem 0.95rem;
+  }
+
+  .card-content h3 {
+    font-size: 0.92rem;
+    line-height: 1.28;
+  }
+
+  .card-content p {
+    font-size: 0.775rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+  }
+
+  .card-header .year {
+    font-size: 0.6rem;
+    padding: 0.12rem 0.45rem;
+  }
+
+  .tech-stack {
+    gap: 0.25rem;
+  }
+
+  .tech-tag {
+    font-size: 0.58rem;
+    padding: 0.12rem 0.4rem;
+  }
+
+  .card-actions {
+    gap: 0.4rem;
+    margin-top: 0.15rem;
+  }
+
+  .card-btn {
+    flex: 1 1 0;
+    justify-content: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.68rem;
+  }
+
+  .show-more-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 6. Contact — one card, form first                                   */
+  /* ------------------------------------------------------------------ */
+  .contact-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Socials above the form: a quick tap beats filling three fields */
+  .contact-right {
+    order: -1;
+  }
+
+  .social-section h3 {
+    font-size: 1rem;
+  }
+
+  .form-header h3 {
+    font-size: 1.05rem;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .submit-btn {
+    padding: 0.9rem;
+    font-size: 0.875rem;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* 7. Tap targets                                                      */
+  /* Hover states never fire on touch; pressed states are what read.     */
+  /* ------------------------------------------------------------------ */
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card-btn:active,
+  .hero-cta:active,
+  .show-more-btn:active,
+  .footer-link:active,
+  .tab-heading:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Very narrow phones ------------------------------------------------------ */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 2.7rem;
+  }
+
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-card {
+    flex: 0 0 86%;
+  }
+
+  .mobile-nav-label {
+    font-size: 0.56rem;
+  }
+}
