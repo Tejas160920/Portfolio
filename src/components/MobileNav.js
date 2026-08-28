@@ -1,22 +1,25 @@
 import React, { useCallback } from 'react';
-import { Home, LayoutGrid, FileText, Cpu, Mail } from 'lucide-react';
+import { Home, LayoutGrid, FileText, Mail, Sparkles } from 'lucide-react';
 import './MobileNav.css';
 import { useActiveSection } from '../hooks/useActiveSection';
 
 const TABS = [
   { id: 'home', label: 'Home', Icon: Home },
   { id: 'portfolio', label: 'Work', Icon: LayoutGrid },
+  { id: 'ai', label: 'Ask AI', Icon: Sparkles, action: true },
   { id: 'resume', label: 'Resume', Icon: FileText },
-  { id: 'domain', label: 'Skills', Icon: Cpu },
   { id: 'contact', label: 'Contact', Icon: Mail }
 ];
 
-const IDS = TABS.map((t) => t.id);
+const IDS = TABS.filter((t) => !t.action).map((t) => t.id);
 
 /**
- * Fixed bottom tab bar — the navigation pattern people already know from
- * native apps. Replaces the desktop pill nav below 768px, so reaching any
- * section is one thumb tap instead of a long scroll.
+ * Bottom tab bar with an elevated centre action.
+ *
+ * Ask AI used to be a floating pill that sat on top of the hero copy. Making
+ * it the raised middle tab is the pattern people already know from Instagram
+ * and X — it reads as the primary action instead of an obstruction, and it
+ * frees the screen of a permanently overlapping control.
  */
 const MobileNav = () => {
   const [active, setActive] = useActiveSection(IDS);
@@ -27,22 +30,41 @@ const MobileNav = () => {
     setActive(id);
   }, [setActive]);
 
+  const openAI = useCallback(() => {
+    window.dispatchEvent(new CustomEvent('openTejasAI'));
+  }, []);
+
   return (
     <nav className="mobile-nav" aria-label="Sections">
-      {TABS.map(({ id, label, Icon }) => (
-        <button
-          key={id}
-          type="button"
-          className={`mobile-nav-item ${active === id ? 'active' : ''}`}
-          aria-current={active === id ? 'true' : undefined}
-          onClick={() => go(id)}
-        >
-          <span className="mobile-nav-icon">
-            <Icon size={19} strokeWidth={2} />
-          </span>
-          <span className="mobile-nav-label">{label}</span>
-        </button>
-      ))}
+      {TABS.map(({ id, label, Icon, action }) =>
+        action ? (
+          <button
+            key={id}
+            type="button"
+            className="mobile-nav-item mobile-nav-action"
+            onClick={openAI}
+            aria-label="Ask Tejas's AI assistant"
+          >
+            <span className="mobile-nav-fab">
+              <Icon size={20} strokeWidth={2.1} />
+            </span>
+            <span className="mobile-nav-label">{label}</span>
+          </button>
+        ) : (
+          <button
+            key={id}
+            type="button"
+            className={`mobile-nav-item ${active === id ? 'active' : ''}`}
+            aria-current={active === id ? 'true' : undefined}
+            onClick={() => go(id)}
+          >
+            <span className="mobile-nav-icon">
+              <Icon size={19} strokeWidth={2} />
+            </span>
+            <span className="mobile-nav-label">{label}</span>
+          </button>
+        )
+      )}
     </nav>
   );
 };

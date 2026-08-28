@@ -103,3 +103,109 @@
     display: none;
   }
 }
+
+/* Elevated centre action -------------------------------------------------- */
+@media (max-width: 768px) {
+  .mobile-nav-action {
+    color: var(--text-muted);
+  }
+
+  .mobile-nav-fab {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-top: -18px;
+    border-radius: 50%;
+    color: #04120a;
+    background: linear-gradient(140deg, var(--accent-green), var(--accent-cyan));
+    box-shadow: 0 6px 18px -4px color-mix(in srgb, var(--accent-green) 65%, transparent),
+      0 0 0 4px var(--bg-navbar);
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .mobile-nav-action:active .mobile-nav-fab {
+    transform: scale(0.92);
+  }
+
+  @supports not (box-shadow: 0 0 0 1px color-mix(in srgb, red 50%, blue)) {
+    .mobile-nav-fab { box-shadow: var(--shadow-md), 0 0 0 4px var(--bg-navbar); }
+  }
+
+  /* The raised button needs headroom inside the bar */
+  .mobile-nav {
+    overflow: visible;
+  }
+}
+
+/* ==========================================================================
+   Slim top bar
+   Gives the site a mark on mobile (there was none) and gives the theme
+   toggle a surface to sit on, instead of floating over scrolling content.
+   ========================================================================== */
+.mobile-topbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99991;
+
+    display: flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 var(--space-gutter);
+
+    background: var(--bg-navbar);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .mobile-topbar-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .mobile-topbar-monogram {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #04120a;
+    background: linear-gradient(140deg, var(--accent-green), var(--accent-cyan));
+  }
+
+  .mobile-topbar-name {
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  /* The toggle sits on the bar rather than over the page */
+  .theme-toggle {
+    top: 11px;
+    bottom: auto;
+    right: var(--space-gutter);
+    z-index: 99992;
+  }
+
+  html.chat-open .mobile-topbar {
+    display: none;
+  }
+}

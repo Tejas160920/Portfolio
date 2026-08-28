@@ -190,6 +190,19 @@ const SkillWheel = () => {
         ))}
       </div>
 
+      {/* Phones get a plain grid: the wheel needs a large canvas and a
+          drag, and its icons fall outside a 390px viewport. */}
+      <div className="sw-mobile-grid">
+        {skills.map((skill) => (
+          <div className="sw-mobile-item" key={`m-${skill.id}`}>
+            <div className="sw-mobile-icon">
+              <img src={skill.icon} alt="" loading="lazy" />
+            </div>
+            <span className="sw-mobile-label">{skill.name}</span>
+          </div>
+        ))}
+      </div>
+
       {/* Drag Hint */}
       <div className="drag-hint">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

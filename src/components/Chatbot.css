@@ -744,22 +744,12 @@
    RESPONSIVE - MOBILE
    ============================================ */
 @media (max-width: 1024px) {
-  .chatbot-toggle {
-    /* Heart is at top:80px, 42px height, plus like-count, plus gap */
-    top: 160px;
-    right: 20px;
-    width: 42px;
-    height: 42px;
-  }
 }
 
 @media (max-width: 768px) {
+  /* Ask AI lives in the tab bar on phones, so the floating pill goes */
   .chatbot-toggle {
-    /* Clears the bottom tab bar */
-    bottom: calc(4.6rem + env(safe-area-inset-bottom));
-    right: 14px;
-    padding: 0.55rem 0.9rem;
-    font-size: 0.74rem;
+    display: none;
   }
 
   .chat-sidebar {
@@ -895,17 +885,6 @@
 
 /* iPhone 15 and similar (393px width) */
 @media (max-width: 430px) {
-  .chatbot-toggle {
-    bottom: 140px;
-    right: 15px;
-    width: 48px;
-    height: 48px;
-  }
-
-  .chatbot-toggle svg {
-    width: 22px;
-    height: 22px;
-  }
 
   .welcome-screen {
     padding: 70px 14px 16px;

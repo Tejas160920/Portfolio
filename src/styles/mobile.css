@@ -293,3 +293,173 @@
     font-size: 0.56rem;
   }
 }
+
+/* ==========================================================================
+   MOBILE LAYER — round two
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* Content clears the fixed top bar */
+  .hero {
+    padding-top: 5.25rem;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Role line stays on one line                                         */
+  /* It was wrapping because the viewport reserved 12ch and the row was  */
+  /* allowed to wrap. Smaller type, no wrap, and the role may shrink.    */
+  /* ------------------------------------------------------------------ */
+  .hero-roles {
+    flex-wrap: nowrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .hero-roles-prefix {
+    flex: 0 0 auto;
+  }
+
+  .hero-roles-viewport {
+    min-width: 0;
+    flex: 1 1 auto;
+    height: 1.45em;
+    line-height: 1.45;
+  }
+
+  .hero-role {
+    justify-content: flex-start;
+    font-size: 0.95rem;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Project cards: equal height, consistent banner                      */
+  /* ------------------------------------------------------------------ */
+  .tab-content {
+    align-items: stretch;
+  }
+
+  .portfolio-card {
+    height: auto;
+  }
+
+  .card-image {
+    height: 132px;
+    flex: 0 0 132px;
+  }
+
+  /* Push the buttons to the bottom so every card ends on the same line */
+  .card-content {
+    justify-content: flex-start;
+  }
+
+  .card-actions {
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Contact — one compact card                                          */
+  /* Two stacked cards plus a tall textarea filled two screens.          */
+  /* ------------------------------------------------------------------ */
+  .contact-section {
+    padding-bottom: 1.5rem;
+  }
+
+  .contact-content {
+    gap: 0.85rem;
+  }
+
+  /* Socials become a slim strip, not a full card */
+  .contact-right {
+    order: -1;
+  }
+
+  .social-section {
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+  }
+
+  .social-section h3 {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  .social-section > p {
+    display: none;
+  }
+
+  .social-links {
+    margin-top: 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .social-item {
+    width: 42px;
+    height: 42px;
+  }
+
+  .social-item svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .form-header p {
+    display: none;
+  }
+
+  .contact-form {
+    gap: 0.7rem;
+  }
+
+  .form-group {
+    margin: 0;
+  }
+
+  .form-group label {
+    margin-bottom: 0.3rem;
+  }
+
+  /* A four-row textarea is most of a screen on a phone */
+  .input-wrapper textarea {
+    min-height: 74px;
+    height: 74px;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Footer — one tight block                                            */
+  /* ------------------------------------------------------------------ */
+  .footer {
+    padding: 1.5rem var(--space-gutter) 1.25rem;
+  }
+
+  /* The oversized wordmark is a desktop flourish; on a phone it is noise
+     behind the only text in the block. */
+  .footer-wordmark {
+    display: none;
+  }
+
+  .footer-inner {
+    gap: 0.85rem;
+  }
+
+  .footer-line {
+    font-size: 0.8rem;
+  }
+
+  .footer-sub {
+    font-size: 0.65rem;
+  }
+
+  .footer-link {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .footer-top {
+    top: 1.5rem;
+  }
+}
