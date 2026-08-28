@@ -354,7 +354,10 @@ const Chatbot = () => {
     if (!vv) return;
 
     const apply = () => {
-      document.documentElement.style.setProperty('--chat-vh', `${vv.height}px`);
+      const root = document.documentElement;
+      root.style.setProperty('--chat-vh', `${vv.height}px`);
+      // Where the visible area currently starts inside the layout viewport
+      root.style.setProperty('--chat-top', `${vv.offsetTop}px`);
     };
 
     apply();
@@ -365,6 +368,7 @@ const Chatbot = () => {
       vv.removeEventListener('resize', apply);
       vv.removeEventListener('scroll', apply);
       document.documentElement.style.removeProperty('--chat-vh');
+      document.documentElement.style.removeProperty('--chat-top');
     };
   }, [isOpen]);
 

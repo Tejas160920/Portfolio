@@ -1007,20 +1007,29 @@
    transcript, composer pinned above the keyboard.
    ========================================================================== */
 @media (max-width: 768px) {
-  /* The panel always covers the whole screen, so the page can never show
-     through. 100% ignores the browser chrome; dvh tracks it. */
+  /* The panel is pinned to exactly the visible area: --chat-top is where
+     the visual viewport starts and --chat-vh is how tall it is. Matching
+     both means the composer already sits just above the keyboard, so iOS
+     never needs to scroll anything to reveal it — which is what was pushing
+     the header off screen and leaving dead space below the input. */
   .chatbot-fullscreen {
+    top: var(--chat-top, 0px);
     height: 100vh;
     height: 100dvh;
+    height: var(--chat-vh, 100dvh);
     overflow: hidden;
     overscroll-behavior: none;
+    /* The open/close scale would fight the pinning */
+    transform: none;
   }
 
-  /* Only the interactive column follows the keyboard. --chat-vh comes from
-     visualViewport, the one value that tracks it on iOS. */
+  .chatbot-fullscreen.open {
+    transform: none;
+  }
+
   .chat-main {
-    height: var(--chat-vh, 100dvh);
-    max-height: var(--chat-vh, 100dvh);
+    height: 100%;
+    max-height: 100%;
     min-height: 0;
   }
 
