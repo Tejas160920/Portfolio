@@ -596,21 +596,28 @@ const Chatbot = () => {
                         <div className="message-content">
                           {message.text.split('\n').map((line, i) => {
                             const trimmedLine = line.trim();
-                            // Check if line is a heading (wrapped in **)
-                            const isHeading = trimmedLine.startsWith('**') && trimmedLine.includes('**', 2);
-                            const isBullet = trimmedLine.startsWith('•');
+
+                            // A heading is any line containing a **bold** run.
+                            // Testing startsWith('**') missed every line the
+                            // model prefixes with an emoji, which is most of
+                            // them, so they rendered with literal asterisks.
+                            const isHeading = /\*\*[^*]+\*\*/.test(trimmedLine);
+                            const isBullet = trimmedLine.startsWith('\u2022');
 
                             if (isHeading) {
-                              // Remove ** and render as heading
-                              const headingText = trimmedLine.replace(/\*\*/g, '');
-                              return <p key={i} className="heading-line">{headingText}</p>;
+                              return (
+                                <p key={i} className="heading-line">
+                                  {trimmedLine.replace(/\*\*/g, '')}
+                                </p>
+                              );
                             }
+
                             return (
                               <p key={i} className={isBullet ? 'bullet-line' : ''}>
                                 {/* the marker is drawn in CSS, so drop the
                                     literal bullet to avoid doubling it */}
                                 {isBullet
-                                  ? trimmedLine.replace(/^•\s*/, '')
+                                  ? trimmedLine.replace(/^\u2022\s*/, '')
                                   : (line || '\u00A0')}
                               </p>
                             );
