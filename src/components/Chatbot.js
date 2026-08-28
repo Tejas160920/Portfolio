@@ -607,7 +607,11 @@ const Chatbot = () => {
                             }
                             return (
                               <p key={i} className={isBullet ? 'bullet-line' : ''}>
-                                {line || '\u00A0'}
+                                {/* the marker is drawn in CSS, so drop the
+                                    literal bullet to avoid doubling it */}
+                                {isBullet
+                                  ? trimmedLine.replace(/^•\s*/, '')
+                                  : (line || '\u00A0')}
                               </p>
                             );
                           })}
