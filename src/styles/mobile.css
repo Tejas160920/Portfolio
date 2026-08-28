@@ -463,3 +463,107 @@
     top: 1.5rem;
   }
 }
+
+/* ==========================================================================
+   MOBILE LAYER — chip and button text fitting
+   Small type inside small pills clips easily: the body line-height of 1.6
+   overflows a tight pill, `overflow: hidden` (needed for the ripple) then
+   cuts it, and flex children set to `1 1 0` shrink below their label.
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* --- Chips ---------------------------------------------------------- */
+  .tech-tag,
+  .domain-tag,
+  .course-tag,
+  .time-badge,
+  .year,
+  .hero-badge {
+    /* A tight line box that actually fits the glyphs */
+    line-height: 1.45;
+    /* Never clip a label to a partial word */
+    white-space: nowrap;
+    overflow: visible;
+    /* Chips size to their text rather than being squeezed by a flex parent */
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  .tech-tag,
+  .domain-tag,
+  .course-tag {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.6rem;
+  }
+
+  .time-badge {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.63rem;
+  }
+
+  .year {
+    padding: 0.18rem 0.5rem;
+    font-size: 0.62rem;
+  }
+
+  .hero-badge {
+    padding: 0.35rem 0.7rem 0.35rem 0.55rem;
+    line-height: 1.4;
+  }
+
+  /* --- Buttons -------------------------------------------------------- */
+  /* `flex: 1 1 0` let these shrink narrower than their own label, and the
+     ripple's overflow:hidden then clipped it. Size to content, shrink only
+     if there is genuinely no room. */
+  .card-btn {
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.7rem;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+
+  .card-actions {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .hero-cta,
+  .submit-btn,
+  .show-more-btn,
+  .download-resume-btn,
+  .footer-link {
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: visible;
+  }
+
+  /* Tab labels size to their text inside the scrolling row */
+  .tab-heading {
+    flex: 0 0 auto;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: visible;
+  }
+
+  /* --- Tab bar labels -------------------------------------------------- */
+  /* Enough room for "Contact" and "Resume" at this size, so nothing needs
+     truncating; the ellipsis stays only as a last resort. */
+  .mobile-nav-label {
+    font-size: 0.6rem;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 380px) {
+  .card-btn {
+    font-size: 0.66rem;
+    padding: 0.45rem 0.55rem;
+  }
+
+  .mobile-nav-label {
+    font-size: 0.54rem;
+    letter-spacing: -0.01em;
+  }
+}

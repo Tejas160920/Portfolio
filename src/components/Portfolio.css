@@ -696,8 +696,7 @@
 
   /* Only the first few tags fit legibly at this width */
   .tech-stack {
-    flex-wrap: nowrap;
-    overflow: hidden;
+    flex-wrap: wrap;
   }
 
   .show-more-container {
