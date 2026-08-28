@@ -309,12 +309,21 @@
   /* It was wrapping because the viewport reserved 12ch and the row was  */
   /* allowed to wrap. Smaller type, no wrap, and the role may shrink.    */
   /* ------------------------------------------------------------------ */
+  /* `align-items: baseline` sits the role above the prefix: the rotator is
+     an inline-block with overflow:hidden, and such a box reports its bottom
+     margin edge as its baseline. Centre both line boxes instead, and give
+     them the same height so centring lines the text up exactly. */
   .hero-roles {
     flex-wrap: nowrap;
-    align-items: baseline;
+    align-items: center;
     gap: 0.35rem;
     font-size: 0.95rem;
+    line-height: 1.45;
     white-space: nowrap;
+  }
+
+  .hero-roles-prefix {
+    line-height: 1.45;
   }
 
   .hero-roles-prefix {
@@ -325,6 +334,11 @@
     min-width: 0;
     flex: 1 1 auto;
     height: 1.45em;
+    line-height: 1.45;
+  }
+
+  .hero-role {
+    align-items: center;
     line-height: 1.45;
   }
 
