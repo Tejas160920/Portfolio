@@ -323,6 +323,27 @@ const Chatbot = () => {
     }
   };
 
+  // Track the usable viewport height while the chat is open
+  useEffect(() => {
+    if (!isOpen) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const apply = () => {
+      document.documentElement.style.setProperty('--chat-vh', `${vv.height}px`);
+    };
+
+    apply();
+    vv.addEventListener('resize', apply);
+    vv.addEventListener('scroll', apply);
+
+    return () => {
+      vv.removeEventListener('resize', apply);
+      vv.removeEventListener('scroll', apply);
+      document.documentElement.style.removeProperty('--chat-vh');
+    };
+  }, [isOpen]);
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -461,13 +482,52 @@ const Chatbot = () => {
 
         {/* Main Chat Area */}
         <div className="chat-main">
-          {/* Close button for mobile */}
-          <button className="mobile-close-btn" onClick={handleClose}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
+            {/* Mobile header: the sidebar is hidden on phones, so back,
+              identity and New Chat all live here. */}
+          <div className="chat-mobile-header">
+            <button
+              className="mobile-close-btn"
+              onClick={handleClose}
+              aria-label="Back to portfolio"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+
+            <div className="chat-mobile-title">
+              <span className="chat-mobile-avatar">T</span>
+              <span className="chat-mobile-name">Tejas AI</span>
+            </div>
+
+            <button
+              className="chat-mobile-new"
+              onClick={handleNewChat}
+              aria-label="Start a new chat"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* Saved chats are only reachable from the sidebar on desktop, so
+              surface them here while the welcome screen is showing. */}
+          {messages.length === 0 && savedChats.length > 0 && (
+            <div className="chat-mobile-recents">
+              {savedChats.map((chat) => (
+                <button
+                  key={chat.id}
+                  className="chat-mobile-recent"
+                  onClick={() => handleLoadChat(chat.id)}
+                >
+                  {chat.title}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Messages Area */}
           <div className="chat-messages-area">

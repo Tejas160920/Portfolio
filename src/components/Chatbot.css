@@ -776,8 +776,6 @@
   }
 
   .welcome-screen {
-    padding: 80px 16px 20px;
-    justify-content: flex-start;
     overflow-y: auto;
   }
 
@@ -994,5 +992,197 @@
   .typing-dots {
     gap: 4px;
     padding: 4px 0;
+  }
+}
+
+/* ==========================================================================
+   MOBILE ASK AI
+   A chat screen, not a shrunken desktop pane: fixed header, scrolling
+   transcript, composer pinned above the keyboard.
+   ========================================================================== */
+@media (max-width: 768px) {
+  .chatbot-fullscreen {
+    /* 100% ignores the browser chrome; dvh tracks it. --chat-vh is set from
+       visualViewport while open, which is the only value that follows the
+       iOS keyboard. */
+    height: 100dvh;
+    height: var(--chat-vh, 100dvh);
+    max-height: var(--chat-vh, 100dvh);
+    overflow: hidden;
+  }
+
+  .chat-main {
+    min-height: 0;
+  }
+
+  /* --- Header --------------------------------------------------------- */
+  .chat-mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    height: 54px;
+    padding: 0 0.6rem;
+    padding-top: env(safe-area-inset-top);
+    height: calc(54px + env(safe-area-inset-top));
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+  }
+
+  .chat-mobile-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chat-mobile-avatar {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #04120a;
+    background: linear-gradient(140deg, var(--accent-green), var(--accent-cyan));
+  }
+
+  .chat-mobile-name {
+    font-size: 0.92rem;
+    font-weight: 650;
+    color: var(--text-primary);
+  }
+
+  /* The close button becomes a back affordance inside the header */
+  .mobile-close-btn {
+    display: grid;
+    place-items: center;
+    position: static;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+  }
+
+  .chat-mobile-new {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .mobile-close-btn:active,
+  .chat-mobile-new:active {
+    background: var(--bg-elevated);
+    transform: scale(0.94);
+  }
+
+  /* --- Recent chats --------------------------------------------------- */
+  .chat-mobile-recents {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    padding: 0.6rem 0.85rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .chat-mobile-recents::-webkit-scrollbar { display: none; }
+
+  .chat-mobile-recent {
+    flex: 0 0 auto;
+    max-width: 60vw;
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-color);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  /* --- Transcript ----------------------------------------------------- */
+  .chat-messages-area {
+    min-height: 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .messages-container {
+    padding: 0.9rem 0.85rem;
+    gap: 0.85rem;
+  }
+
+  .message-bubble {
+    max-width: 88%;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .bot-avatar,
+  .user-avatar {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  /* --- Welcome -------------------------------------------------------- */
+  .welcome-screen {
+    padding: 1.5rem 0.9rem 1rem;
+    justify-content: center;
+  }
+
+  .welcome-screen h1 {
+    font-size: 1.25rem;
+  }
+
+  .welcome-screen > p {
+    font-size: 0.82rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .suggestions-grid {
+    gap: 0.5rem;
+  }
+
+  .suggestion-card {
+    padding: 0.7rem 0.85rem;
+    font-size: 0.8rem;
+    text-align: left;
+  }
+
+  /* --- Composer ------------------------------------------------------- */
+  .chat-input-area {
+    flex-shrink: 0;
+    padding: 0.6rem 0.75rem;
+    padding-bottom: calc(0.6rem + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-primary);
+  }
+
+  .chat-input-area .input-wrapper input {
+    /* Below 16px iOS zooms the whole page on focus */
+    font-size: 16px;
+    padding: 0.75rem 3rem 0.75rem 1rem;
+  }
+
+  .input-hint {
+    display: none;
   }
 }
