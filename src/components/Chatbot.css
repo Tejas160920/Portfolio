@@ -77,6 +77,12 @@
   white-space: nowrap;
 }
 
+/* The mobile header duplicates the sidebar on desktop */
+.chat-mobile-header,
+.chat-mobile-recents {
+  display: none;
+}
+
 /* ============================================
    FULL SCREEN CHAT INTERFACE
    ============================================ */
@@ -1001,18 +1007,28 @@
    transcript, composer pinned above the keyboard.
    ========================================================================== */
 @media (max-width: 768px) {
+  /* The panel always covers the whole screen, so the page can never show
+     through. 100% ignores the browser chrome; dvh tracks it. */
   .chatbot-fullscreen {
-    /* 100% ignores the browser chrome; dvh tracks it. --chat-vh is set from
-       visualViewport while open, which is the only value that follows the
-       iOS keyboard. */
+    height: 100vh;
     height: 100dvh;
-    height: var(--chat-vh, 100dvh);
-    max-height: var(--chat-vh, 100dvh);
     overflow: hidden;
+    overscroll-behavior: none;
   }
 
+  /* Only the interactive column follows the keyboard. --chat-vh comes from
+     visualViewport, the one value that tracks it on iOS. */
   .chat-main {
+    height: var(--chat-vh, 100dvh);
+    max-height: var(--chat-vh, 100dvh);
     min-height: 0;
+  }
+
+  /* Unmistakable back affordance — this is the only way out on a phone */
+  .mobile-close-btn {
+    border: 1px solid var(--border-color) !important;
+    background: var(--bg-elevated) !important;
+    color: var(--text-primary) !important;
   }
 
   /* --- Header --------------------------------------------------------- */

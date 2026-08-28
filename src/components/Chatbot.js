@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './Chatbot.css';
 
 const Chatbot = () => {
@@ -10,6 +10,23 @@ const Chatbot = () => {
   const [currentChatId, setCurrentChatId] = useState(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const scrollLockRef = useRef(0);
+
+  // Undo the body pin and put the reader back where they were
+  const releaseScrollLock = useCallback(() => {
+    const body = document.body;
+    if (body.style.position !== 'fixed') {
+      body.style.overflow = '';
+      return;
+    }
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.width = '';
+    body.style.overflow = '';
+    window.scrollTo(0, scrollLockRef.current);
+  }, []);
 
   // Hugging Face Space API URL
   const API_URL = 'https://tejasgaikwad16092002-tejas-portfolio-rag.hf.space/chat';
@@ -133,14 +150,21 @@ const Chatbot = () => {
     document.documentElement.classList.toggle('chat-open', isOpen);
 
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      scrollLockRef.current = window.scrollY;
+      const body = document.body;
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollLockRef.current}px`;
+      body.style.left = '0';
+      body.style.right = '0';
+      body.style.width = '100%';
+      body.style.overflow = 'hidden';
       // Hide hire-me button on mobile when chat is open
       const hireMeBtn = document.querySelector('.hire-me-button');
       if (hireMeBtn && window.innerWidth <= 768) {
         hireMeBtn.style.display = 'none';
       }
     } else {
-      document.body.style.overflow = 'unset';
+      releaseScrollLock();
       // Show hire-me button again
       const hireMeBtn = document.querySelector('.hire-me-button');
       if (hireMeBtn) {
@@ -167,12 +191,12 @@ const Chatbot = () => {
     document.addEventListener('click', handleNavClick);
 
     return () => {
-      document.body.style.overflow = 'unset';
+      releaseScrollLock();
       document.documentElement.classList.remove('chat-open');
       window.removeEventListener('hashchange', handleHashChange);
       document.removeEventListener('click', handleNavClick);
     };
-  }, [isOpen]);
+  }, [isOpen, releaseScrollLock]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
