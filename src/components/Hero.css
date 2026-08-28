@@ -335,7 +335,7 @@
 .avatar-image {
   position: relative;
   z-index: 2;
-  width: 88%;
+  width: 94%;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.4));
