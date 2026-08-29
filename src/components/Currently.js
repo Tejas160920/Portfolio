@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { BookOpen, Music, Tv, Gamepad2, Trophy, Sun, Moon, Play, X } from 'lucide-react';
 import './Currently.css';
 import Reveal from './Reveal';
@@ -153,7 +154,8 @@ const VideoLightbox = ({ src, onClose }) => {
     const previouslyFocused = document.activeElement;
     const { overflow } = document.body.style;
     document.body.style.overflow = 'hidden';
-    closeRef.current?.focus();
+    // preventScroll matters: focusing normally scrolls the element into view
+    closeRef.current?.focus({ preventScroll: true });
 
     return () => {
       document.removeEventListener('keydown', onKey);
@@ -162,7 +164,11 @@ const VideoLightbox = ({ src, onClose }) => {
     };
   }, [onClose]);
 
-  return (
+  // Portalled to <body>. `.page` carries a transform, and a transformed
+  // ancestor becomes the containing block for position:fixed descendants —
+  // so rendered in place this overlay anchored to the top of the whole page
+  // rather than the viewport, and focusing it scrolled the reader up there.
+  return createPortal(
     <div
       className="cur-lightbox"
       role="dialog"
@@ -190,7 +196,8 @@ const VideoLightbox = ({ src, onClose }) => {
           <X size={18} strokeWidth={2.4} />
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

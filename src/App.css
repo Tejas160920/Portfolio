@@ -12,11 +12,13 @@
   /* Establishes the stacking context every section's decorations sit in */
   isolation: isolate;
 
-  /* Content settles in as the intro curtain lifts off it */
+  /* Content settles in as the intro curtain lifts off it.
+     Opacity only, deliberately: a transform here — including one merely
+     animating to `none` — makes .page the containing block for every
+     position:fixed descendant, so overlays anchor to the whole document
+     instead of the viewport and land at the top of the page. */
   opacity: 0;
-  transform: translate3d(0, 12px, 0);
-  transition: opacity 0.8s var(--ease-out-expo),
-    transform 0.8s var(--ease-out-expo);
+  transition: opacity 0.8s var(--ease-out-expo);
 
   /* Failsafe: if the intro callback never lands (JS error, aborted timer),
      reveal the page anyway rather than leaving a blank screen. Animations
@@ -26,17 +28,15 @@
 
 .page.intro-done {
   opacity: 1;
-  transform: none;
 }
 
 @keyframes page-failsafe {
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .page {
     opacity: 1;
-    transform: none;
     animation: none;
   }
 }
