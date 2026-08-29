@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Music, Tv, Gamepad2, Trophy, Sun, Moon } from 'lucide-react';
 import './Currently.css';
 import Reveal from './Reveal';
@@ -19,18 +19,6 @@ const MEDIA = {
     focus: '50% 30%',
     span: 'tall'
   },
-  game: {
-    Icon: Gamepad2,
-    label: 'Currently playing',
-    title: 'Valorant',
-    detail: 'Played competitively',
-    image: '/currently/game.webp',
-    focus: '50% 50%',
-    span: 'portrait',
-    hover: 'Play together',
-    // 1080x1920 source, which is why this tile is portrait
-    video: '/currently/valorant-hover.mp4'
-  },
   album: {
     Icon: Music,
     label: 'On repeat',
@@ -48,6 +36,16 @@ const MEDIA = {
     image: '/currently/book.webp',
     focus: '50% 40%',
     span: 'normal'
+  },
+  game: {
+    Icon: Gamepad2,
+    label: 'Currently playing',
+    title: 'Valorant',
+    detail: 'Played competitively',
+    image: '/currently/game.webp',
+    focus: '50% 50%',
+    span: 'wide',
+    hover: 'Play together'
   }
 };
 
@@ -89,45 +87,17 @@ const describeHour = (hour) => {
 const splitTime = (date) => {
   const parts = timeParts.formatToParts(date);
   const get = (type) => parts.find((p) => p.type === type)?.value ?? '';
-  return { clock: `${get('hour')}:${get('minute')}`, meridiem: get('dayPeriod') };
+  return {
+    clock: `${get('hour')}:${get('minute')}`,
+    meridiem: get('dayPeriod')
+  };
 };
 
 const MediaCard = ({ item, delay }) => {
-  const { Icon, label, title, detail, image, focus, span, hover, video } = item;
-  const videoRef = useRef(null);
-  const loadedRef = useRef(false);
-
-  // The clip is 2.6MB, so the source is attached only on first hover. Nobody
-  // pays for it unless they ask to see it, and it never loads on touch, where
-  // there is no hover to trigger it.
-  const startVideo = useCallback(() => {
-    const el = videoRef.current;
-    if (!el || !video) return;
-
-    if (!loadedRef.current) {
-      el.src = video;
-      loadedRef.current = true;
-    }
-    el.play().catch(() => {
-      // Playback can still be refused; the poster art simply stays
-    });
-  }, [video]);
-
-  const stopVideo = useCallback(() => {
-    const el = videoRef.current;
-    if (!el || !loadedRef.current) return;
-    el.pause();
-    el.currentTime = 0;
-  }, []);
+  const { Icon, label, title, detail, image, focus, span, hover } = item;
 
   return (
-    <Reveal
-      animation="up"
-      delay={delay}
-      className={`cur-card cur-media span-${span} ${video ? 'has-video' : ''}`}
-      onPointerEnter={video ? startVideo : undefined}
-      onPointerLeave={video ? stopVideo : undefined}
-    >
+    <Reveal animation="up" delay={delay} className={`cur-card cur-media span-${span}`}>
       <img
         className="cur-art"
         src={image}
@@ -136,20 +106,6 @@ const MediaCard = ({ item, delay }) => {
         loading="lazy"
         style={{ objectPosition: focus }}
       />
-
-      {video && (
-        <video
-          ref={videoRef}
-          className="cur-video"
-          muted
-          loop
-          playsInline
-          preload="none"
-          aria-hidden="true"
-          tabIndex={-1}
-        />
-      )}
-
       <div className="cur-scrim" aria-hidden="true" />
 
       <div className="cur-body">
@@ -191,6 +147,7 @@ const Currently = () => {
   const hour = hourIn(now);
   const isDay = hour >= 6 && hour < 19;
   const { clock, meridiem } = splitTime(now);
+  // Fraction of the day elapsed there, drawn as the ring below
   const dayProgress = (hour * 60 + now.getMinutes()) / 1440;
 
   return (
@@ -210,24 +167,14 @@ const Currently = () => {
           <p className="currently-intro">The parts a résumé leaves out.</p>
         </Reveal>
 
-        {/* Source order drives grid placement:
-              row 1   valorant (2x3)   anime (2x2)   album (2)
-              row 2     ^                ^           book (2)
-              row 3     ^              clock (4)
-              row 4   supporting (6) */}
         <div className="currently-bento">
-          <MediaCard item={MEDIA.game} delay={0} />
-          <MediaCard item={MEDIA.anime} delay={70} />
-          <MediaCard item={MEDIA.album} delay={140} />
-          <MediaCard item={MEDIA.book} delay={210} />
+          <MediaCard item={MEDIA.anime} delay={0} />
 
           {/* Clock ------------------------------------------------------- */}
-          <Reveal animation="up" delay={280} className="cur-card cur-clock span-wide">
+          <Reveal animation="up" delay={70} className="cur-card cur-clock span-wide">
             <div className="cur-clock-top">
               <span className="cur-label">
-                {isDay
-                  ? <Sun size={13} strokeWidth={2.1} />
-                  : <Moon size={13} strokeWidth={2.1} />}
+                {isDay ? <Sun size={13} strokeWidth={2.1} /> : <Moon size={13} strokeWidth={2.1} />}
                 Local time
               </span>
               <span className="cur-live" aria-hidden="true" />
@@ -252,8 +199,12 @@ const Currently = () => {
             </p>
           </Reveal>
 
+          <MediaCard item={MEDIA.album} delay={140} />
+          <MediaCard item={MEDIA.book} delay={210} />
+          <MediaCard item={MEDIA.game} delay={280} />
+
           {/* Supporting -------------------------------------------------- */}
-          <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-full">
+          <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-normal">
             <span className="cur-label">
               <Trophy size={13} strokeWidth={2.1} />
               Always supporting
