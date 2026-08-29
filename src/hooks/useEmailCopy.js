@@ -5,13 +5,30 @@ export const EMAIL = 'tejassgaikwad.dev@gmail.com';
 export const MAILTO = `mailto:${EMAIL}`;
 
 /**
- * Copy the address to the clipboard alongside a mailto link.
+ * A Gmail compose URL with the address (and optionally a subject) filled in.
  *
- * A bare mailto only works when the visitor's browser has a mail handler
- * registered. Plenty of people use webmail with none set, so the click either
- * does nothing or opens an empty tab — which looks broken. Copying as well
- * means the click always produces something useful, whatever the browser does
- * with the mailto itself.
+ * Why not a plain mailto: that only opens anything when the visitor's browser
+ * has a mail handler registered. Plenty of people use webmail with none set,
+ * so the click either does nothing or opens an empty tab. This always opens a
+ * real compose window with the recipient already there.
+ *
+ * The `to` fallback in the URL means a signed-out visitor still lands on
+ * Gmail's compose screen after logging in, rather than an empty inbox.
+ */
+export const composeUrl = (subject = '') => {
+  const params = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    to: EMAIL
+  });
+  if (subject) params.set('su', subject);
+  return `https://mail.google.com/mail/?${params.toString()}`;
+};
+
+/**
+ * Copy the address to the clipboard. Used by the Contact section, where
+ * copying is the point; the Hire me and footer links open a compose window
+ * instead.
  */
 export const useEmailCopy = ({ resetAfter = 2000 } = {}) => {
   const [copied, setCopied] = useState(false);
@@ -22,8 +39,6 @@ export const useEmailCopy = ({ resetAfter = 2000 } = {}) => {
   }, []);
 
   const copyEmail = useCallback(() => {
-    // Deliberately does NOT preventDefault: the mailto still fires for anyone
-    // who has a mail client, and this is a belt-and-braces addition.
     if (!navigator.clipboard?.writeText) return;
 
     navigator.clipboard.writeText(EMAIL)
@@ -32,9 +47,7 @@ export const useEmailCopy = ({ resetAfter = 2000 } = {}) => {
         if (timerRef.current) clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => setCopied(false), resetAfter);
       })
-      .catch(() => {
-        // Clipboard can be blocked; the mailto is still doing its job
-      });
+      .catch(() => {});
   }, [resetAfter]);
 
   return [copied, copyEmail];

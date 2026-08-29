@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Navbar.css';
 import { useMagnetic } from '../hooks/useMagnetic';
-import { useEmailCopy, MAILTO } from '../hooks/useEmailCopy';
+import { composeUrl } from '../hooks/useEmailCopy';
 
 const SECTIONS = [
   { id: 'home', label: 'Home' },
@@ -12,14 +12,13 @@ const SECTIONS = [
   { id: 'contact', label: 'Contact' }
 ];
 
-const EMAIL_TITLE = 'Opens your mail app, and copies the address either way';
+const HIRE_SUBJECT = 'Opportunity for Tejas';
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const listRef = useRef(null);
   const hireRef = useMagnetic({ strength: 0.3 });
-  const [emailCopied, copyEmail] = useEmailCopy();
 
   // Active section via IntersectionObserver.
   // The previous version measured all six sections with getBoundingClientRect
@@ -147,13 +146,13 @@ const Navbar = () => {
 
       <a
         ref={hireRef}
-        href={MAILTO}
+        href={composeUrl(HIRE_SUBJECT)}
         className="hire-me-button"
-        onClick={copyEmail}
-        title={EMAIL_TITLE}
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <span className="hire-dot" />
-        {emailCopied ? 'Email copied' : 'Hire me'}
+        Hire me
       </a>
     </>
   );
