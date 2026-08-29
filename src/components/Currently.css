@@ -68,8 +68,6 @@
 .span-tall   { grid-column: span 2; grid-row: span 2; }
 .span-wide   { grid-column: span 4; }
 .span-normal { grid-column: span 2; }
-.cur-card.span-wide.cur-media { grid-column: span 3; }
-.cur-card.cur-plain           { grid-column: span 3; }
 
 /* Artwork ------------------------------------------------------------------ */
 .cur-art {
@@ -267,17 +265,20 @@
     grid-row: span 2;
   }
 
-  .span-wide,
-  .span-normal,
-  .cur-card.span-wide.cur-media,
-  .cur-card.cur-plain {
+  .span-normal {
     grid-column: span 1;
   }
 
-  /* Clock takes the full row */
+  /* Clock and crests each take a full row of their own, below the two
+     portrait tiles and the pair of covers. */
+  .cur-clock,
+  .cur-teams {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
   .cur-clock {
-    grid-column: span 1 !important;
-    grid-row: span 2;
+    min-height: 150px;
   }
 
   .cur-card {
@@ -424,4 +425,49 @@
   .cur-crests {
     gap: 0.7rem;
   }
+}
+
+
+/* ==========================================================================
+   Hover video (Valorant)
+   Sits over the poster art and fades in once it is playing. The source is
+   attached in JS on first hover, so this element downloads nothing until
+   someone actually asks for it.
+   ========================================================================== */
+.cur-video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.has-video:hover .cur-video {
+  opacity: 1;
+}
+
+/* Fade the still out underneath so the two do not double-expose */
+.has-video:hover .cur-art {
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.7s var(--ease-out-quint);
+}
+
+.cur-art {
+  opacity: 1;
+  transition: opacity 0.45s ease, transform 0.7s var(--ease-out-quint);
+}
+
+/* Touch devices never fire hover, so the video would never play and the
+   element would just sit there empty. Keep the still. */
+@media (hover: none) {
+  .cur-video { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cur-video { display: none; }
+  .has-video:hover .cur-art { opacity: 1; }
 }
