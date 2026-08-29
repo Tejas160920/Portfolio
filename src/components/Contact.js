@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Github, Linkedin, Check } from 'lucide-react';
 import { FiSend, FiUser, FiMessageSquare, FiMail } from 'react-icons/fi';
 import './Contact.css';
+import { EMAIL } from '../hooks/useEmailCopy';
 import Reveal from './Reveal';
 
 const Contact = () => {
@@ -15,7 +16,7 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const copyEmailToClipboard = () => {
-    const email = 'tejasgaikwad16092002@gmail.com';
+    const email = EMAIL;
     navigator.clipboard.writeText(email)
       .then(() => {
         setCopied(true);

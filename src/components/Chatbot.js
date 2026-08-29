@@ -338,7 +338,7 @@ const Chatbot = () => {
         ...prev,
         {
           type: 'bot',
-          text: "Sorry, I'm having trouble connecting right now. The AI service might be waking up - please try again in a moment, or reach out to Tejas directly at tejasgaikwad16092002@gmail.com"
+          text: "Sorry, I'm having trouble connecting right now. The AI service might be waking up - please try again in a moment, or reach out to Tejas directly at tejassgaikwad.dev@gmail.com"
         }
       ]);
     } finally {
