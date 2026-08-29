@@ -333,33 +333,40 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  gap: clamp(0.5rem, 2vw, 1.25rem);
   flex: 1;
   min-height: 0;
   width: 100%;
+  /* Never let a crest push past the card edge */
+  overflow: hidden;
 }
 
 .cur-crest {
-  display: grid;
-  place-items: center;
-  height: clamp(46px, 7.5vw, 66px);
-  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  min-width: 0;
   opacity: 0.95;
   transition: opacity 0.3s ease, transform 0.35s var(--ease-spring);
 }
 
 .cur-crest img {
-  height: 100%;
+  display: block;
+  /* Matching heights, so a landscape mark reads as strongly as a square one */
+  height: clamp(40px, 5.5vw, 58px);
   width: auto;
-  max-width: none;
+  max-width: 100%;
   object-fit: contain;
 }
 
 /* The centre crest is the one he actually follows */
 .cur-crest.is-lead {
-  height: clamp(58px, 9.5vw, 84px);
   opacity: 1;
+}
+
+.cur-crest.is-lead img {
+  height: clamp(52px, 7vw, 74px);
 }
 
 .cur-teams:hover .cur-crest {
