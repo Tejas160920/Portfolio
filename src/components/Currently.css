@@ -319,3 +319,109 @@
   .cur-card:hover { transform: none; }
   .cur-media:hover .cur-art { transform: scale(1.02); }
 }
+
+/* ==========================================================================
+   Team crests
+   Paper Rex leads in the centre, Bills left, India right.
+   ========================================================================== */
+.cur-teams {
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cur-crests {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.9rem, 3vw, 1.6rem);
+  flex: 1;
+  min-height: 0;
+}
+
+.cur-crest {
+  display: grid;
+  place-items: center;
+  width: clamp(34px, 8vw, 46px);
+  height: clamp(34px, 8vw, 46px);
+  flex-shrink: 0;
+  /* Crests sit at mixed weights, so ease them back and lift on hover
+     rather than competing with the section headings at full strength. */
+  opacity: 0.72;
+  transition: opacity 0.3s ease, transform 0.35s var(--ease-spring);
+}
+
+.cur-crest img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* The centre crest is the one he actually follows */
+.cur-crest.is-lead {
+  width: clamp(46px, 11vw, 62px);
+  height: clamp(46px, 11vw, 62px);
+  opacity: 1;
+}
+
+.cur-teams:hover .cur-crest {
+  opacity: 1;
+}
+
+.cur-crest:hover {
+  transform: translateY(-3px) scale(1.06);
+}
+
+/* ==========================================================================
+   Hover caption (Valorant)
+   ========================================================================== */
+.cur-hover {
+  position: absolute;
+  top: clamp(0.9rem, 1.8vw, 1.25rem);
+  right: clamp(0.9rem, 1.8vw, 1.25rem);
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-pill);
+
+  background: var(--accent-green);
+  color: #04120a;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(-6px) scale(0.94);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.35s var(--ease-spring);
+}
+
+.cur-media:hover .cur-hover,
+.cur-media:focus-within .cur-hover {
+  opacity: 1;
+  transform: none;
+}
+
+/* No hover on touch, so show it outright rather than hiding it forever */
+@media (hover: none) {
+  .cur-hover {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .cur-hover {
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.58rem;
+  }
+
+  .cur-crests {
+    gap: 0.7rem;
+  }
+}

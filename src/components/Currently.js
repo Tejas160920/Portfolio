@@ -44,17 +44,17 @@ const MEDIA = {
     detail: 'Played competitively',
     image: '/currently/game.webp',
     focus: '50% 50%',
-    span: 'wide'
+    span: 'wide',
+    hover: 'Play together'
   }
 };
 
-/* Teams still to come from Tejas — see the note in the section below. */
-const SUPPORTING = {
-  Icon: Trophy,
-  label: 'Always supporting',
-  title: 'Add your teams',
-  detail: 'Through every season'
-};
+/* Left to right, with Paper Rex centred as the lead. */
+const TEAMS = [
+  { name: 'Buffalo Bills', image: '/currently/team-bills.png' },
+  { name: 'Paper Rex', image: '/currently/team-prx.png', lead: true },
+  { name: 'India', image: '/currently/team-india.png' }
+];
 
 const TIME_ZONE = 'America/Los_Angeles';
 
@@ -94,7 +94,7 @@ const splitTime = (date) => {
 };
 
 const MediaCard = ({ item, delay }) => {
-  const { Icon, label, title, detail, image, focus, span } = item;
+  const { Icon, label, title, detail, image, focus, span, hover } = item;
 
   return (
     <Reveal animation="up" delay={delay} className={`cur-card cur-media span-${span}`}>
@@ -116,6 +116,13 @@ const MediaCard = ({ item, delay }) => {
         <p className="cur-title">{title}</p>
         <p className="cur-detail">{detail}</p>
       </div>
+
+      {hover && (
+        <span className="cur-hover" aria-hidden="true">
+          <Gamepad2 size={14} strokeWidth={2.2} />
+          {hover}
+        </span>
+      )}
     </Reveal>
   );
 };
@@ -197,13 +204,25 @@ const Currently = () => {
           <MediaCard item={MEDIA.game} delay={280} />
 
           {/* Supporting -------------------------------------------------- */}
-          <Reveal animation="up" delay={350} className="cur-card cur-plain span-normal">
+          <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-normal">
             <span className="cur-label">
-              <SUPPORTING.Icon size={13} strokeWidth={2.1} />
-              {SUPPORTING.label}
+              <Trophy size={13} strokeWidth={2.1} />
+              Always supporting
             </span>
-            <p className="cur-title">{SUPPORTING.title}</p>
-            <p className="cur-detail">{SUPPORTING.detail}</p>
+
+            <div className="cur-crests">
+              {TEAMS.map(({ name, image, lead }) => (
+                <span
+                  key={name}
+                  className={`cur-crest ${lead ? 'is-lead' : ''}`}
+                  title={name}
+                >
+                  <img src={image} alt={name} loading="lazy" />
+                </span>
+              ))}
+            </div>
+
+            <p className="cur-detail">Through every season</p>
           </Reveal>
         </div>
       </div>
