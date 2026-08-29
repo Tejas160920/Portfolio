@@ -12,6 +12,7 @@ import Marquee from './components/Marquee';
 import Portfolio from './components/Portfolio';
 import Resume from './components/Resume';
 import DomainsSection from './components/Domains';
+import Currently from './components/Currently';
 import CustomCursor from './components/CustomCursor';
 import SkillWheel from './components/Skillwheel';
 import Contact from './components/Contact';
@@ -47,6 +48,7 @@ function App() {
         <Portfolio />
         <Resume />
         <DomainsSection />
+        <Currently />
         <Contact />
         <Footer />
       </main>
