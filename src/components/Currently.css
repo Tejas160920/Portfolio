@@ -366,7 +366,7 @@
 }
 
 .cur-crest.is-lead img {
-  height: clamp(58px, 8vw, 82px);
+  height: clamp(58px, 8vw, 75px);
 }
 
 .cur-teams:hover .cur-crest {
