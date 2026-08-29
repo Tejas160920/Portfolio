@@ -1,61 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Music, Tv, Clock, Gamepad2, Trophy } from 'lucide-react';
+import { BookOpen, Music, Tv, Gamepad2, Trophy, Sun, Moon } from 'lucide-react';
 import './Currently.css';
 import Reveal from './Reveal';
 
 /* ==========================================================================
    EDIT ME
-   Everything on this panel comes from the array below. Change a `value`,
-   redeploy, done. Keep it to six rows — more starts reading like a diary,
-   and a stale entry is worse than no panel at all.
+   Swap a title, detail or image and the card updates. Artwork lives in
+   public/currently/. Keep this short — a stale entry reads worse than none.
    ========================================================================== */
-const ITEMS = [
-  {
-    Icon: BookOpen,
-    label: 'Currently reading',
-    value: 'The Lord of the Rings',
-    detail: 'J.R.R. Tolkien'
-  },
-  {
-    Icon: Music,
-    label: 'On repeat',
-    // TODO: swap for the track you wanted
-    value: 'Add your song here',
-    detail: 'Artist name'
-  },
-  {
+const MEDIA = {
+  anime: {
     Icon: Tv,
     label: 'Currently watching',
-    value: 'Attack on Titan',
-    detail: 'Rewatching, and still not over it'
+    title: 'Attack on Titan',
+    detail: 'Rewatching, still not over it',
+    image: '/currently/anime.jpg',
+    // The subject sits high in this poster
+    focus: '50% 30%',
+    span: 'tall'
   },
-  {
+  album: {
+    Icon: Music,
+    label: 'On repeat',
+    title: 'My Dear Melancholy,',
+    detail: 'The Weeknd',
+    image: '/currently/album.jpg',
+    focus: '50% 55%',
+    span: 'normal'
+  },
+  book: {
+    Icon: BookOpen,
+    label: 'Currently reading',
+    title: 'The Lord of the Rings',
+    detail: 'J.R.R. Tolkien',
+    image: '/currently/book.webp',
+    focus: '50% 40%',
+    span: 'normal'
+  },
+  game: {
     Icon: Gamepad2,
     label: 'Currently playing',
-    value: 'Valorant',
-    detail: 'Played competitively'
-  },
-  {
-    Icon: Trophy,
-    label: 'Always supporting',
-    // TODO: swap for your teams
-    value: 'Add your teams here',
-    detail: 'Through everything'
+    title: 'Valorant',
+    detail: 'Played competitively',
+    image: '/currently/game.webp',
+    focus: '50% 50%',
+    span: 'wide'
   }
-];
+};
 
-/** Where the clock is anchored. */
+/* Teams still to come from Tejas — see the note in the section below. */
+const SUPPORTING = {
+  Icon: Trophy,
+  label: 'Always supporting',
+  title: 'Add your teams',
+  detail: 'Through every season'
+};
+
 const TIME_ZONE = 'America/Los_Angeles';
-const TIME_LABEL = 'San Jose, CA';
 
-const timeFormatter = new Intl.DateTimeFormat('en-US', {
+const timeParts = new Intl.DateTimeFormat('en-US', {
   timeZone: TIME_ZONE,
   hour: 'numeric',
   minute: '2-digit',
   hour12: true
 });
 
-/** Hour there, used to pick the greeting line. */
 const hourIn = (date) =>
   Number(
     new Intl.DateTimeFormat('en-US', {
@@ -74,37 +83,65 @@ const describeHour = (hour) => {
   return 'Probably still shipping';
 };
 
+/** Split "10:42 AM" so the meridiem can be styled down. */
+const splitTime = (date) => {
+  const parts = timeParts.formatToParts(date);
+  const get = (type) => parts.find((p) => p.type === type)?.value ?? '';
+  return {
+    clock: `${get('hour')}:${get('minute')}`,
+    meridiem: get('dayPeriod')
+  };
+};
+
+const MediaCard = ({ item, delay }) => {
+  const { Icon, label, title, detail, image, focus, span } = item;
+
+  return (
+    <Reveal animation="up" delay={delay} className={`cur-card cur-media span-${span}`}>
+      <img
+        className="cur-art"
+        src={image}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        style={{ objectPosition: focus }}
+      />
+      <div className="cur-scrim" aria-hidden="true" />
+
+      <div className="cur-body">
+        <span className="cur-label">
+          <Icon size={13} strokeWidth={2.1} />
+          {label}
+        </span>
+        <p className="cur-title">{title}</p>
+        <p className="cur-detail">{detail}</p>
+      </div>
+    </Reveal>
+  );
+};
+
 const Currently = () => {
   const [now, setNow] = useState(() => new Date());
 
-  // Tick on the minute rather than every second: the display only shows
-  // minutes, so a per-second interval would be 59 wasted renders.
+  // Tick on the minute, not every second — the display only shows minutes,
+  // so a per-second interval would be 59 wasted renders an hour.
   useEffect(() => {
     let timeoutId;
-
-    const scheduleNextTick = () => {
-      const msToNextMinute = 60000 - (Date.now() % 60000);
+    const schedule = () => {
       timeoutId = setTimeout(() => {
         setNow(new Date());
-        scheduleNextTick();
-      }, msToNextMinute + 50);
+        schedule();
+      }, 60000 - (Date.now() % 60000) + 50);
     };
-
-    scheduleNextTick();
+    schedule();
     return () => clearTimeout(timeoutId);
   }, []);
 
-  const rows = [
-    ...ITEMS.slice(0, 3),
-    {
-      Icon: Clock,
-      label: 'Local time',
-      value: timeFormatter.format(now),
-      detail: `${TIME_LABEL} · ${describeHour(hourIn(now))}`,
-      live: true
-    },
-    ...ITEMS.slice(3)
-  ];
+  const hour = hourIn(now);
+  const isDay = hour >= 6 && hour < 19;
+  const { clock, meridiem } = splitTime(now);
+  // Fraction of the day elapsed there, drawn as the ring below
+  const dayProgress = (hour * 60 + now.getMinutes()) / 1440;
 
   return (
     <section id="currently" className="currently-section section-shell">
@@ -120,31 +157,54 @@ const Currently = () => {
         </Reveal>
 
         <Reveal animation="up" delay={140}>
-          <p className="currently-intro">
-            The parts a résumé leaves out.
-          </p>
+          <p className="currently-intro">The parts a résumé leaves out.</p>
         </Reveal>
 
-        <div className="currently-grid">
-          {rows.map(({ Icon, label, value, detail, live }, index) => (
-            <Reveal
-              key={label}
-              animation="up"
-              delay={index * 70}
-              className="currently-card"
-            >
-              <div className="currently-head">
-                <span className="currently-icon">
-                  <Icon size={16} strokeWidth={1.9} />
-                </span>
-                <span className="currently-label">{label}</span>
-                {live && <span className="currently-live" aria-hidden="true" />}
-              </div>
+        <div className="currently-bento">
+          <MediaCard item={MEDIA.anime} delay={0} />
 
-              <p className="currently-value">{value}</p>
-              {detail && <p className="currently-detail">{detail}</p>}
-            </Reveal>
-          ))}
+          {/* Clock ------------------------------------------------------- */}
+          <Reveal animation="up" delay={70} className="cur-card cur-clock span-wide">
+            <div className="cur-clock-top">
+              <span className="cur-label">
+                {isDay ? <Sun size={13} strokeWidth={2.1} /> : <Moon size={13} strokeWidth={2.1} />}
+                Local time
+              </span>
+              <span className="cur-live" aria-hidden="true" />
+            </div>
+
+            <div className="cur-clock-face">
+              <span className="cur-clock-time">{clock}</span>
+              <span className="cur-clock-meridiem">{meridiem}</span>
+            </div>
+
+            {/* How far through the day it is where he is */}
+            <div className="cur-clock-track" aria-hidden="true">
+              <span
+                className="cur-clock-fill"
+                style={{ transform: `scaleX(${dayProgress.toFixed(4)})` }}
+              />
+            </div>
+
+            <p className="cur-clock-place">
+              San Jose, California
+              <span className="cur-clock-mood">{describeHour(hour)}</span>
+            </p>
+          </Reveal>
+
+          <MediaCard item={MEDIA.album} delay={140} />
+          <MediaCard item={MEDIA.book} delay={210} />
+          <MediaCard item={MEDIA.game} delay={280} />
+
+          {/* Supporting -------------------------------------------------- */}
+          <Reveal animation="up" delay={350} className="cur-card cur-plain span-normal">
+            <span className="cur-label">
+              <SUPPORTING.Icon size={13} strokeWidth={2.1} />
+              {SUPPORTING.label}
+            </span>
+            <p className="cur-title">{SUPPORTING.title}</p>
+            <p className="cur-detail">{SUPPORTING.detail}</p>
+          </Reveal>
         </div>
       </div>
     </section>
