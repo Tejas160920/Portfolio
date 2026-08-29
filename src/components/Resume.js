@@ -95,21 +95,6 @@ const Resume = () => {
                   </div>
                 </div>
               </Reveal>
-
-              <Reveal animation="left" delay={220} className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-content">
-                  <div className="time-badge">Feb 2022 - Jul 2024</div>
-                  <div className="content-card">
-                    <h4>Software Engineer</h4>
-                    <p className="institution">Hexaware Technologies, India</p>
-                    <ul className="experience-points">
-                      <li>Developed REST APIs and backend features using Java, Spring Boot, and SQL.</li>
-                      <li>Refactored a monolith into microservices and set up CI/CD pipelines for faster releases.</li>
-                    </ul>
-                  </div>
-                </div>
-              </Reveal>
             </div>
           </div>
         </div>
