@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BookOpen, Music, Tv, Gamepad2, Trophy, Sun, Moon } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { BookOpen, Music, Tv, Gamepad2, Trophy, Sun, Moon, Play, X } from 'lucide-react';
 import './Currently.css';
 import Reveal from './Reveal';
 
@@ -45,7 +45,8 @@ const MEDIA = {
     image: '/currently/game.webp',
     focus: '50% 50%',
     span: 'wide',
-    hover: 'Play together'
+    action: 'Play together',
+    video: '/currently/valorant-hover.mp4'
   }
 };
 
@@ -93,8 +94,8 @@ const splitTime = (date) => {
   };
 };
 
-const MediaCard = ({ item, delay }) => {
-  const { Icon, label, title, detail, image, focus, span, hover } = item;
+const MediaCard = ({ item, delay, onAction }) => {
+  const { Icon, label, title, detail, image, focus, span, action } = item;
 
   return (
     <Reveal animation="up" delay={delay} className={`cur-card cur-media span-${span}`}>
@@ -117,18 +118,86 @@ const MediaCard = ({ item, delay }) => {
         <p className="cur-detail">{detail}</p>
       </div>
 
-      {hover && (
-        <span className="cur-hover" aria-hidden="true">
-          <Gamepad2 size={14} strokeWidth={2.2} />
-          {hover}
-        </span>
+      {action && (
+        <button
+          type="button"
+          className="cur-action"
+          onClick={onAction}
+          aria-label={`${action} — play the clip`}
+        >
+          <Play size={13} strokeWidth={2.6} fill="currentColor" />
+          {action}
+        </button>
       )}
     </Reveal>
   );
 };
 
+/**
+ * Lightbox for the Valorant clip.
+ *
+ * The source is 9:16, so it gets its own panel at that aspect rather than
+ * being squeezed into a landscape card. Mounted only while open, which is
+ * also what keeps the 4MB file from ever downloading unless asked for.
+ */
+const VideoLightbox = ({ src, onClose }) => {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKey);
+
+    // Hold the page still behind the overlay and restore focus on the way out
+    const previouslyFocused = document.activeElement;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = 'hidden';
+    closeRef.current?.focus();
+
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = overflow;
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      className="cur-lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Valorant clip"
+      onClick={onClose}
+    >
+      <div className="cur-lightbox-panel" onClick={(e) => e.stopPropagation()}>
+        <video
+          className="cur-lightbox-video"
+          src={src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          controls
+        />
+        <button
+          ref={closeRef}
+          type="button"
+          className="cur-lightbox-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <X size={18} strokeWidth={2.4} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Currently = () => {
   const [now, setNow] = useState(() => new Date());
+  const [openVideo, setOpenVideo] = useState(null);
+  const closeVideo = useCallback(() => setOpenVideo(null), []);
 
   // Tick on the minute, not every second — the display only shows minutes,
   // so a per-second interval would be 59 wasted renders an hour.
@@ -201,7 +270,11 @@ const Currently = () => {
 
           <MediaCard item={MEDIA.album} delay={140} />
           <MediaCard item={MEDIA.book} delay={210} />
-          <MediaCard item={MEDIA.game} delay={280} />
+          <MediaCard
+            item={MEDIA.game}
+            delay={280}
+            onAction={() => setOpenVideo(MEDIA.game.video)}
+          />
 
           {/* Supporting -------------------------------------------------- */}
           <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-normal">
@@ -226,6 +299,8 @@ const Currently = () => {
           </Reveal>
         </div>
       </div>
+
+      {openVideo && <VideoLightbox src={openVideo} onClose={closeVideo} />}
     </section>
   );
 };
