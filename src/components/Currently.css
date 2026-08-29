@@ -354,7 +354,7 @@
 .cur-crest img {
   display: block;
   /* Matching heights, so a landscape mark reads as strongly as a square one */
-  height: clamp(46px, 6.4vw, 66px);
+  height: clamp(52px, 7.2vw, 74px);
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -365,9 +365,6 @@
   opacity: 1;
 }
 
-.cur-crest.is-lead img {
-  height: clamp(58px, 8vw, 75px);
-}
 
 .cur-teams:hover .cur-crest {
   opacity: 1;
