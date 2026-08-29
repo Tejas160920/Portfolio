@@ -26,7 +26,7 @@ const MEDIA = {
     detail: 'Played competitively',
     image: '/currently/game.webp',
     focus: '50% 50%',
-    span: 'tall',
+    span: 'portrait',
     hover: 'Play together',
     // 1080x1920 source, which is why this tile is portrait
     video: '/currently/valorant-hover.mp4'
@@ -211,12 +211,13 @@ const Currently = () => {
         </Reveal>
 
         {/* Source order drives grid placement:
-              row 1   anime (2x2)   valorant (2x2)   album (2)
-              row 2     ^              ^             book (2)
-              row 3   clock (4)                      supporting (2) */}
+              row 1   valorant (2x3)   anime (2x2)   album (2)
+              row 2     ^                ^           book (2)
+              row 3     ^              clock (4)
+              row 4   supporting (6) */}
         <div className="currently-bento">
-          <MediaCard item={MEDIA.anime} delay={0} />
-          <MediaCard item={MEDIA.game} delay={70} />
+          <MediaCard item={MEDIA.game} delay={0} />
+          <MediaCard item={MEDIA.anime} delay={70} />
           <MediaCard item={MEDIA.album} delay={140} />
           <MediaCard item={MEDIA.book} delay={210} />
 
@@ -252,7 +253,7 @@ const Currently = () => {
           </Reveal>
 
           {/* Supporting -------------------------------------------------- */}
-          <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-normal">
+          <Reveal animation="up" delay={350} className="cur-card cur-plain cur-teams span-full">
             <span className="cur-label">
               <Trophy size={13} strokeWidth={2.1} />
               Always supporting
