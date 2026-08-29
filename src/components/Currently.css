@@ -255,30 +255,34 @@
    Two columns on phones. The poster keeps its two-row height so the section
    still has a focal point, and the clock spans the full width as the anchor.
    -------------------------------------------------------------------------- */
+/* ==========================================================================
+   MOBILE
+   Not the desktop bento at two columns — a different composition. The clock
+   leads as a full-width band because it is the one live thing here, the
+   poster and the two covers form a reading block, and Valorant and the
+   crests each take a full row so the play button and the three logos have
+   room to breathe.
+
+       [        LOCAL TIME        ]
+       [ Attack on ][   Album     ]
+       [   Titan   ][   Book      ]
+       [        VALORANT          ]
+       [       SUPPORTING         ]
+   ========================================================================== */
 @media (max-width: 760px) {
   .currently-bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 140px;
-    gap: 0.6rem;
+    grid-auto-rows: 128px;
+    gap: 0.55rem;
   }
 
-  .span-tall {
-    grid-column: span 1;
-    grid-row: span 2;
-  }
-
-  .span-wide,
-  .span-normal,
-  .cur-card.span-wide.cur-media,
-  .cur-card.cur-plain {
-    grid-column: span 1;
-  }
-
-  /* Clock takes the full row */
-  .cur-clock {
-    grid-column: span 1 !important;
-    grid-row: span 2;
-  }
+  /* DOM order serves the desktop grid; mobile reorders without touching it */
+  .cur-clock       { order: 1; grid-column: span 2; grid-row: span 1; }
+  .cur-slot-anime  { order: 2; grid-column: span 1; grid-row: span 2; }
+  .cur-slot-album  { order: 3; grid-column: span 1; grid-row: span 1; }
+  .cur-slot-book   { order: 4; grid-column: span 1; grid-row: span 1; }
+  .cur-slot-game   { order: 5; grid-column: span 2; grid-row: span 1; }
+  .cur-teams       { order: 6; grid-column: span 2; grid-row: span 1; }
 
   .cur-card {
     padding: 0.8rem;
@@ -289,29 +293,126 @@
     font-size: 0.55rem;
     letter-spacing: 0.1em;
     gap: 0.3rem;
+    margin-bottom: 0.25rem;
   }
 
   .cur-title {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
+    line-height: 1.15;
   }
 
   .cur-detail {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
+  }
+
+  /* Clock: a proper status band rather than a narrow column ---------------- */
+  .cur-clock {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 0.9rem;
+    row-gap: 0.5rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .cur-clock-top {
+    grid-column: 1 / -1;
+  }
+
+  .cur-clock-face {
+    grid-column: 1;
   }
 
   .cur-clock-time {
-    font-size: 2.1rem;
+    font-size: 2.3rem;
   }
 
+  .cur-clock-meridiem {
+    font-size: 0.8rem;
+  }
+
+  /* Place sits beside the time instead of under it */
   .cur-clock-place {
+    grid-column: 2;
     flex-direction: column;
-    gap: 0.15rem;
-    font-size: 0.72rem;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.1rem;
+    font-size: 0.7rem;
+    text-align: right;
   }
 
   .cur-clock-mood {
-    text-align: left;
-    font-size: 0.62rem;
+    font-size: 0.6rem;
+  }
+
+  .cur-clock-track {
+    grid-column: 1 / -1;
+    height: 2px;
+  }
+
+  /* Valorant: full width, so the play button clears the title -------------- */
+  .cur-slot-game .cur-title {
+    font-size: 1rem;
+  }
+
+  .cur-action {
+    top: 50%;
+    right: 0.8rem;
+    transform: translateY(-50%);
+    padding: 0.45rem 0.8rem;
+    font-size: 0.64rem;
+  }
+
+  .cur-media:hover .cur-action {
+    transform: translateY(-50%);
+  }
+
+  .cur-action:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  /* Crests: a full row, so they get real space ---------------------------- */
+  .cur-teams {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .cur-teams .cur-detail {
+    display: none;
+  }
+
+  .cur-crests {
+    gap: clamp(1.25rem, 8vw, 2.5rem);
+  }
+
+  .cur-crest img {
+    height: clamp(44px, 12vw, 58px);
+  }
+
+  .currently-intro {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Narrow phones: the poster block stacks so nothing gets pinched ----------- */
+@media (max-width: 400px) {
+  .currently-bento {
+    grid-auto-rows: 112px;
+  }
+
+  .cur-clock-time {
+    font-size: 2rem;
+  }
+
+  .cur-clock-place {
+    font-size: 0.64rem;
+  }
+
+  .cur-crest img {
+    height: 46px;
   }
 }
 

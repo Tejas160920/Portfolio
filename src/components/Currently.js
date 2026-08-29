@@ -95,11 +95,15 @@ const splitTime = (date) => {
   };
 };
 
-const MediaCard = ({ item, delay, onAction }) => {
+const MediaCard = ({ item, delay, onAction, slot }) => {
   const { Icon, label, title, detail, image, focus, span, action } = item;
 
   return (
-    <Reveal animation="up" delay={delay} className={`cur-card cur-media span-${span}`}>
+    <Reveal
+      animation="up"
+      delay={delay}
+      className={`cur-card cur-media span-${span} cur-slot-${slot}`}
+    >
       <img
         className="cur-art"
         src={image}
@@ -244,7 +248,7 @@ const Currently = () => {
         </Reveal>
 
         <div className="currently-bento">
-          <MediaCard item={MEDIA.anime} delay={0} />
+          <MediaCard item={MEDIA.anime} delay={0} slot="anime" />
 
           {/* Clock ------------------------------------------------------- */}
           <Reveal animation="up" delay={70} className="cur-card cur-clock span-wide">
@@ -275,11 +279,12 @@ const Currently = () => {
             </p>
           </Reveal>
 
-          <MediaCard item={MEDIA.album} delay={140} />
-          <MediaCard item={MEDIA.book} delay={210} />
+          <MediaCard item={MEDIA.album} delay={140} slot="album" />
+          <MediaCard item={MEDIA.book} delay={210} slot="book" />
           <MediaCard
             item={MEDIA.game}
             delay={280}
+            slot="game"
             onAction={() => setOpenVideo(MEDIA.game.video)}
           />
 
