@@ -131,6 +131,17 @@ const VISITOR_REASONS = [
   'Just browsing'
 ];
 
+/* Reflected back after a tap, so answering feels acknowledged rather than
+   like the form just grew. */
+const REACTIONS = {
+  'Recruiter': "A recruiter! Now you have my attention 👀",
+  'Engineer': "An engineer — we'll get along 🤝",
+  'Hiring manager': "A hiring manager! Hello 👋",
+  'Founder': "A founder — building something good? 🚀",
+  'Student': "A student! Ask me anything 🎓",
+  'Just curious': "Curiosity is underrated 🔍"
+};
+
 const STATS = [
   { value: '3+', label: 'Years building' },
   { value: '10+', label: 'Projects shipped' },
@@ -145,6 +156,8 @@ const Hero = () => {
   const [showNamePrompt, setShowNamePrompt] = useState(false);
   const [visitorRole, setVisitorRole] = useState('');
   const [visitorReason, setVisitorReason] = useState('');
+  const [visitorName, setVisitorName] = useState('');
+  const [visitorContact, setVisitorContact] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const namePromptTimerRef = useRef(null);
   const emojiTimerRef = useRef(null);
@@ -230,16 +243,17 @@ const Hero = () => {
 
     setIsSubmitting(true);
 
-    await saveUserName(visitorRole || 'Visitor');
+    await saveUserName(visitorName.trim() || visitorRole || 'Visitor');
 
     try {
       await fetch('/api/visitor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: visitorRole || 'Someone',
           role: visitorRole || 'Not specified',
-          company: visitorReason || 'Not specified',
+          reason: visitorReason || 'Not specified',
+          name: visitorName.trim(),
+          contact: visitorContact.trim(),
           likes: likes
         })
       });
@@ -251,13 +265,19 @@ const Hero = () => {
     setShowNamePrompt(false);
     setVisitorRole('');
     setVisitorReason('');
+    setVisitorName('');
+    setVisitorContact('');
   };
 
   const handleSkipName = () => {
     setShowNamePrompt(false);
     setVisitorRole('');
     setVisitorReason('');
+    setVisitorName('');
+    setVisitorContact('');
   };
+
+  const picked = Boolean(visitorRole || visitorReason);
 
   const scrollTo = useCallback((id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -436,6 +456,43 @@ const Hero = () => {
                   ))}
                 </div>
               </fieldset>
+
+              {picked && (
+                <div className="visitor-reveal">
+                  <p className="visitor-reaction">
+                    {REACTIONS[visitorRole] || "Good to have you here 👋"}
+                  </p>
+
+                  <label className="visitor-field">
+                    <span className="visitor-legend">Who do I thank?</span>
+                    <input
+                      type="text"
+                      value={visitorName}
+                      onChange={(e) => setVisitorName(e.target.value)}
+                      placeholder="First name is plenty"
+                      maxLength={50}
+                      autoComplete="given-name"
+                    />
+                  </label>
+
+                  <label className="visitor-field">
+                    <span className="visitor-legend">Where do I find you?</span>
+                    <input
+                      type="text"
+                      value={visitorContact}
+                      onChange={(e) => setVisitorContact(e.target.value)}
+                      placeholder="Email or LinkedIn"
+                      maxLength={120}
+                      autoComplete="email"
+                      onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+                    />
+                  </label>
+
+                  <p className="visitor-note">
+                    Both optional — I just like knowing who dropped by.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="name-prompt-buttons">

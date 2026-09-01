@@ -822,3 +822,69 @@
     gap: 0.4rem;
   }
 }
+
+/* ==========================================================================
+   Visitor prompt — the reveal
+   Only appears once a chip is tapped, so the ask lands after the visitor is
+   already engaged rather than guarding the door.
+   ========================================================================== */
+.visitor-reveal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--border-color);
+  animation: visitor-reveal-in 0.4s var(--ease-out-expo);
+}
+
+@keyframes visitor-reveal-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.visitor-reaction {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--accent-green);
+}
+
+.visitor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.visitor-field input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: inherit;
+  /* 16px keeps iOS from zooming the page on focus */
+  font-size: 16px;
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+.visitor-field input::placeholder {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.visitor-field input:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  background: var(--bg-card-hover);
+}
+
+.visitor-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visitor-reveal { animation: none; }
+}

@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, role, company, likes } = req.body;
+  const { name, role, reason, contact, likes } = req.body;
 
   // `role` and `company` are now the two chip answers. They come from fixed
   // lists in the UI, but this endpoint is public, so escape anything that
@@ -29,7 +29,13 @@ module.exports = async function handler(req, res) {
       .replace(/"/g, '&quot;');
 
   const who = esc(role) || 'Someone';
-  const why = esc(company) || 'Not specified';
+  const why = esc(reason) || 'Not specified';
+  const visitorName = esc(name);
+  const visitorContact = esc(contact);
+
+  // If they left an email, make the notification directly replyable
+  const rawContact = String(contact ?? '').trim();
+  const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawContact);
   const count = Number.isFinite(Number(likes)) ? Number(likes) : 0;
 
   // Check if env variables are set
@@ -58,7 +64,10 @@ module.exports = async function handler(req, res) {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: process.env.EMAIL_USER,
-    subject: `Portfolio visitor: ${who}${why !== 'Not specified' ? ` — ${why}` : ''}`,
+    subject: `Portfolio visitor: ${visitorName || who}${
+      visitorName ? ` (${who})` : ''
+    }${why !== 'Not specified' ? ` — ${why}` : ''}`,
+    ...(looksLikeEmail ? { replyTo: rawContact } : {}),
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #4ade80; border-bottom: 2px solid #4ade80; padding-bottom: 10px;">
@@ -66,6 +75,20 @@ module.exports = async function handler(req, res) {
         </h2>
         <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
           <table style="width: 100%; border-collapse: collapse;">
+            ${visitorName ? `
+            <tr>
+              <td style="padding: 10px 0; font-weight: bold; width: 140px;">Name:</td>
+              <td style="padding: 10px 0;"><strong>${visitorName}</strong></td>
+            </tr>` : ''}
+            ${visitorContact ? `
+            <tr>
+              <td style="padding: 10px 0; font-weight: bold; width: 140px;">Contact:</td>
+              <td style="padding: 10px 0;">${
+                looksLikeEmail
+                  ? `<a href="mailto:${visitorContact}">${visitorContact}</a>`
+                  : visitorContact
+              }</td>
+            </tr>` : ''}
             <tr>
               <td style="padding: 10px 0; font-weight: bold; width: 140px;">They are a:</td>
               <td style="padding: 10px 0;">${who}</td>
