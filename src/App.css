@@ -13,8 +13,8 @@
   isolation: isolate;
 
   /* Content settles in as the intro curtain lifts off it.
-     Opacity only, deliberately: a transform here — including one merely
-     animating to `none` — makes .page the containing block for every
+     Opacity only, deliberately: a transform here, including one merely
+     animating to `none`, makes .page the containing block for every
      position:fixed descendant, so overlays anchor to the whole document
      instead of the viewport and land at the top of the page. */
   opacity: 0;

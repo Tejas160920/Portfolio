@@ -28,7 +28,7 @@ const Footer = () => {
             Designed &amp; built by Tejas Gaikwad
           </p>
           <p className="footer-sub">
-            React · Firebase · Vercel — © {new Date().getFullYear()}
+            React · Firebase · Vercel · © {new Date().getFullYear()}
           </p>
         </div>
 

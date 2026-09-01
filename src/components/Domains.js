@@ -42,7 +42,7 @@ const domains = [
     icon: Database,
     name: 'Data',
     description:
-      'PostgreSQL, MongoDB, DynamoDB, Redis — modelling, indexing, and query tuning.',
+      'PostgreSQL, MongoDB, DynamoDB, Redis. Modelling, indexing, and query tuning.',
     tags: ['PostgreSQL', 'Redis', 'DynamoDB'],
     span: 'wide',
     accent: 'var(--accent-yellow)'

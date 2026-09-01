@@ -23,7 +23,7 @@ function styleInject(css, ref) {
   }
 }
 
-/* Ring diameter, kept in sync with the CSS below — the free-roaming state
+/* Ring diameter, kept in sync with the CSS below. The free-roaming state
    offsets by half of this to centre the ring on the pointer. */
 var RING = 46;
 var DOT = 6;
@@ -57,7 +57,7 @@ body{cursor:none!important}
   pointer-events:none;
   will-change:transform;
   /* transform is driven frame-by-frame in JS while free, so it must not be
-     transitioned here — that was the original source of the lag. */
+     transitioned here: that was the original source of the lag. */
   transition:width .22s cubic-bezier(.22,1,.36,1),
              height .22s cubic-bezier(.22,1,.36,1),
              border-radius .22s cubic-bezier(.22,1,.36,1),
@@ -114,7 +114,7 @@ const CustomCursor = () => {
       let rafId = null;
       let settled = false;
 
-      // Fraction of the remaining gap the ring closes each frame — this is
+      // Fraction of the remaining gap the ring closes each frame. This is
       // the trail. Lower = more lag behind the dot; higher = tighter.
       const FOLLOW = 0.22;
 
@@ -136,7 +136,7 @@ const CustomCursor = () => {
       const render = () => {
         rafId = requestAnimationFrame(render);
 
-        // The dot always tracks the pointer exactly — no smoothing, no lag.
+        // The dot always tracks the pointer exactly: no smoothing, no lag.
         cursorDot.style.transform =
           `translate3d(${position.x - DOT / 2}px, ${position.y - DOT / 2}px, 0)`;
 

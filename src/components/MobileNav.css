@@ -1,6 +1,6 @@
 /* ==========================================================================
    Mobile tab bar
-   Hidden entirely on desktop — this is not a resized version of the pill nav,
+   Hidden entirely on desktop, this is not a resized version of the pill nav,
    it is a different control for a different input method.
    ========================================================================== */
 
@@ -56,7 +56,7 @@
   }
 
   /* The icon carries the active state via a pill behind it, the way native
-     tab bars do — no layout shift when it changes. */
+     tab bars do, with no layout shift when it changes. */
   .mobile-nav-icon {
     display: grid;
     place-items: center;

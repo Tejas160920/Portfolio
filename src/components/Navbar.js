@@ -22,7 +22,7 @@ const Navbar = () => {
 
   // Active section via IntersectionObserver.
   // The previous version measured all six sections with getBoundingClientRect
-  // on every scroll frame — six forced synchronous layouts per frame, which
+  // on every scroll frame, six forced synchronous layouts per frame, which
   // was a large part of the scroll jank. The observer costs nothing on scroll.
   useEffect(() => {
     const seen = new Map();

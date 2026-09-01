@@ -4,7 +4,7 @@ import './AnimationGovernor.css';
 /**
  * Pauses CSS animations in regions that are not on screen.
  *
- * The page runs a lot of infinite animations — aurora blobs, the marquee,
+ * The page runs a lot of infinite animations: aurora blobs, the marquee,
  * avatar rings, orbital rings, the skill wheel's centre pulse. Without this
  * they all keep running while scrolled far past, and the browser keeps
  * compositing them. Chrome in particular does not throttle offscreen CSS

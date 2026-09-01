@@ -7,7 +7,7 @@ import Reveal from './Reveal';
 /* ==========================================================================
    EDIT ME
    Swap a title, detail or image and the card updates. Artwork lives in
-   public/currently/. Keep this short — a stale entry reads worse than none.
+   public/currently/. Keep this short: a stale entry reads worse than none.
    ========================================================================== */
 const MEDIA = {
   anime: {
@@ -128,7 +128,7 @@ const MediaCard = ({ item, delay, onAction, slot }) => {
           type="button"
           className="cur-action"
           onClick={onAction}
-          aria-label={`${action} — play the clip`}
+          aria-label={`${action}: play the clip`}
         >
           <Play size={13} strokeWidth={2.6} fill="currentColor" />
           {action}
@@ -169,7 +169,7 @@ const VideoLightbox = ({ src, onClose }) => {
   }, [onClose]);
 
   // Portalled to <body>. `.page` carries a transform, and a transformed
-  // ancestor becomes the containing block for position:fixed descendants —
+  // ancestor becomes the containing block for position:fixed descendants -
   // so rendered in place this overlay anchored to the top of the whole page
   // rather than the viewport, and focusing it scrolled the reader up there.
   return createPortal(
@@ -210,7 +210,7 @@ const Currently = () => {
   const [openVideo, setOpenVideo] = useState(null);
   const closeVideo = useCallback(() => setOpenVideo(null), []);
 
-  // Tick on the minute, not every second — the display only shows minutes,
+  // Tick on the minute rather than every second: the display shows minutes,
   // so a per-second interval would be 59 wasted renders an hour.
   useEffect(() => {
     let timeoutId;

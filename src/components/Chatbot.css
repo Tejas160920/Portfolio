@@ -1029,7 +1029,7 @@
   /* The panel is pinned to exactly the visible area: --chat-top is where
      the visual viewport starts and --chat-vh is how tall it is. Matching
      both means the composer already sits just above the keyboard, so iOS
-     never needs to scroll anything to reveal it — which is what was pushing
+     never needs to scroll anything to reveal it, which is what was pushing
      the header off screen and leaving dead space below the input. */
   .chatbot-fullscreen {
     top: var(--chat-top, 0px);
@@ -1052,7 +1052,7 @@
     min-height: 0;
   }
 
-  /* Unmistakable back affordance — this is the only way out on a phone */
+  /* Unmistakable back affordance: this is the only way out on a phone */
   .mobile-close-btn {
     border: 1px solid var(--border-color) !important;
     background: var(--bg-elevated) !important;

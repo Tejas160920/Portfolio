@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Atmosphere — the one continuous page background
+   Atmosphere: the one continuous page background
    Fixed to the viewport so it never scrolls with, or seams between, sections.
    ========================================================================== */
 
@@ -105,7 +105,7 @@
   /* Fade the rule out toward the edges so it reads as texture, not a table */
   -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
   mask-image: radial-gradient(ellipse 90% 70% at 50% 45%, #000 20%, transparent 78%);
-  /* Parallax against the aurora at a different rate — adds depth */
+  /* Parallax against the aurora at a different rate, which adds depth */
   transform: translate3d(0, 0, 0);
   will-change: transform;
 }

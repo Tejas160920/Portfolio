@@ -102,7 +102,7 @@ const Chatbot = () => {
   }, []);
 
   // Persist the current chat, debounced.
-  // This used to run on every `messages` change — meaning once per streamed
+  // This used to run on every `messages` change, which meant once per streamed
   // token it serialised the entire chat history with JSON.stringify and did a
   // synchronous localStorage write, blocking the main thread mid-frame. Now
   // it settles after the reply stops changing.
@@ -119,7 +119,7 @@ const Chatbot = () => {
         try {
           localStorage.setItem('tejas-portfolio-chats', JSON.stringify(updated));
         } catch (e) {
-          // Quota exceeded or private mode — the chat still works in memory
+          // Quota exceeded or private mode: the chat still works in memory
         }
         return updated;
       });
@@ -135,7 +135,7 @@ const Chatbot = () => {
 
   // Keyed on message COUNT, not on the messages array. Streaming rewrites the
   // last message on every frame, and the old dependency restarted a smooth
-  // scrollIntoView animation each time — hundreds of interrupted animations
+  // scrollIntoView animation each time: hundreds of interrupted animations
   // over one reply, which is most of what made this page stutter.
   useEffect(() => {
     scrollToBottom();

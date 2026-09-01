@@ -1,8 +1,8 @@
 /* ==========================================================================
    MOBILE LAYER
    Loaded last, so this file owns the phone layout rather than patching the
-   desktop one selector by selector. Same design language — same palette,
-   type and glass — but a composition built for a 390px screen and a thumb.
+   desktop one selector by selector. Same design language, same palette,
+   type and glass, but a composition built for a 390px screen and a thumb.
    ========================================================================== */
 
 @media (max-width: 768px) {
@@ -53,7 +53,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* 3. Hero — no portrait, content first                                */
+  /* 3. Hero, no portrait, content first                                */
   /* ------------------------------------------------------------------ */
   .hero-visual {
     display: none;
@@ -119,7 +119,7 @@
     font-size: 0.82rem;
   }
 
-  /* Stats as a bordered strip — an app stat row, not three floated blocks */
+  /* Stats as a bordered strip, an app stat row, not three floated blocks */
   .hero-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -158,7 +158,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* 4. Section headers — compact, consistent                            */
+  /* 4. Section headers, compact, consistent                            */
   /* ------------------------------------------------------------------ */
   .portfolio-title,
   .resume-title,
@@ -170,7 +170,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* 5. Projects — compact swipe cards                                   */
+  /* 5. Projects, compact swipe cards                                   */
   /* ------------------------------------------------------------------ */
   .portfolio-card {
     flex: 0 0 82%;
@@ -229,7 +229,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* 6. Contact — one card, form first                                   */
+  /* 6. Contact, one card, form first                                   */
   /* ------------------------------------------------------------------ */
   .contact-content {
     display: flex;
@@ -295,7 +295,7 @@
 }
 
 /* ==========================================================================
-   MOBILE LAYER — round two
+   MOBILE LAYER: round two
    ========================================================================== */
 @media (max-width: 768px) {
 
@@ -374,7 +374,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Contact — one compact card                                          */
+  /* Contact, one compact card                                          */
   /* Two stacked cards plus a tall textarea filled two screens.          */
   /* ------------------------------------------------------------------ */
   .contact-section {
@@ -444,7 +444,7 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Footer — one tight block                                            */
+  /* Footer, one tight block                                            */
   /* ------------------------------------------------------------------ */
   .footer {
     padding: 1.5rem var(--space-gutter) 1.25rem;
@@ -479,7 +479,7 @@
 }
 
 /* ==========================================================================
-   MOBILE LAYER — chip and button text fitting
+   MOBILE LAYER: chip and button text fitting
    Small type inside small pills clips easily: the body line-height of 1.6
    overflows a tight pill, `overflow: hidden` (needed for the ripple) then
    cuts it, and flex children set to `1 1 0` shrink below their label.

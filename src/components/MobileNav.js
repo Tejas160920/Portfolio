@@ -18,7 +18,7 @@ const IDS = TABS.filter((t) => !t.action).map((t) => t.id);
  *
  * Ask AI used to be a floating pill that sat on top of the hero copy. Making
  * it the raised middle tab is the pattern people already know from Instagram
- * and X — it reads as the primary action instead of an obstruction, and it
+ * and X. It reads as the primary action instead of an obstruction, and it
  * frees the screen of a permanently overlapping control.
  */
 const MobileNav = () => {

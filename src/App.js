@@ -28,7 +28,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      {/* The one background for the whole page — sections are transparent
+      {/* The one background for the whole page. Sections are transparent
           frames laid over it, which is what removes the seams between them. */}
       <Atmosphere />
 

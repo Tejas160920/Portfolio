@@ -135,9 +135,9 @@ const VISITOR_REASONS = [
    like the form just grew. */
 const REACTIONS = {
   'Recruiter': "A recruiter! Now you have my attention 👀",
-  'Engineer': "An engineer — we'll get along 🤝",
+  'Engineer': "An engineer, we'll get along 🤝",
   'Hiring manager': "A hiring manager! Hello 👋",
-  'Founder': "A founder — building something good? 🚀",
+  'Founder': "A founder, building something good? 🚀",
   'Student': "A student! Ask me anything 🎓",
   'Just curious': "Curiosity is underrated 🔍"
 };
@@ -302,7 +302,7 @@ const Hero = () => {
             </h1>
           </Reveal>
 
-          {/* Role rotator — fixed height so nothing below it shifts */}
+          {/* Role rotator: fixed height so nothing below it shifts */}
           <Reveal animation="up" delay={260}>
             <div className="hero-roles" aria-live="polite">
               <span className="hero-roles-prefix">I build as a</span>
@@ -489,7 +489,7 @@ const Hero = () => {
                   </label>
 
                   <p className="visitor-note">
-                    Both optional — I just like knowing who dropped by.
+                    Both optional. I just like knowing who dropped by.
                   </p>
                 </div>
               )}

@@ -6,7 +6,7 @@
   flex-direction: column;
   gap: 0.6rem;
   overflow: hidden;
-  /* Hairlines instead of a filled band — keeps the page seamless */
+  /* Hairlines instead of a filled band: keeps the page seamless */
   border-block: 1px solid var(--border-color);
   background: transparent;
   /* Fade both ends so items enter and leave, never pop */

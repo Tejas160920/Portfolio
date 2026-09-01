@@ -66,7 +66,7 @@ module.exports = async function handler(req, res) {
     to: process.env.EMAIL_USER,
     subject: `Portfolio visitor: ${visitorName || who}${
       visitorName ? ` (${who})` : ''
-    }${why !== 'Not specified' ? ` — ${why}` : ''}`,
+    }${why !== 'Not specified' ? `, here for ${why}` : ''}`,
     ...(looksLikeEmail ? { replyTo: rawContact } : {}),
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

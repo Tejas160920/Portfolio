@@ -276,7 +276,7 @@
 
 /* ==========================================================================
    Mobile: condensed timeline
-   The desktop version is two long columns of roomy cards — several screens
+   The desktop version is two long columns of roomy cards, several screens
    of scrolling. Here it is a single tight list, sized like an app's feed.
    ========================================================================== */
 @media (max-width: 768px) {

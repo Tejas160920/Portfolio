@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Currently — artwork bento
+   Currently: artwork bento
    Same six-column grid language as the Domains section, but the cards are
    led by cover art rather than text, so the section reads at a glance.
    ========================================================================== */
@@ -320,7 +320,7 @@
     overflow: hidden;
   }
 
-  /* Clock — a status band, laid out for the width it now has -------------- */
+  /* Clock: a status band, laid out for the width it now has -------------- */
   .cur-clock {
     display: flex;
     flex-direction: column;
@@ -362,7 +362,7 @@
     flex-shrink: 0;
   }
 
-  /* Valorant — full width, so the button clears the title ----------------- */
+  /* Valorant: full width, so the button clears the title ----------------- */
   .cur-slot-game .cur-title {
     font-size: 1rem;
     -webkit-line-clamp: 1;
@@ -384,7 +384,7 @@
   .cur-media:hover .cur-action { transform: translateY(-50%); }
   .cur-action:active { transform: translateY(-50%) scale(0.95); }
 
-  /* Crests — a full row of their own -------------------------------------- */
+  /* Crests: a full row of their own -------------------------------------- */
   .cur-teams {
     justify-content: center;
     gap: 0.5rem;

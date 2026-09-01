@@ -26,7 +26,7 @@ const Reveal = ({
     const el = ref.current;
     if (!el) return;
 
-    // Anything already on screen at mount reveals immediately — avoids a
+    // Anything already on screen at mount reveals immediately, avoids a
     // blank first paint when the browser restores a scroll position.
     const observer = new IntersectionObserver(
       ([entry]) => {

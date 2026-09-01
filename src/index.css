@@ -2,7 +2,7 @@
    Design tokens
    One source of truth for color, type, spacing, motion.
    Page background lives on the fixed <Atmosphere /> layer, never on the
-   sections themselves — that is what keeps the page reading as one surface.
+   sections themselves, that is what keeps the page reading as one surface.
    ========================================================================== */
 
 :root {
@@ -17,7 +17,7 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
-  /* Fluid type scale — no media queries needed */
+  /* Fluid type scale: no media queries needed */
   --text-xs: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
   --text-sm: clamp(0.84rem, 0.8rem + 0.15vw, 0.92rem);
   --text-base: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
@@ -27,7 +27,7 @@
   --text-3xl: clamp(2.25rem, 1.5rem + 3.4vw, 4rem);
   --text-4xl: clamp(2.75rem, 1.4rem + 6vw, 6.5rem);
 
-  /* Vertical rhythm — sections breathe instead of snapping to 100vh */
+  /* Vertical rhythm: sections breathe instead of snapping to 100vh */
   --space-section: clamp(6rem, 12vh, 11rem);
   --space-gutter: clamp(1.25rem, 4vw, 3rem);
   --content-max: 1200px;
@@ -44,7 +44,7 @@
    Dark theme (default)
    -------------------------------------------------------------------------- */
 [data-theme="dark"], :root {
-  /* Surfaces carry a slight blue cast — pure #000 reads flat and cheap */
+  /* Surfaces carry a slight blue cast, pure #000 reads flat and cheap */
   --bg-primary: #05060a;
   --bg-secondary: #070810;
   --bg-tertiary: #090b14;
@@ -205,7 +205,7 @@ a {
 /* --------------------------------------------------------------------------
    Shared section shell
    Sections are transparent frames over the atmosphere. No section may set an
-   opaque background — that is what re-introduces the seams.
+   opaque background, that is what re-introduces the seams.
    -------------------------------------------------------------------------- */
 .section-shell {
   position: relative;
@@ -243,7 +243,7 @@ a {
 }
 
 /* --------------------------------------------------------------------------
-   Reveal system — one animation vocabulary for the whole page
+   Reveal system: one animation vocabulary for the whole page
    -------------------------------------------------------------------------- */
 .reveal {
   opacity: 0;

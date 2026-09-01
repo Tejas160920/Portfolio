@@ -10,18 +10,18 @@ import './Atmosphere.css';
  * transparent frames laid over it.
  *
  * Layers, back to front:
- *   1. base wash        — the page colour
- *   2. aurora blobs     — three slow-drifting radial gradients
- *   3. grid             — faint blueprint rule, masked out at the edges
- *   4. spotlight        — follows the pointer, very subtle
- *   5. grain            — SVG noise, kills gradient banding
+ *   1. base wash        the page colour
+ *   2. aurora blobs     three slow-drifting radial gradients
+ *   3. grid             faint blueprint rule, masked out at the edges
+ *   4. spotlight        follows the pointer, very subtle
+ *   5. grain            SVG noise, kills gradient banding
  */
 const Atmosphere = () => {
   const rootRef = useRef(null);
   const spotlightRef = useRef(null);
 
   // Drive scroll + pointer through CSS custom properties so we never trigger
-  // a React re-render, and never touch layout — only compositor properties.
+  // a React re-render, and never touch layout: only compositor properties.
   useEffect(() => {
     const root = rootRef.current;
     const spotlight = spotlightRef.current;

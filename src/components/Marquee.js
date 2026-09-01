@@ -18,7 +18,7 @@ const ROW_TWO = [
  * lands on a hard boundary between one block of content and the next.
  *
  * The track holds the list twice and translates by exactly -50%, which is
- * what makes the loop seamless — the second copy is in the first copy's
+ * what makes the loop seamless: the second copy is in the first copy's
  * position at the moment the animation resets.
  */
 const MarqueeRow = ({ items, reverse = false, speed = 42 }) => (
