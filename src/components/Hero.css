@@ -836,9 +836,6 @@
    Only appears once a chip is tapped, so the ask lands after the visitor is
    already engaged rather than guarding the door.
    ========================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  .visitor-reveal { animation: none; }
-}
 
 /* Name and contact, side by side so they cost one row rather than two */
 .visitor-identity {
