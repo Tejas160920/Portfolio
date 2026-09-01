@@ -236,7 +236,7 @@ const Hero = () => {
   const handleNameSubmit = async () => {
     // Either answer on its own is worth sending; requiring both would just
     // reintroduce the friction the chips are meant to remove.
-    if (!visitorRole && !visitorReason) {
+    if (!visitorRole && !visitorReason && !visitorName.trim() && !visitorContact.trim()) {
       setShowNamePrompt(false);
       return;
     }
@@ -278,6 +278,7 @@ const Hero = () => {
   };
 
   const picked = Boolean(visitorRole || visitorReason);
+  const hasAnswer = picked || Boolean(visitorName.trim() || visitorContact.trim());
 
   const scrollTo = useCallback((id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -414,11 +415,15 @@ const Hero = () => {
         <div className="name-prompt-overlay" role="dialog" aria-modal="true">
           <div className="name-prompt-modal">
             <h3>Thanks for the love! 💚</h3>
-            <p>Two taps and I'll know who stopped by.</p>
+            <p className="visitor-sub">
+              {picked
+                ? (REACTIONS[visitorRole] || 'Good to have you here 👋')
+                : "A few taps and I'll know who stopped by."}
+            </p>
 
             <div className="visitor-form">
               <fieldset className="visitor-group">
-                <legend className="visitor-legend">You are a…</legend>
+                <legend className="visitor-legend">You are a</legend>
                 <div className="visitor-chips">
                   {VISITOR_ROLES.map((option) => (
                     <button
@@ -426,8 +431,8 @@ const Hero = () => {
                       type="button"
                       className={`visitor-chip ${visitorRole === option ? 'selected' : ''}`}
                       aria-pressed={visitorRole === option}
-                      /* Tapping the current choice clears it, so a mis-tap
-                         is one tap to undo rather than a locked-in answer */
+                      /* Tapping the current choice clears it, so a mis-tap is
+                         one tap to undo rather than a locked-in answer */
                       onClick={() =>
                         setVisitorRole((prev) => (prev === option ? '' : option))
                       }
@@ -439,7 +444,7 @@ const Hero = () => {
               </fieldset>
 
               <fieldset className="visitor-group">
-                <legend className="visitor-legend">Here for…</legend>
+                <legend className="visitor-legend">Here for</legend>
                 <div className="visitor-chips">
                   {VISITOR_REASONS.map((option) => (
                     <button
@@ -457,42 +462,29 @@ const Hero = () => {
                 </div>
               </fieldset>
 
-              {picked && (
-                <div className="visitor-reveal">
-                  <p className="visitor-reaction">
-                    {REACTIONS[visitorRole] || "Good to have you here 👋"}
-                  </p>
-
-                  <label className="visitor-field">
-                    <span className="visitor-legend">Who do I thank?</span>
-                    <input
-                      type="text"
-                      value={visitorName}
-                      onChange={(e) => setVisitorName(e.target.value)}
-                      placeholder="First name is plenty"
-                      maxLength={50}
-                      autoComplete="given-name"
-                    />
-                  </label>
-
-                  <label className="visitor-field">
-                    <span className="visitor-legend">Where do I find you?</span>
-                    <input
-                      type="text"
-                      value={visitorContact}
-                      onChange={(e) => setVisitorContact(e.target.value)}
-                      placeholder="Email or LinkedIn"
-                      maxLength={120}
-                      autoComplete="email"
-                      onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
-                    />
-                  </label>
-
-                  <p className="visitor-note">
-                    Both optional. I just like knowing who dropped by.
-                  </p>
+              {/* Always visible: the name is the whole point of asking */}
+              <fieldset className="visitor-group">
+                <legend className="visitor-legend">So I know who to thank</legend>
+                <div className="visitor-identity">
+                  <input
+                    type="text"
+                    value={visitorName}
+                    onChange={(e) => setVisitorName(e.target.value)}
+                    placeholder="Your name"
+                    maxLength={50}
+                    autoComplete="given-name"
+                  />
+                  <input
+                    type="text"
+                    value={visitorContact}
+                    onChange={(e) => setVisitorContact(e.target.value)}
+                    placeholder="Email or LinkedIn"
+                    maxLength={120}
+                    autoComplete="email"
+                    onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+                  />
                 </div>
-              )}
+              </fieldset>
             </div>
 
             <div className="name-prompt-buttons">
@@ -502,7 +494,7 @@ const Hero = () => {
               <button
                 onClick={handleNameSubmit}
                 className="submit-btn"
-                disabled={isSubmitting || (!visitorRole && !visitorReason)}
+                disabled={isSubmitting || !hasAnswer}
               >
                 {isSubmitting ? 'Sending…' : 'Send'}
               </button>

@@ -481,8 +481,8 @@
 }
 
 .name-prompt-modal {
-  width: min(420px, 100%);
-  padding: clamp(1.5rem, 4vw, 2.25rem);
+  width: min(440px, 100%);
+  padding: clamp(1.4rem, 3vw, 1.9rem);
   border-radius: var(--radius-lg);
   background: var(--bg-card-solid);
   border: 1px solid var(--border-color-light);
@@ -502,16 +502,19 @@
   color: var(--text-primary);
 }
 
-.name-prompt-modal > p {
-  margin: 0 0 1.35rem;
+.visitor-sub {
+  margin: 0.3rem 0 1.4rem;
   font-size: var(--text-sm);
+  line-height: 1.5;
   color: var(--text-secondary);
+  /* Fixed height so swapping in the reaction line does not jump the modal */
+  min-height: 1.5em;
 }
 
 .visitor-form {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.15rem;
 }
 
 .visitor-group {
@@ -523,10 +526,10 @@
 
 .visitor-legend {
   padding: 0;
-  margin-bottom: 0.6rem;
-  font-size: var(--text-xs);
+  margin-bottom: 0.5rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -534,19 +537,20 @@
 .visitor-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .visitor-chip {
-  padding: 0.5rem 0.9rem;
+  flex: 0 1 auto;
+  padding: 0.45rem 0.8rem;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-color-light);
   background: var(--bg-elevated);
   color: var(--text-secondary);
   font-family: inherit;
-  font-size: var(--text-sm);
+  font-size: 0.8rem;
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.3;
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -572,7 +576,11 @@
 
 .name-prompt-buttons {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.6rem;
+  /* A rule and real space, so the actions read as separate from the answers */
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .name-prompt-buttons button {
@@ -828,36 +836,21 @@
    Only appears once a chip is tapped, so the ask lands after the visitor is
    already engaged rather than guarding the door.
    ========================================================================== */
-.visitor-reveal {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-  padding-top: 0.9rem;
-  border-top: 1px dashed var(--border-color);
-  animation: visitor-reveal-in 0.4s var(--ease-out-expo);
+@media (prefers-reduced-motion: reduce) {
+  .visitor-reveal { animation: none; }
 }
 
-@keyframes visitor-reveal-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: none; }
+/* Name and contact, side by side so they cost one row rather than two */
+.visitor-identity {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
 }
 
-.visitor-reaction {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--accent-green);
-}
-
-.visitor-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.visitor-field input {
+.visitor-identity input {
+  min-width: 0;
   width: 100%;
-  padding: 0.7rem 0.9rem;
+  padding: 0.65rem 0.8rem;
   border-radius: var(--radius-md);
   background: var(--bg-elevated);
   border: 1px solid var(--border-color);
@@ -868,23 +861,19 @@
   transition: border-color 0.25s ease, background 0.25s ease;
 }
 
-.visitor-field input::placeholder {
+.visitor-identity input::placeholder {
   color: var(--text-muted);
-  font-size: var(--text-sm);
+  font-size: 0.85rem;
 }
 
-.visitor-field input:focus {
+.visitor-identity input:focus {
   outline: none;
   border-color: var(--accent-green);
   background: var(--bg-card-hover);
 }
 
-.visitor-note {
-  margin: 0;
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .visitor-reveal { animation: none; }
+@media (max-width: 480px) {
+  .visitor-identity {
+    grid-template-columns: 1fr;
+  }
 }
