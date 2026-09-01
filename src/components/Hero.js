@@ -113,6 +113,24 @@ const ROLES = [
   'Cloud Engineer'
 ];
 
+/* Two taps, no typing. Free-text fields are why nobody answers this. */
+const VISITOR_ROLES = [
+  'Recruiter',
+  'Engineer',
+  'Hiring manager',
+  'Founder',
+  'Student',
+  'Just curious'
+];
+
+const VISITOR_REASONS = [
+  'A role for you',
+  'Your projects',
+  'The AI assistant',
+  'We have met',
+  'Just browsing'
+];
+
 const STATS = [
   { value: '3+', label: 'Years building' },
   { value: '10+', label: 'Projects shipped' },
@@ -125,11 +143,8 @@ const Hero = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [roleIndex, setRoleIndex] = useState(0);
   const [showNamePrompt, setShowNamePrompt] = useState(false);
-  const [visitorInfo, setVisitorInfo] = useState({
-    name: '',
-    role: '',
-    company: ''
-  });
+  const [visitorRole, setVisitorRole] = useState('');
+  const [visitorReason, setVisitorReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const namePromptTimerRef = useRef(null);
   const emojiTimerRef = useRef(null);
@@ -206,41 +221,42 @@ const Hero = () => {
 
   // Handle visitor info submission
   const handleNameSubmit = async () => {
-    const hasAnyInfo = visitorInfo.name.trim() || visitorInfo.role.trim() || visitorInfo.company.trim();
-
-    if (hasAnyInfo) {
-      setIsSubmitting(true);
-
-      // Save to Firebase
-      await saveUserName(visitorInfo.name.trim() || 'Anonymous');
-
-      // Send email notification
-      try {
-        await fetch('/api/visitor', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: visitorInfo.name.trim() || 'Anonymous',
-            role: visitorInfo.role.trim() || 'Not specified',
-            company: visitorInfo.company.trim() || 'Not specified',
-            likes: likes
-          })
-        });
-      } catch (error) {
-        console.error('Failed to send visitor info:', error);
-      }
-
-      setIsSubmitting(false);
+    // Either answer on its own is worth sending; requiring both would just
+    // reintroduce the friction the chips are meant to remove.
+    if (!visitorRole && !visitorReason) {
+      setShowNamePrompt(false);
+      return;
     }
 
+    setIsSubmitting(true);
+
+    await saveUserName(visitorRole || 'Visitor');
+
+    try {
+      await fetch('/api/visitor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: visitorRole || 'Someone',
+          role: visitorRole || 'Not specified',
+          company: visitorReason || 'Not specified',
+          likes: likes
+        })
+      });
+    } catch (error) {
+      console.error('Failed to send visitor info:', error);
+    }
+
+    setIsSubmitting(false);
     setShowNamePrompt(false);
-    setVisitorInfo({ name: '', role: '', company: '' });
+    setVisitorRole('');
+    setVisitorReason('');
   };
 
-  // Handle skip
   const handleSkipName = () => {
     setShowNamePrompt(false);
-    setVisitorInfo({ name: '', role: '', company: '' });
+    setVisitorRole('');
+    setVisitorReason('');
   };
 
   const scrollTo = useCallback((id) => {
@@ -378,37 +394,60 @@ const Hero = () => {
         <div className="name-prompt-overlay" role="dialog" aria-modal="true">
           <div className="name-prompt-modal">
             <h3>Thanks for the love! 💚</h3>
-            <p>I'd love to know who's visiting!</p>
+            <p>Two taps and I'll know who stopped by.</p>
+
             <div className="visitor-form">
-              <input
-                type="text"
-                value={visitorInfo.name}
-                onChange={(e) => setVisitorInfo({...visitorInfo, name: e.target.value})}
-                placeholder="Your name"
-                maxLength={50}
-                autoFocus
-              />
-              <input
-                type="text"
-                value={visitorInfo.role}
-                onChange={(e) => setVisitorInfo({...visitorInfo, role: e.target.value})}
-                placeholder="Your role (e.g. Recruiter, Developer, Student)"
-                maxLength={50}
-              />
-              <input
-                type="text"
-                value={visitorInfo.company}
-                onChange={(e) => setVisitorInfo({...visitorInfo, company: e.target.value})}
-                placeholder="Company / Organization"
-                maxLength={100}
-                onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
-              />
+              <fieldset className="visitor-group">
+                <legend className="visitor-legend">You are a…</legend>
+                <div className="visitor-chips">
+                  {VISITOR_ROLES.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={`visitor-chip ${visitorRole === option ? 'selected' : ''}`}
+                      aria-pressed={visitorRole === option}
+                      /* Tapping the current choice clears it, so a mis-tap
+                         is one tap to undo rather than a locked-in answer */
+                      onClick={() =>
+                        setVisitorRole((prev) => (prev === option ? '' : option))
+                      }
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="visitor-group">
+                <legend className="visitor-legend">Here for…</legend>
+                <div className="visitor-chips">
+                  {VISITOR_REASONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className={`visitor-chip ${visitorReason === option ? 'selected' : ''}`}
+                      aria-pressed={visitorReason === option}
+                      onClick={() =>
+                        setVisitorReason((prev) => (prev === option ? '' : option))
+                      }
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
             </div>
-            <p className="optional-note">All fields are optional</p>
+
             <div className="name-prompt-buttons">
-              <button onClick={handleSkipName} className="skip-btn">Skip</button>
-              <button onClick={handleNameSubmit} className="submit-btn" disabled={isSubmitting}>
-                {isSubmitting ? 'Sending...' : 'Submit'}
+              <button onClick={handleSkipName} className="skip-btn">
+                Maybe later
+              </button>
+              <button
+                onClick={handleNameSubmit}
+                className="submit-btn"
+                disabled={isSubmitting || (!visitorRole && !visitorReason)}
+              >
+                {isSubmitting ? 'Sending…' : 'Send'}
               </button>
             </div>
           </div>
